@@ -1,0 +1,25 @@
+# Laravel
+/public/hot
+/public/storage
+/storage/*.key
+.env
+.env.backup
+
+# Dependencies
+/node_modules
+/vendor
+npm-debug.log
+yarn-error.log
+
+# Virtual Machine
+.vagrant
+Homestead.json
+Homestead.yaml
+
+# Ide-helper
+_ide_helper.json
+_ide_helper_models.php
+.phpstorm.meta.php
+
+# Cache
+.phpunit.result.cache
