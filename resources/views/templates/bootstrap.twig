@@ -6,9 +6,19 @@
 
     <title>{% if page_title is defined %} {{ page_title }} | {% endif %}{{ config('app.name') }}</title>
 
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+
     {% block head %}{% endblock %}
 </head>
 <body>
 {% block body %}{% endblock %}
+
+{% block footer %}
+    <script>window.Laravel = {{ {'csrfToken': csrf_token()}|json_encode()|raw }}</script>
+
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+{% endblock %}
 </body>
 </html>
