@@ -233,8 +233,11 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Twig' => TwigBridge\Facade\Twig::class,
+        // App Specific
+        'Env' => App\Facades\EnvFacade::class,
 
+        // Third Party
+        'Twig' => TwigBridge\Facade\Twig::class,
         'FormFactory' => Barryvdh\Form\Facade\FormFactory::class,
         'FormRenderer' => Barryvdh\Form\Facade\FormRenderer::class,
     ],

@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes([
+    'verify' => true
+]);
 
-Route::any('/login', 'HomeController@login');
-
-Route::get('/home', function () {
-    return view('home');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', 'HomeController@home')->name('home');
 });

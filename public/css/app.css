@@ -10928,3 +10928,8 @@ a.text-dark:focus {
   }
 }
 
+label.required:after {
+  content: " *";
+  color: #dc3545;
+}
+

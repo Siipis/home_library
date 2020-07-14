@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Facades\Classes\Env;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
+
+        $this->app->singleton('env', function () {
+            return new Env();
+        });
     }
 
     /**

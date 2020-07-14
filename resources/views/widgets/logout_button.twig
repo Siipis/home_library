@@ -1,0 +1,7 @@
+<form class="form-inline" method="post" action="{{ route('logout') }}">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+
+    <button class="btn btn-link">
+        {{ trans('auth.logout') }}
+    </button>
+</form>

@@ -28,6 +28,12 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // });
 
 /**
+ * Loads jQuery
+ * @link https://jquery.com/
+ */
+window.$ = require('jquery');
+
+/**
  * Loads Bootstrap's Javascript libraries.
  * @link https://getbootstrap.com/docs/4.5/getting-started/download/#npm
  */
