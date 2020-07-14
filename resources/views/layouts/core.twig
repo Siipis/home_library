@@ -6,9 +6,12 @@
 
     <title>{% if page_title is defined %} {{ page_title }} | {% endif %}{{ config('app.name') }}</title>
 
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     {% block head %}{% endblock %}
 </head>
 <body>
 {% block body %}{% endblock %}
+
+{% block scripts %}{% endblock %}
 </body>
 </html>

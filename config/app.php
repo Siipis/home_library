@@ -169,6 +169,9 @@ return [
         // @link https://github.com/rcrowe/TwigBridge
         TwigBridge\ServiceProvider::class,
 
+        // @link https://github.com/barryvdh/laravel-form-bridge
+        Barryvdh\Form\ServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -231,6 +234,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Twig' => TwigBridge\Facade\Twig::class,
+
+        'FormFactory' => Barryvdh\Form\Facade\FormFactory::class,
+        'FormRenderer' => Barryvdh\Form\Facade\FormRenderer::class,
     ],
 
 ];

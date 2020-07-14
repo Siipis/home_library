@@ -17,7 +17,7 @@ Homestead.json
 Homestead.yaml
 
 # Ide-helper
-_ide_helper.json
+_ide_helper.php
 _ide_helper_models.php
 .phpstorm.meta.php
 

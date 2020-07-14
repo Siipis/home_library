@@ -26,3 +26,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/**
+ * Loads Bootstrap's Javascript libraries.
+ * @link https://getbootstrap.com/docs/4.5/getting-started/download/#npm
+ */
+window.Bootstrap = require('bootstrap');
