@@ -19,4 +19,8 @@ Auth::routes([
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', 'HomeController@home')->name('home');
+
+    Route::get('/search', function () {
+        return view('search');
+    });
 });
