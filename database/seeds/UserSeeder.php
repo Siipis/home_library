@@ -16,7 +16,9 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Admin',
             'email' => 'no-reply@varjohovi.net',
+            'email_verified_at' => \Carbon\Carbon::now(),
             'password' => Hash::make('password'),
+            'is_admin' => true,
         ]);
     }
 }

@@ -23,4 +23,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/search', function () {
         return view('search');
     });
+
+    Route::prefix('/admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
+        Route::get('/', 'HomeController@home')->name('home');
+
+        Route::resource('users', 'UserController');
+        Route::put('users/{user}/promote', 'UserController@promote')->name('users.promote');
+    });
 });

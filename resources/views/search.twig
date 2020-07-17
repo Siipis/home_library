@@ -1,4 +1,4 @@
-{% extends 'templates.bootstrap' %}
+{% extends 'user'|layout %}
 
 {% set page_title = "Hae kirjoja" %}
 
@@ -31,7 +31,7 @@
     </style>
 {% endblock %}
 
-{% block body %}
+{% block content %}
 
     <div class="frame">
         <form method="get">

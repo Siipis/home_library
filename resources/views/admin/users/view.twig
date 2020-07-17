@@ -1,0 +1,81 @@
+{% extends 'admin'|layout %}
+
+{% set page_title = '' %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>{{ 'Käyttäjät'|trans }}</h3>
+
+    <div id="view">
+        <ajax-error :error="error"></ajax-error>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>{{ 'Nimi'|trans }}</th>
+                <th>Hallinnoija</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="user in users">
+                <td>[[ user.name ]]</td>
+                <td>
+                    <div>
+                        <b-button
+                            :variant="user.is_admin ? 'danger' : 'outline-secondary'"
+                            :disabled="user.disabled"
+                            @click="toggleRole(user)">
+
+                            <b-icon icon="check"></b-icon>
+                        </b-button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        new Vue({
+            el: '#view',
+            data: {
+                users: Object.values({{ users|vue }}).map(user => {
+                    if (user.id === {{ auth.id }}) {
+                        user.disabled = true;
+                    }
+
+                    return user;
+                }),
+                error: {},
+            },
+
+            methods: {
+                toggleRole(user) {
+                    if (user.disabled) return;
+
+                    axios.post(Route.get({{ raw_route('admin.users.promote') }}, { user: user.id }), {
+                        _method: 'put',
+                        data: {
+                            user: Object.assign(user, {
+                                is_admin: !user.is_admin,
+                            })
+                        }
+                    }).then(() => {
+                        // Clear errors on a successful save
+                        this.error = {};
+                    }).catch(({ response }) => {
+                        // If something went wrong, show error and reverse action
+                        this.error = response;
+
+                        user = Object.assign(user, {
+                            is_admin: !user.is_admin,
+                        });
+                    });
+                },
+            },
+        });
+    </script>
+{% endblock %}

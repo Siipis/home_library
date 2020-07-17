@@ -1,0 +1,15 @@
+{% extends 'core'|layout %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}

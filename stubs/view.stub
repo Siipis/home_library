@@ -1,0 +1,11 @@
+{% extends '_LAYOUT_'|layout %}
+
+{% set page_title = '_TITLE_' %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    Hello world.
+{% endblock %}
+
+{% block scripts %}{% endblock %}

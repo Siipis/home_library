@@ -1,0 +1,13 @@
+{% block navbar %}
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainMenu">
+            <ul class="navbar-nav mr-auto">
+                {% block auto %}{% endblock %}
+            </ul>
+        </div>
+    </nav>
+{% endblock %}

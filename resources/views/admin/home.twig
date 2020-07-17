@@ -1,0 +1,13 @@
+{% extends 'admin'|layout %}
+
+{% set page_title = '' %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <ul>
+        <li><a href="{{ route('admin.users.index') }}">{{ 'Käyttäjät'|trans }}</a></li>
+    </ul>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

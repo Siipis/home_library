@@ -1,0 +1,29 @@
+{% extends 'core'|layout %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% embed 'navbar'|block %}
+        {% block auto %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('home') }}">Etusivu</a>
+            </li>
+
+            {% if can('access-backend') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.home') }}">Hallintapaneeli</a>
+                </li>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+
+    <div class="container">
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}

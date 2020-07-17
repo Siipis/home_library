@@ -1,18 +1,16 @@
-{% extends 'layouts.core' %}
+{% extends 'guest'|layout %}
 
-{% set page_title = trans('auth.confirm_password') %}
+{% set page_title = 'Vahvista salasanasi'|trans %}
 
-{% block head %}{% endblock %}
-
-{% block body %}
+{% block content %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ trans('auth.confirm_password') }}</div>
+                    <div class="card-header">{{ page_title }}</div>
 
                     <div class="card-body">
-                        {{ trans('auth.please_confirm_password') }}
+                        {{ 'Ole hyvä ja vahvista salasanasi ennen kuin jatkat.'|trans }}
 
                         <form method="POST" action="{{ route('password.confirm') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -34,12 +32,12 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ trans('auth.confirm_password') }}
+                                        {{ 'Vahvista'|trans }}
                                     </button>
 
                                     {% if route_has('password.request') %}
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ trans('auth.forgot_password') }}
+                                        {{ 'Unohditko salasanasi?'|trans }}
                                     </a>
                                     {% endif %}
                                 </div>
@@ -51,5 +49,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block scripts %}{% endblock %}

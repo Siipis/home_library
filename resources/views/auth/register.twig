@@ -1,10 +1,8 @@
-{% extends 'layouts.core' %}
+{% extends 'guest'|layout %}
 
 {% set page_title = trans('auth.register') %}
 
-{% block head %}{% endblock %}
-
-{% block body %}
+{% block content %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -79,5 +77,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block scripts %}{% endblock %}

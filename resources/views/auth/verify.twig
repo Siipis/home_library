@@ -1,28 +1,26 @@
-{% extends 'layouts.core' %}
+{% extends 'guest'|layout %}
 
-{% set page_title = trans('email.verify') %}
+{% set page_title = 'Vahvista sähköpostisi'|trans %}
 
-{% block head %}{% endblock %}
-
-{% block body %}
+{% block content %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ trans('email.verify') }}</div>
+                    <div class="card-header">{{ page_title }}</div>
 
                     <div class="card-body">
                         {% if session('resent') %}
                         <div class="alert alert-success" role="alert">
-                            {{ trans('email.verification_sent') }}
+                            {{ 'Vahvistuslinkki on lähetetty sähköpostiosoitteeseesi.'|trans }}
                         </div>
                         {% endif %}
 
-                        {{ trans('email.check_for_verification') }}
-                        {{ trans('email.empty_inbox') }},
+                        {{ 'Ennen kuin jatkat, ole hyvä ja tarkista onko sähköpostiin lähetetty vahvistuslinkki.'|trans }}
+                        {{ 'Jos sähköpostilaatikkosi on tyhjä'|trans }},
                         <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ trans('email.request_another') }}</button>.
+                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ 'klikkaa tästä tilataksesi uusi linkki'|trans }}</button>.
                         </form>
                     </div>
                 </div>
@@ -31,5 +29,3 @@
     </div>
 
 {% endblock %}
-
-{% block scripts %}{% endblock %}

@@ -1,12 +1,10 @@
-{% extends 'layouts.core' %}
+{% extends 'user'|layout %}
 
-{% set page_title = "Tervetuloa" %}
+{% set page_title = "Tervetuloa"|trans %}
 
 {% block head %}{% endblock %}
 
-{% block body %}
-    {% include 'widgets/logout_button' %}
-
+{% block content %}
     Tervetuloa!
 {% endblock %}
 

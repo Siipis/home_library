@@ -1,10 +1,8 @@
-{% extends 'layouts.core' %}
+{% extends 'guest'|layout %}
 
 {% set page_title = trans('auth.login') %}
 
-{% block head %}{% endblock %}
-
-{% block body %}
+{% block content %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -13,7 +11,7 @@
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('login') }}">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            {% token %}
 
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ trans('fields.email') }}</label>
@@ -49,7 +47,7 @@
                                         <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                         <label class="form-check-label" for="remember">
-                                            {{ trans('auth.remember_me') }}
+                                            {{ 'Muista kirjautuminen'|trans }}
                                         </label>
                                     </div>
                                 </div>
@@ -63,7 +61,7 @@
 
                                     {% if route_has('password.request') %}
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ trans('auth.forgot_password') }}
+                                        {{ 'Unohditko salasanasi?'|trans }}
                                     </a>
                                     {% endif %}
                                 </div>
@@ -75,5 +73,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block scripts %}{% endblock %}

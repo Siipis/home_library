@@ -17,6 +17,12 @@ return [
         resource_path('views'),
     ],
 
+    'prefixes' => [
+        'layouts' => 'layouts',
+        'blocks' => 'templates.blocks',
+        'macros' => 'templates.macros',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Compiled View Path

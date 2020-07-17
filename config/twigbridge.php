@@ -117,7 +117,7 @@ return [
             'TwigBridge\Extension\Loader\Functions',
 
             'TwigBridge\Extension\Laravel\Auth',
-            'TwigBridge\Extension\Laravel\Config',
+            // 'TwigBridge\Extension\Laravel\Config',
             'TwigBridge\Extension\Laravel\Dump',
             'TwigBridge\Extension\Laravel\Input',
             'TwigBridge\Extension\Laravel\Session',
@@ -125,11 +125,16 @@ return [
             'TwigBridge\Extension\Laravel\Translator',
             'TwigBridge\Extension\Laravel\Url',
             'TwigBridge\Extension\Laravel\Model',
-            // 'TwigBridge\Extension\Laravel\Gate',
+            'TwigBridge\Extension\Laravel\Gate',
 
             // 'TwigBridge\Extension\Laravel\Form',
             // 'TwigBridge\Extension\Laravel\Html',
             // 'TwigBridge\Extension\Laravel\Legacy\Facades',
+
+            /**
+             * App Specific Extensions
+             */
+            \App\Twig\Extensions\Helpers::class,
         ],
 
         /*
@@ -194,7 +199,6 @@ return [
             'head',
             'last',
             'mix',
-            'trans',
         ],
 
         /*

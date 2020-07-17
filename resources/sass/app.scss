@@ -1,10 +1,11 @@
-@import "~bootstrap";
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
-label {
-    &.required {
-        &:after {
-            content: ' *';
-            color: $danger;
-        }
-    }
-}
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Bootstrap Vue
+@import '~bootstrap-vue/src/index';

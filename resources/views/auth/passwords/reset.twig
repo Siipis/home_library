@@ -1,15 +1,13 @@
-{% extends 'layouts.core' %}
+{% extends 'guest'|layout %}
 
-{% set page_title = trans('auth.reset_password') %}
+{% set page_title = 'Määritä uusi salasana'|trans %}
 
-{% block head %}{% endblock %}
-
-{% block body %}
+{% block content %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ trans('auth.reset_password') }}</div>
+                    <div class="card-header">{{ page_title }}</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('password.update') }}">
@@ -56,7 +54,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ trans('auth.reset_password') }}
+                                        {{ 'Tallenna'|trans }}
                                     </button>
                                 </div>
                             </div>
@@ -67,5 +65,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block scripts %}{% endblock %}
