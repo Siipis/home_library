@@ -18,16 +18,18 @@ Auth::routes([
 ]);
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', 'HomeController@home')->name('home');
+    Route::get('/', 'HomeController@index')->name('index');
 
     Route::get('/search', function () {
         return view('search');
     });
 
     Route::prefix('/admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
-        Route::get('/', 'HomeController@home')->name('home');
+        Route::get('/', 'HomeController@index')->name('index');
 
         Route::resource('users', 'UserController');
         Route::put('users/{user}/promote', 'UserController@promote')->name('users.promote');
+
+        Route::resource('libraries', 'LibraryController');
     });
 });

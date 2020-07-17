@@ -12,7 +12,7 @@ class MakeView extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:view {name} {--layout=core} {--title=} {--f|force}';
+    protected $signature = 'make:view {name} {--layout=core} {--title=} {--resource} {--f|force}';
 
     /**
      * The console command description.
@@ -69,5 +69,33 @@ class MakeView extends GeneratorCommand
     protected function getRootDestination()
     {
         return resource_path('views');
+    }
+
+    /**
+     * @return bool
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function handle()
+    {
+        if ($this->hasOption('resource') && $this->option('resource')) {
+            $this->info('Generating resource views...');
+
+            $name = $this->argument('name');
+            $views = config('view.generate');
+
+            foreach ($views as $view) {
+                $this->call('make:view', [
+                    'name' => $name . '/' . $view,
+                    '--layout' => $this->option('layout'),
+                    '--title' => $this->option('title'),
+                    '--resource' => false,
+                    '--force' => $this->hasOption('force'),
+                ]);
+            }
+
+            return 0;
+        }
+
+        return parent::handle();
     }
 }

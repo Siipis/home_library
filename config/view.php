@@ -39,4 +39,17 @@ return [
         realpath(storage_path('framework/views'))
     ),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Autogeneration
+    |--------------------------------------------------------------------------
+    |
+    | This option determines which Twig views will be created for a resource
+    | when calling artisan make:view {name} --resource
+    |
+    */
+
+    'generate' => [
+        'index', 'show', 'create', 'edit'
+    ],
 ];

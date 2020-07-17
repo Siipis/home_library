@@ -1,13 +1,18 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Controllers\Admin;
 
-use {{ namespacedModel }};
-use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Library;
 use Illuminate\Http\Request;
 
-class {{ class }} extends Controller
+class LibraryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Library::class, 'library');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,7 @@ class {{ class }} extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.libraries.index');
     }
 
     /**
@@ -42,10 +47,10 @@ class {{ class }} extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function show({{ model }} ${{ modelVariable }})
+    public function show(Library $library)
     {
         //
     }
@@ -53,10 +58,10 @@ class {{ class }} extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function edit({{ model }} ${{ modelVariable }})
+    public function edit(Library $library)
     {
         //
     }
@@ -65,10 +70,10 @@ class {{ class }} extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function update(Request $request, {{ model }} ${{ modelVariable }})
+    public function update(Request $request, Library $library)
     {
         //
     }
@@ -76,10 +81,10 @@ class {{ class }} extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function destroy({{ model }} ${{ modelVariable }})
+    public function destroy(Library $library)
     {
         //
     }

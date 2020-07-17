@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Library;
+use App\Policies\LibraryPolicy;
 use App\Policies\UserPolicy;
 use App\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        Library::class => LibraryPolicy::class,
         User::class => UserPolicy::class,
     ];
 

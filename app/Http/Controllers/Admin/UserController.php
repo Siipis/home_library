@@ -11,20 +11,17 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['admin']);
+        $this->authorizeResource(User::class, 'user');
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function index()
     {
-        Gate::authorize('view', User::class);
-
-        return view('admin.users.view', [
+        return view('admin.users.index', [
             'users' => User::orderBy('name')->get()
         ]);
     }
@@ -32,12 +29,11 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function create()
     {
-        Gate::authorize('create', User::class);
+        //
     }
 
 
@@ -46,36 +42,33 @@ class UserController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param User $user
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', User::class);
+        //
     }
 
     /**
      * Display the specified resource.
      *
      * @param User $user
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function show(User $user)
     {
-        Gate::authorize('view', $user);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param User $user
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function edit(User $user)
     {
-        Gate::authorize('update', $user);
+        //
     }
 
     /**
@@ -83,12 +76,11 @@ class UserController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param User $user
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function update(Request $request, User $user)
     {
-        Gate::authorize('update', $user);
+        //
     }
 
     /**
@@ -96,8 +88,7 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function promote(Request $request, User $user)
     {
@@ -122,11 +113,10 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param User $user
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return mixed
      */
     public function destroy(User $user)
     {
-        Gate::authorize('delete', $user);
+        //
     }
 }

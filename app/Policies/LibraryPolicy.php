@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
+use App\Library;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class LibraryPolicy
 {
     use HandlesAuthorization;
 
@@ -24,10 +25,10 @@ class UserPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view(User $user, Library $library)
     {
         return $user->isAdmin();
     }
@@ -47,59 +48,47 @@ class UserPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Library $library)
     {
-        return $user->id === $model->id || $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can promote the target.
-     *
-     * @param User $user
-     * @param User $target
-     * @return bool
-     */
-    public function promote(User $user, User $target)
-    {
-        return $user->id != $target->id && $user->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Library $library)
     {
-        return $user->id != $model->id && $user->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, Library $library)
     {
-        return $user->id != $model->id && $user->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
+     * @param  \App\Library  $library
      * @return mixed
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, Library $library)
     {
-        return $user->id != $model->id && $user->isAdmin();
+        return $user->isAdmin();
     }
 }

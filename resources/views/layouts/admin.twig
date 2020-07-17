@@ -8,12 +8,12 @@
     {% embed 'navbar'|block %}
         {% block auto %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('home') }}">Etusivu</a>
+                <a class="nav-link" href="{{ route('index') }}">Etusivu</a>
             </li>
 
             {% if can('access-backend') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.home') }}">Hallintapaneeli</a>
+                    <a class="nav-link" href="{{ route('admin.index') }}">Hallintapaneeli</a>
                 </li>
             {% endif %}
         {% endblock %}

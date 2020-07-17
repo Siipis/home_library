@@ -9,7 +9,7 @@
         {% block auto %}
             {% if can('access-backend') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.home') }}">Hallintapaneeli</a>
+                    <a class="nav-link" href="{{ route('admin.index') }}">Hallintapaneeli</a>
                 </li>
             {% endif %}
         {% endblock %}

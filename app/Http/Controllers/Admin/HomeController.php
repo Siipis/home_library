@@ -12,8 +12,8 @@ class HomeController extends Controller
         $this->middleware(['can:access-backend']);
     }
 
-    public function home()
+    public function index()
     {
-        return view('admin.home');
+        return view('admin.index');
     }
 }

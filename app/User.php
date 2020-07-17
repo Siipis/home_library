@@ -38,8 +38,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_admin' => 'boolean',
     ];
 
+    /**
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->is_admin;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function libraries()
+    {
+        return $this->belongsToMany(Library::class)->withPivot(['role']);
     }
 }

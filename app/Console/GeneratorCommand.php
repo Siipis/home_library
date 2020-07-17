@@ -175,7 +175,7 @@ abstract class GeneratorCommand extends Command
 
         $this->files->put($path, $this->buildFile());
 
-        $this->info($this->type . ' created successfully.');
+        $this->info($this->type . ' ' . $name . ' created successfully.');
     }
 
     /**
@@ -197,7 +197,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function getPath($name)
     {
-        return $this->getRootDestination(). '/' . str_replace('\\', '/', $name) . '.' . $this->getExtension();
+        return $this->getRootDestination() . '/' . str_replace('\\', '/', $name) . '.' . $this->getExtension();
     }
 
     /**
