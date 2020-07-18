@@ -92479,6 +92479,9 @@ window.Vue.options.delimiters = ['[[', ']]'];
 window.Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["BootstrapVue"]);
 window.Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["IconsPlugin"]);
 window.Vue.component('ajax-error', _components_AjaxError__WEBPACK_IMPORTED_MODULE_2__["default"]);
+window.app = new window.Vue({
+  'el': '#app'
+});
 
 /***/ }),
 

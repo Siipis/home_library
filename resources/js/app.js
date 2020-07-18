@@ -20,3 +20,7 @@ window.Vue.use(BootstrapVue);
 window.Vue.use(IconsPlugin);
 
 window.Vue.component('ajax-error', AjaxError);
+
+window.app = new window.Vue({
+    'el': '#app'
+});
