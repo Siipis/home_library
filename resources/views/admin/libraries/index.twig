@@ -1,11 +1,28 @@
 {% extends 'admin'|layout %}
 
-{% set page_title = '' %}
+{% set page_title = 'Kokoelmat'|trans %}
 
 {% block head %}{% endblock %}
 
 {% block content %}
-    Hello world.
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{{ 'Kokoelma'|trans }}</th>
+            <th>{{ 'URL-pääte'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for library in libraries %}
+        <tr>
+            <td>{{ library.name }}</td>
+            <td>{{ library.slug }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <b-button variant="primary" href="{{ route('admin.libraries.create') }}">{{ 'fields.create'|trans }}</b-button>
 {% endblock %}
 
 {% block scripts %}{% endblock %}

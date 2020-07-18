@@ -108,6 +108,7 @@ return [
         'string'  => 'Kentän :attribute arvon tulee olla kokoa :size merkkiä.',
         'array'   => 'Kentän :attribute tulee sisältää :size arvoa.',
     ],
+    'slug'        => 'Kenttä :attribute saa sisältää vain pieniä kirjaimia ja numeroita sekä väliviivoja.',
     'starts_with' => 'Attribuutin :attribute tulee alkaa yhdellä seuraavista: :values',
     'string'      => 'Kentän :attribute arvon tulee olla tekstiä.',
     'timezone'    => 'Kentän :attribute arvon tulee olla validi aikavyöhyketunniste.',

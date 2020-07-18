@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Rules\Slug;
+use Validator;
 use App\Facades\Classes\Env;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Validator::extend('slug', function ($attribute, $value, $parameters, $validator) {
+            return $value === \Str::slug($value);
+        });
     }
 }
