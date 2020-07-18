@@ -10,9 +10,13 @@ use Illuminate\Http\Request;
 
 class LibraryController extends Controller
 {
+    private $form;
+
     public function __construct()
     {
         $this->authorizeResource(Library::class, 'library');
+
+        $this->form = new LibraryForm();
     }
 
     /**
@@ -30,13 +34,12 @@ class LibraryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param Request $request
      * @return mixed
      */
-    public function create(Request $request)
+    public function create()
     {
         return view('admin.libraries.create', [
-            'form' => LibraryForm::get($request, [
+            'form' => $this->form->make([
                 'action' => route('admin.libraries.store')
             ])
         ]);
@@ -51,13 +54,13 @@ class LibraryController extends Controller
      */
     public function store(Request $request)
     {
-        if ($library = LibraryForm::handle($request)) {
+        if ($library = $this->form->handle($request)) {
             $library->save();
 
             return redirect()->route('admin.libraries.index');
         }
 
-        return LibraryForm::back($request);
+        return $this->form->back();
     }
 
     /**

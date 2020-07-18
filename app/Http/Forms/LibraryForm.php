@@ -4,14 +4,13 @@
 namespace App\Http\Forms;
 
 
-
 use App\Library;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class LibraryForm extends Form
 {
-    protected static $model = Library::class;
+    protected $model = Library::class;
 
     public function build()
     {
