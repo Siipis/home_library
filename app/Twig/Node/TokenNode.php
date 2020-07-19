@@ -18,7 +18,7 @@ class TokenNode extends Node
     {
         $compiler
             ->addDebugInfo($this)
-            ->write("echo '<input type=\"hidden\" name=\"_token\" value=\"'. csrf_token() .'\" />'")
+            ->write('echo "<input type=\"hidden\" name=\"_token\" value=\"". csrf_token() ."\" />\n"')
             ->raw(";\n")
         ;
     }
