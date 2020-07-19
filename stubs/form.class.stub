@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class {{ class }} extends Form
 {
-    protected $model = {{ model }}::class;
+    protected $model = {{ modelClass }};
 
     public function build()
     {

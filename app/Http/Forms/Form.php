@@ -184,7 +184,7 @@ class Form
     protected function initForm(array $options = [], Model $model = null)
     {
         if (is_null($model)) {
-            $model = new $this->model;
+            $model = is_array($this->model) ? $this->model : new $this->model;
         }
 
         $this->form = $this->createForm(FormType::class, $model, $options);

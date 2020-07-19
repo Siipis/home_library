@@ -13,7 +13,7 @@ class MakeForm extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:form {name} {model}';
+    protected $signature = 'make:form {name} {model?}';
 
     /**
      * The console command description.
@@ -45,7 +45,7 @@ class MakeForm extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace .'\Http\Forms';
+        return $rootNamespace . '\Http\Forms';
     }
 
     /**
@@ -53,7 +53,7 @@ class MakeForm extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
     protected function buildClass($name)
@@ -64,9 +64,12 @@ class MakeForm extends GeneratorCommand
 
         if ($this->argument('model')) {
             $replace = $this->buildModelReplacements($replace);
+        } else {
+            $replace = $this->buildReplacementsWithoutModel($replace);
         }
 
         $replace["use {$formNamespace}\Form;\n"] = '';
+        $replace["use [];\n"] = '';
 
         return str_replace(
             array_keys($replace), array_values($replace), parent::buildClass($name)
@@ -74,16 +77,32 @@ class MakeForm extends GeneratorCommand
     }
 
     /**
+     * Build the form without a model.
+     *
+     * @param array $replace
+     * @return array
+     */
+    protected function buildReplacementsWithoutModel(array $replace)
+    {
+        return array_merge($replace, [
+            '{{ namespacedModel }}' => '[]',
+            '{{namespacedModel}}' => '[]',
+            '{{ modelClass }}' => '[]',
+            '{{modelClass}}' => '[]',
+        ]);
+    }
+
+    /**
      * Build the model replacement values.
      *
-     * @param  array  $replace
+     * @param array $replace
      * @return array
      */
     protected function buildModelReplacements(array $replace)
     {
         $modelClass = $this->parseModel($this->argument('model'));
 
-        if (! class_exists($modelClass)) {
+        if (!class_exists($modelClass)) {
             if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
                 $this->call('make:model', ['name' => $modelClass]);
             }
@@ -94,8 +113,8 @@ class MakeForm extends GeneratorCommand
             '{{ namespacedModel }}' => $modelClass,
             '{{namespacedModel}}' => $modelClass,
             'DummyModelClass' => class_basename($modelClass),
-            '{{ model }}' => class_basename($modelClass),
-            '{{model}}' => class_basename($modelClass),
+            '{{ modelClass }}' => class_basename($modelClass) . '::class',
+            '{{modelClass}}' => class_basename($modelClass) . '::class',
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
             '{{ modelVariable }}' => lcfirst(class_basename($modelClass)),
             '{{modelVariable}}' => lcfirst(class_basename($modelClass)),
@@ -105,7 +124,7 @@ class MakeForm extends GeneratorCommand
     /**
      * Get the fully-qualified model class name.
      *
-     * @param  string  $model
+     * @param string $model
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -118,8 +137,8 @@ class MakeForm extends GeneratorCommand
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace.$model;
+        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+            $model = $rootNamespace . $model;
         }
 
         return $model;
