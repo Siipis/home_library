@@ -10,6 +10,7 @@ use Barryvdh\Form\CreatesForms;
 use Barryvdh\Form\ValidatesForms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form as FormBuilder;
 
@@ -23,7 +24,7 @@ class Form
     protected $form;
 
     /**
-     * @var Model
+     * @var Model|array
      */
     protected $model;
 
@@ -34,6 +35,7 @@ class Form
 
     /**
      * Form constructor.
+     *
      * @throws AbstractFormException
      */
     public function __construct()
@@ -45,6 +47,7 @@ class Form
 
     /**
      * Add fields to the form.
+     *
      * @return void
      */
     public function build()
@@ -55,6 +58,7 @@ class Form
 
     /**
      * Return the form.
+     *
      * @param array $options
      * @param Model|null $model
      * @return FormBuilder
@@ -68,6 +72,7 @@ class Form
 
     /**
      * Handle the form request.
+     *
      * @param Request $request
      * @param Model|null $model
      * @return Model|boolean
@@ -80,7 +85,7 @@ class Form
         $this->form->handleRequest($request);
 
         if ($this->isValid($request)) {
-            return $this->form->getData();
+            return $this->model();
         }
 
         return false;
@@ -89,6 +94,7 @@ class Form
     /**
      * Add a field to the form. The name must be unique,
      * otherwise the field is overwritten.
+     *
      * @param string $name
      * @param string $type
      * @param array $options
@@ -109,6 +115,7 @@ class Form
 
     /**
      * Remove the field with the given name.
+     *
      * @param string $name
      * @return FormBuilder
      */
@@ -119,6 +126,7 @@ class Form
 
     /**
      * Return whether a field with the given name exists.
+     *
      * @param string $name
      * @return bool
      */
@@ -128,7 +136,30 @@ class Form
     }
 
     /**
+     * Get the form data as a Model.
+     *
+     * @return Model
+     */
+    public function model()
+    {
+        if (!$this->form->getData() instanceof Model) return null;
+
+        return $this->form->getData();
+    }
+
+    /**
+     * Get the form data as an array.
+     *
+     * @return array
+     */
+    public function array()
+    {
+        return collect($this->form->getData())->toArray();
+    }
+
+    /**
      * Return the underlying FormBuilder instance.
+     *
      * @return FormBuilder
      */
     public function form()
@@ -142,6 +173,7 @@ class Form
 
     /**
      * Return all fields.
+     *
      * @return array
      */
     protected function fields()
@@ -151,6 +183,7 @@ class Form
 
     /**
      * Return a field by name.
+     *
      * @param string $name
      * @return FormBuilder
      */
@@ -160,7 +193,8 @@ class Form
     }
 
     /**
-     * Return all validation rules in form.
+     * Return all validation rules in the form.
+     *
      * @return array
      */
     protected function rules()
@@ -168,8 +202,10 @@ class Form
         $rules = [];
 
         foreach ($this->form->all() as $field) {
-            if($field->getConfig()->hasOption('rules')) {
-                $rules[$field->getName()] = $field->getConfig()->getOption('rules');
+            if ($field->getConfig()->hasOption('rules')) {
+                $r = $field->getConfig()->getOption('rules');
+
+                $rules[$field->getName()] = array_unique($r);
             }
         }
 
@@ -178,16 +214,13 @@ class Form
 
     /**
      * Prepare the form.
+     *
      * @param array $options
      * @param Model $model
      */
     protected function initForm(array $options = [], Model $model = null)
     {
-        if (is_null($model)) {
-            $model = is_array($this->model) ? $this->model : new $this->model;
-        }
-
-        $this->form = $this->createForm(FormType::class, $model, $options);
+        $this->form = $this->createForm(FormType::class, $this->makeModel($model), $options);
         $this->build();
 
         $this->isInitialized = true;
@@ -195,14 +228,15 @@ class Form
 
     /**
      * Validate the form.
+     *
      * @param Request $request
      * @return bool
      * @throws UnsentFormException
      */
     public function isValid(Request $request)
     {
-        if ($this->isSubmitted()) {
-            if ($this->isDisabled()) return true;
+        if (!empty($request->all())) {
+            if ($this->form->isDisabled()) return true;
 
             $this->validateForm($this->form, $request, $this->rules());
 
@@ -213,18 +247,21 @@ class Form
     }
 
     /**
-     * @return bool
+     * Return the model instance.
+     *
+     * @param Model|null $model
+     * @return Model|array
      */
-    public function isSubmitted()
+    private function makeModel(Model $model = null)
     {
-        return $this->form->isSubmitted();
-    }
+        // If the model is an array, do nothing.
+        if (is_array($this->model)) return $this->model;
 
-    /**
-     * @return bool
-     */
-    public function isDisabled()
-    {
-        return $this->form->isDisabled();
+        // If the model is already instantiated, do nothing.
+        if ($model instanceof Model) return $model;
+
+        // Attempt to create a new model instance from the class config.
+        $className = is_null($model) ? $this->model : $model;
+        return new $className;
     }
 }

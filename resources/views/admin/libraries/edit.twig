@@ -1,11 +1,13 @@
 {% extends 'admin'|layout %}
 
-{% set page_title = '' %}
+{% set page_title = 'Kokoelma'|trans ~ ': ' ~ Request.route().parameter('library').name %}
 
 {% block head %}{% endblock %}
 
 {% block content %}
-    Hello world.
+    <h3>{{ page_title }}</h3>
+
+    {{ form(form) }}
 {% endblock %}
 
 {% block scripts %}{% endblock %}

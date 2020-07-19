@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Forms\Exceptions\FormException;
+use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\LibraryForm;
 use App\Library;
 use Illuminate\Http\Request;
@@ -80,7 +81,12 @@ class LibraryController extends Controller
      */
     public function edit(Library $library)
     {
-        //
+        return view('admin.libraries.edit', [
+            'form' => $this->form->make([
+                'action' => route('admin.libraries.update', $library->id),
+                'method' => 'put',
+            ], $library)
+        ]);
     }
 
     /**
@@ -89,10 +95,15 @@ class LibraryController extends Controller
      * @param Request $request
      * @param Library $library
      * @return mixed
+     * @throws UnsentFormException
      */
     public function update(Request $request, Library $library)
     {
-        //
+        $library = $this->form->get($request, $library);
+
+        $library->save();
+
+        return redirect()->route('admin.libraries.index');
     }
 
     /**
