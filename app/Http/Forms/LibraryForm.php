@@ -18,7 +18,7 @@ class LibraryForm extends Form
             'rules' => 'required|string'
         ]);
         $this->add('slug', TextType::class, [
-            'rules' => 'required|slug|min:3'
+            'rules' => 'required|slug|min:3|unique:libraries'
         ]);
         $this->add('create', SubmitType::class);
     }

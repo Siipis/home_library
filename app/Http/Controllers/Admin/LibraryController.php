@@ -54,13 +54,11 @@ class LibraryController extends Controller
      */
     public function store(Request $request)
     {
-        if ($library = $this->form->handle($request)) {
-            $library->save();
+        $library = $this->form->get($request);
 
-            return redirect()->route('admin.libraries.index');
-        }
+        $library->save();
 
-        return $this->form->back();
+        return redirect()->route('admin.libraries.index');
     }
 
     /**

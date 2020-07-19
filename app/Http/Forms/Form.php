@@ -7,26 +7,20 @@ namespace App\Http\Forms;
 use App\Http\Forms\Exceptions\AbstractFormException;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use Barryvdh\Form\CreatesForms;
+use Barryvdh\Form\ValidatesForms;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form as FormBuilder;
 
 class Form
 {
-    use CreatesForms;
+    use CreatesForms, ValidatesForms;
 
     /**
      * @var FormBuilder
      */
     protected $form;
-
-    /**
-     * @var MessageBag
-     */
-    private $messageBag;
 
     /**
      * @var Model
@@ -47,8 +41,6 @@ class Form
         if (is_null($this->model)) {
             throw new AbstractFormException("The class attribute 'model' is required.");
         }
-
-        $this->messageBag = new MessageBag();
     }
 
     /**
@@ -81,45 +73,17 @@ class Form
      * @return Model|boolean
      * @throws UnsentFormException
      */
-    public function handle(Request $request, Model $model = null)
+    public function get(Request $request, Model $model = null)
     {
         $this->initForm([], $model);
 
         $this->form->handleRequest($request);
 
-        if ($this->form->isSubmitted()) {
-            if ($this->form->isValid()) {
-                return $this->form->getData();
-            }
-
-            $errors = $this->form->getErrors(true);
-
-            foreach ($errors as $error) {
-                $this->messageBag->add($error->getOrigin()->getName(), $error->getMessage());
-            }
-
-            return false;
+        if ($this->isValid($request)) {
+            return $this->form->getData();
         }
 
-        throw new UnsentFormException("The form " . get_called_class() . " contains no data.");
-    }
-
-    /**
-     * Return a response with the errors attached.
-     * @return RedirectResponse
-     */
-    public function back()
-    {
-        return redirect()->back()->withErrors($this->messageBag);
-    }
-
-    /**
-     * Return the validation errors.
-     * @return MessageBag
-     */
-    public function errors()
-    {
-        return $this->messageBag;
+        return false;
     }
 
     /**
@@ -164,6 +128,19 @@ class Form
     }
 
     /**
+     * Return the underlying FormBuilder instance.
+     * @return FormBuilder
+     */
+    public function form()
+    {
+        if (!$this->isInitialized) {
+            $this->initForm();
+        }
+
+        return $this->form;
+    }
+
+    /**
      * Return all fields.
      * @return array
      */
@@ -183,16 +160,20 @@ class Form
     }
 
     /**
-     * Return the underlying FormBuilder instance.
-     * @return FormBuilder
+     * Return all validation rules in form.
+     * @return array
      */
-    public function form()
+    protected function rules()
     {
-        if (!$this->isInitialized) {
-            $this->initForm();
+        $rules = [];
+
+        foreach ($this->form->all() as $field) {
+            if($field->getConfig()->hasOption('rules')) {
+                $rules[$field->getName()] = $field->getConfig()->getOption('rules');
+            }
         }
 
-        return $this->form;
+        return $rules;
     }
 
     /**
@@ -210,5 +191,40 @@ class Form
         $this->build();
 
         $this->isInitialized = true;
+    }
+
+    /**
+     * Validate the form.
+     * @param Request $request
+     * @return bool
+     * @throws UnsentFormException
+     */
+    public function isValid(Request $request)
+    {
+        if ($this->isSubmitted()) {
+            if ($this->isDisabled()) return true;
+
+            $this->validateForm($this->form, $request, $this->rules());
+
+            return true;
+        }
+
+        throw new UnsentFormException("The form " . get_called_class() . " contains no data.");
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSubmitted()
+    {
+        return $this->form->isSubmitted();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisabled()
+    {
+        return $this->form->isDisabled();
     }
 }
