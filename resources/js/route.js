@@ -1,5 +1,5 @@
 export default class Route {
-    get(route, replacements) {
+    static get(route, replacements) {
         let uri = route.trim('/');
 
         Object.keys(replacements).forEach(replace => {
@@ -12,3 +12,9 @@ export default class Route {
         return '/' + uri;
     }
 }
+
+export const RoutePlugin = {
+    install: function (Vue, options) {
+        Vue.route = Route.get;
+    }
+};

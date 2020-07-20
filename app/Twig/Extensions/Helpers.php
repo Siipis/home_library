@@ -27,6 +27,14 @@ class Helpers extends AbstractExtension implements GlobalsInterface
 
                 throw new \Exception("Named route $string was not found.");
             }, ['is_safe' => ['html']]),
+
+            new TwigFunction('unique_id', function ($object) {
+                if ($object instanceof Model) {
+                    return $object->getTable() . '--' . $object->getKey();
+                }
+
+                return uniqid();
+            }),
         ];
     }
 

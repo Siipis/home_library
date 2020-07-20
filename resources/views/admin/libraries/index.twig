@@ -11,19 +11,30 @@
             <th>{{ 'Kokoelma'|trans }}</th>
             <th>{{ 'URL-pääte'|trans }}</th>
             <th>{{ 'fields.edit'|trans }}</th>
+            <th>{{ 'fields.delete'|trans }}</th>
         </tr>
         </thead>
         <tbody>
         {% for library in libraries %}
-        <tr>
-            <td>{{ library.name }}</td>
-            <td>{{ library.slug }}</td>
-            <td>
-                <b-button variant="outline-secondary" href="{{ route('admin.libraries.edit', library.id) }}">
-                    <b-icon icon="pencil"></b-icon>
-                </b-button>
-            </td>
-        </tr>
+            <tr>
+                <td>{{ library.name }}</td>
+                <td>{{ library.slug }}</td>
+                <td>
+                    <b-button variant="outline-secondary" href="{{ route('admin.libraries.edit', library.id) }}">
+                        <b-icon icon="pencil"></b-icon>
+                    </b-button>
+                </td>
+                <td>
+                    <delete-confirmation action="{{ route('admin.libraries.destroy', library.id) }}"
+                                         id="{{ unique_id(library) }}"
+                    >
+                        <p><strong>{{ 'Jatkamalla poistat seuraavat asiat:'|trans }}</strong></p>
+                        <ul>
+                            <li>{{ 'Kokoelma: '|trans ~ library.name ~ ' (' ~ library.slug ~ ')' }}</li>
+                        </ul>
+                    </delete-confirmation>
+                </td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

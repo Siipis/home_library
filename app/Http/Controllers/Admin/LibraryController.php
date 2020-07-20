@@ -111,9 +111,12 @@ class LibraryController extends Controller
      *
      * @param Library $library
      * @return mixed
+     * @throws \Exception
      */
     public function destroy(Library $library)
     {
-        //
+        $library->delete();
+
+        return redirect()->route('admin.libraries.index');
     }
 }
