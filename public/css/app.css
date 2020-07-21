@@ -14113,3 +14113,7 @@ input[type=color].form-control:disabled {
   vertical-align: text-bottom;
 }
 
+p:last-child {
+  margin-bottom: 0;
+}
+

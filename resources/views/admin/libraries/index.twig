@@ -25,14 +25,15 @@
                     </b-button>
                 </td>
                 <td>
-                    <delete-confirmation action="{{ route('admin.libraries.destroy', library.id) }}"
-                                         id="{{ unique_id(library) }}"
-                    >
+                    <delete-button
+                        action="{{ route('admin.libraries.destroy', library.id) }}"
+                        id="{{ unique_id(library) }}">
+
                         <p><strong>{{ 'Jatkamalla poistat seuraavat asiat:'|trans }}</strong></p>
                         <ul>
                             <li>{{ 'Kokoelma: '|trans ~ library.name ~ ' (' ~ library.slug ~ ')' }}</li>
                         </ul>
-                    </delete-confirmation>
+                    </delete-button>
                 </td>
             </tr>
         {% endfor %}

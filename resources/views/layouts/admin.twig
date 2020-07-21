@@ -20,6 +20,8 @@
     {% endembed %}
 
     <div class="container">
+        <ajax-error :error="error"></ajax-error>
+
         {{ parent() }}
     </div>
 {% endblock %}

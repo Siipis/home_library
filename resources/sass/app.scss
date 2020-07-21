@@ -9,3 +9,8 @@
 
 // Bootstrap Vue
 @import '~bootstrap-vue/src/index';
+
+// Custom CSS
+p:last-child {
+    margin-bottom: 0;
+}

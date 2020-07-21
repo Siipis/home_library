@@ -24,7 +24,7 @@
 
 <script>
     export default {
-        name: "DeleteConfirmation",
+        name: "DeleteButton",
         props: ['action', 'id'],
         computed: {
             modalId: function () {

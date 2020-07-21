@@ -7,49 +7,53 @@
 {% block content %}
     <h3>{{ 'Käyttäjät'|trans }}</h3>
 
-    <div id="view">
-        <ajax-error :error="error"></ajax-error>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{{ 'Nimi'|trans }}</th>
+            <th>{{ 'Hallinnoija'|trans }}</th>
+            <th>{{ 'fields.delete'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="user in users">
+            <td>[[ user.name ]]</td>
+            <td>
+                <div>
+                    <b-button
+                        :variant="user.is_admin ? 'danger' : 'outline-secondary'"
+                        :disabled="user.disabled"
+                        @click="toggleRole(user)">
 
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>{{ 'Nimi'|trans }}</th>
-                <th>Hallinnoija</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="user in users">
-                <td>[[ user.name ]]</td>
-                <td>
-                    <div>
-                        <b-button
-                            :variant="user.is_admin ? 'danger' : 'outline-secondary'"
-                            :disabled="user.disabled"
-                            @click="toggleRole(user)">
-
-                            <b-icon icon="check"></b-icon>
-                        </b-button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                        <b-icon icon="check"></b-icon>
+                    </b-button>
+                </div>
+            </td>
+            <td>
+                <delete-button
+                    v-if="!user.disabled"
+                    :action="user.delete_action"
+                    :id="'user--' + user.id">
+                </delete-button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript">
-        new Vue({
-            el: '#view',
+        const mixin = {
             data: {
                 users: Object.values({{ users|vue }}).map(user => {
                     if (user.id === {{ auth.id }}) {
                         user.disabled = true;
                     }
 
+                    user.delete_action = Route.get({{ raw_route('admin.users.destroy') }}, { user: user.id });
+
                     return user;
-                }),
-                error: {},
+                })
             },
 
             methods: {
@@ -76,6 +80,8 @@
                     });
                 },
             },
-        });
+        };
+
+        window.Mixin.add('users', mixin);
     </script>
 {% endblock %}
