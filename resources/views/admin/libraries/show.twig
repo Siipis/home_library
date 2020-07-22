@@ -1,11 +1,116 @@
 {% extends 'admin'|layout %}
 
-{% set page_title = '' %}
+{% set page_title = 'library.collection'|trans_choice(1) ~ ': ' ~ library.name %}
 
 {% block head %}{% endblock %}
 
 {% block content %}
-    Hello world.
+    <h3>{{ page_title }}</h3>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>[[ 'fields.name'|trans ]]</th>
+            <th>[[ 'fields.email'|trans ]]</th>
+            <th>[[ 'library.role'|trans ]]</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="member in members">
+            <td>
+                <b-button size="sm" variant="outline-secondary" @click="removeMember(member)">
+                    <b-icon icon="person-dash"></b-icon>
+                </b-button>
+            </td>
+            <td>[[ member.name ]]</td>
+            <td>[[ member.email ]]</td>
+            <td>
+                <b-form-select v-model="member.role"
+                               :options="roles">
+                </b-form-select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <b-card title="{{ 'library.add_members'|trans }}">
+        <table class="table table-sm">
+            <tbody>
+            <tr v-for="member in nonMembers">
+                <td>
+                    <b-button size="sm" variant="outline-secondary" @click="addMember(member)">
+                        <b-icon icon="person-plus"></b-icon>
+                    </b-button>
+                </td>
+                <td>[[ member.name ]]</td>
+                <td>[[ member.email ]]</td>
+            </tr>
+            </tbody>
+        </table>
+    </b-card>
 {% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        window.Mixin.add('library.view', {
+            data: {
+                members: {{ library.members|vue }},
+                nonMembers: {{ nonMembers|vue }},
+                roles: [
+                    { value: 'lender', text: '{{ 'library.lender'|trans }}' },
+                    { value: 'owner', text: '{{ 'library.owner'|trans }}' },
+                ]
+            },
+
+            methods: {
+                addMember: function (member) {
+                    this.members.push(Object.assign(member, {
+                        role: 'lender'
+                    }));
+
+                    this.nonMembers = this.nonMembers.filter(m => m.id !== member.id);
+                },
+
+                removeMember: function (member) {
+                    this.nonMembers.push(member);
+
+                    this.members = this.members.filter(m => m.id !== member.id);
+                },
+
+                updateMembers: function () {
+                    axios.post('{{ route('admin.library.members', library.id) }}', {
+                        _method: 'put',
+                        data: {
+                            members: this.members.map(m => {
+                                return Object.assign({}, {
+                                    id: m.id,
+                                    role: m.role,
+                                });
+                            }),
+                        }
+                    }).then(() => {
+                        this.error = {};
+                    }).catch(({ response }) => {
+                        this.error = response;
+                    });
+                }
+            },
+
+            watch: {
+                members: {
+                    deep: true,
+
+                    handler() {
+                        this.debouncedUpdate();
+                    }
+                }
+            },
+
+            created: function () {
+                // @link https://lodash.com/docs/#debounce
+                this.debouncedUpdate = _.debounce(this.updateMembers, 500);
+            },
+        });
+    </script>
+{% endblock %}

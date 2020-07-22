@@ -1,6 +1,6 @@
 {% extends 'admin'|layout %}
 
-{% set page_title = 'Kokoelmat'|trans %}
+{% set page_title = 'library.collection'|trans_choice(2) %}
 
 {% block head %}{% endblock %}
 
@@ -8,8 +8,9 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>{{ 'Kokoelma'|trans }}</th>
-            <th>{{ 'URL-pääte'|trans }}</th>
+            <th>{{ 'library.collection'|trans_choice(1) }}</th>
+            <th>{{ 'fields.slug'|trans }}</th>
+            <th>{{ 'library.member'|trans_choice(2) }}</th>
             <th>{{ 'fields.edit'|trans }}</th>
             <th>{{ 'fields.delete'|trans }}</th>
         </tr>
@@ -19,6 +20,11 @@
             <tr>
                 <td>{{ library.name }}</td>
                 <td>{{ library.slug }}</td>
+                <td>
+                    <b-button variant="outline-secondary" href="{{ route('admin.libraries.show', library.id) }}">
+                        <b-icon icon="people"></b-icon>
+                    </b-button>
+                </td>
                 <td>
                     <b-button variant="outline-secondary" href="{{ route('admin.libraries.edit', library.id) }}">
                         <b-icon icon="pencil"></b-icon>
@@ -31,7 +37,7 @@
 
                         <p><strong>{{ 'Jatkamalla poistat seuraavat asiat:'|trans }}</strong></p>
                         <ul>
-                            <li>{{ 'Kokoelma: '|trans ~ library.name ~ ' (' ~ library.slug ~ ')' }}</li>
+                            <li>{{ 'library.collection'|trans_choice(1) ~ ': ' ~ library.name ~ ' (' ~ library.slug ~ ')' }}</li>
                         </ul>
                     </delete-button>
                 </td>
@@ -40,7 +46,7 @@
         </tbody>
     </table>
 
-    <b-button variant="primary" href="{{ route('admin.libraries.create') }}">{{ 'fields.create'|trans }}</b-button>
+    <b-button variant="primary" href="{{ route('admin.libraries.create') }}">{{ 'fields.create'|trans ~ ' ' ~ 'library.collection'|trans_choice(1)|lower }}</b-button>
 {% endblock %}
 
 {% block scripts %}{% endblock %}

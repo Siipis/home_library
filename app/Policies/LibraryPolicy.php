@@ -34,6 +34,18 @@ class LibraryPolicy
     }
 
     /**
+     * Determine whether the user can update the library members.
+     *
+     * @param User $user
+     * @param Library $library
+     * @return bool
+     */
+    public function members(User $user, Library $library)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @param  \App\User  $user

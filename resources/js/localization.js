@@ -3,6 +3,7 @@ import Lang from 'lang.js';
 export const messages = {
     'fi.auth': require('../lang/fi/auth.php'),
     'fi.fields': require('../lang/fi/fields.php'),
+    'fi.library': require('../lang/fi/library.php'),
 };
 
 window.Lang = new Lang({

@@ -31,5 +31,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('users/{user}/promote', 'UserController@promote')->name('users.promote');
 
         Route::resource('libraries', 'LibraryController');
+        Route::put('libraries/{library}/members', 'LibraryController@members')->name('library.members');
     });
 });

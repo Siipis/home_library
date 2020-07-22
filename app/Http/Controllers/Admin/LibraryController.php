@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\Exceptions\FormException;
 use App\Http\Forms\Exceptions\UnsentFormException;
@@ -70,7 +71,38 @@ class LibraryController extends Controller
      */
     public function show(Library $library)
     {
-        //
+        $library->members = collect($library->members)->map(function ($member) {
+            $member->role = $member->pivot->role;
+
+            return $member;
+        });
+
+        return view('admin.libraries.show', [
+            'library' => $library,
+            'nonMembers' => $library->nonMembers(),
+        ]);
+    }
+
+    /**
+     * Update the library members.
+     *
+     * @param Request $request
+     * @param Library $library
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function members(Request $request, Library $library)
+    {
+        Gate::authorize('members', $library);
+
+        $members = [];
+
+        foreach ($request->input('data.members') as $member) {
+            $members[$member['id']] = [
+                'role' => $member['role']]
+            ;
+        }
+
+        $library->members()->sync($members);
     }
 
     /**

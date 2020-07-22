@@ -17,7 +17,7 @@ class CreateLibraryUserTable extends Migration
             $table->id();
             $table->bigInteger('library_id');
             $table->bigInteger('user_id');
-            $table->enum('role', ['owner', 'lender']);
+            $table->enum('role', ['owner', 'lender'])->default('lender');
         });
     }
 

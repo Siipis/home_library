@@ -6,7 +6,8 @@ namespace App\Twig\Extensions;
 
 
 use App\Twig\TokenParser\Token_TokenParser;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
@@ -58,6 +59,10 @@ class Helpers extends AbstractExtension implements GlobalsInterface
             }),
 
             new TwigFilter('vue', function ($model) {
+                if (is_array($model)) {
+                    return json_encode($model);
+                }
+
                 if ($model instanceof Model) {
                     return $model->toJson();
                 }
@@ -66,7 +71,15 @@ class Helpers extends AbstractExtension implements GlobalsInterface
                     return $model->toJson();
                 }
 
-                throw new \Exception("Unrecognized data type. Must be an instance of " . Model::class . " or " . Collection::class);
+                if ($model instanceof EloquentCollection) {
+                    return $model->toJson();
+                }
+
+                throw new \Exception("Unrecognized data type. Must be an instance of " .
+                    Model::class . ", " .
+                    Collection::class . " " .
+                    "or " . EloquentCollection::class . "." .
+                    get_class($model) . " given.");
             }, ['is_safe' => ['html']]),
         ];
     }

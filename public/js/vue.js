@@ -59113,7 +59113,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var messages = {
   'fi.auth': __webpack_require__(/*! ../lang/fi/auth.php */ "./resources/lang/fi/auth.php"),
-  'fi.fields': __webpack_require__(/*! ../lang/fi/fields.php */ "./resources/lang/fi/fields.php")
+  'fi.fields': __webpack_require__(/*! ../lang/fi/fields.php */ "./resources/lang/fi/fields.php"),
+  'fi.library': __webpack_require__(/*! ../lang/fi/library.php */ "./resources/lang/fi/library.php")
 };
 window.Lang = new lang_js__WEBPACK_IMPORTED_MODULE_0___default.a({
   locale: 'fi',
@@ -59240,6 +59241,17 @@ module.exports = {"register":"Rekisteröidy","login":"Kirjaudu sisään","logout
 /***/ (function(module, exports) {
 
 module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete":"Poista","submit":"Tallenna","cancel":"Peruuta","are_you_sure":"Haluatko varmasti jatkaa?","name":"Nimi","email":"Sähköposti","password":"Salasana","confirm_password":"Vahvista salasana","slug":"URL-pääte"};
+
+/***/ }),
+
+/***/ "./resources/lang/fi/library.php":
+/*!***************************************!*\
+  !*** ./resources/lang/fi/library.php ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {"collection":"Kokoelma|Kokoelmat","role":"Rooli","member":"Jäsen|Jäsenet","owner":"Hallinnoija","lender":"Lainaaja","add_members":"Lisää käyttäjiä"};
 
 /***/ }),
 

@@ -6,8 +6,8 @@
 
 {% block content %}
     <ul>
-        <li><a href="{{ route('admin.users.index') }}">{{ 'Käyttäjät'|trans }}</a></li>
-        <li><a href="{{ route('admin.libraries.index') }}">{{ 'Kokoelmat'|trans }}</a></li>
+        <li><a href="{{ route('admin.users.index') }}">{{ 'user.user'|trans_choice(2) }}</a></li>
+        <li><a href="{{ route('admin.libraries.index') }}">{{ 'library.collection'|trans_choice(2) }}</a></li>
     </ul>
 {% endblock %}
 
