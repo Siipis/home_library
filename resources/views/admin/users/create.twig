@@ -1,0 +1,13 @@
+{% extends 'admin'|layout %}
+
+{% set page_title = 'fields.create'|trans ~ ' ' ~ 'user.user'|trans_choice(1)|lower %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>{{ page_title }}</h3>
+
+    {{ form(form) }}
+{% endblock %}
+
+{% block scripts %}{% endblock %}

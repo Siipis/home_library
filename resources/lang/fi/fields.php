@@ -19,7 +19,7 @@ return [
     'name'              => 'Nimi',
     'email'             => 'Sähköposti',
     'password'          => 'Salasana',
-    'confirm_password'  => 'Vahvista salasana',
+    'password_confirmation'  => 'Vahvista salasana',
 
     'slug'              => 'URL-pääte',
 ];

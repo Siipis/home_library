@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes([
-    'verify' => true
+    'verify' => true,
+    'register' => false,
 ]);
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -23,6 +24,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/search', function () {
         return view('search');
     });
+
+    Route::resource('invite', 'InviteController')->only([
+        'store', 'show', 'destroy',
+    ]);
 
     Route::prefix('/admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
         Route::get('/', 'HomeController@index')->name('index');

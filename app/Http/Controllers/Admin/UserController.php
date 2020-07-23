@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Forms\Exceptions\UnsentFormException;
+use App\Http\Forms\UserForm;
 use App\User;
 use Gate;
 use App\Http\Controllers\Controller;
@@ -9,9 +11,16 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    /**
+     * @var UserForm
+     */
+    private $form;
+
     public function __construct()
     {
         $this->authorizeResource(User::class, 'user');
+
+        $this->form = new UserForm();
     }
 
     /**
@@ -33,20 +42,31 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create', [
+            'form' => $this->form->make([
+                'action' => route('admin.users.store')
+            ]),
+        ]);
     }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param User $user
+     * @param Request $request
      * @return mixed
+     * @throws UnsentFormException
      */
     public function store(Request $request)
     {
-        //
+        $user = $this->form->get($request);
+
+        unset($user->password_confirmation);
+
+        $user->password = \Hash::make($user->password);
+
+        $user->save();
+
+        return redirect()->route('admin.users.show', $user->id);
     }
 
     /**
@@ -57,7 +77,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -74,7 +94,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param User $user
      * @return mixed
      */

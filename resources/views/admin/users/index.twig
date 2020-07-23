@@ -1,11 +1,11 @@
 {% extends 'admin'|layout %}
 
-{% set page_title = '' %}
+{% set page_title = 'user.user'|trans_choice(2) %}
 
 {% block head %}{% endblock %}
 
 {% block content %}
-    <h3>{{ 'Käyttäjät'|trans }}</h3>
+    <h3>{{ page_title }}</h3>
 
     <table class="table table-hover">
         <thead>
@@ -39,11 +39,15 @@
         </tr>
         </tbody>
     </table>
+
+    <b-button variant="primary" href="{{ route('admin.users.create') }}">
+        {{ 'fields.create'|trans ~ ' ' ~ 'user.user'|trans_choice(1)|lower }}
+    </b-button>
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript">
-        const mixin = {
+        window.Mixin.add('users', {
             data: {
                 users: Object.values({{ users|vue }}).map(user => {
                     if (user.id === {{ auth.id }}) {
@@ -80,8 +84,6 @@
                     });
                 },
             },
-        };
-
-        window.Mixin.add('users', mixin);
+        });
     </script>
 {% endblock %}
