@@ -54,6 +54,6 @@ class MakeLayout extends GeneratorCommand
      */
     protected function getRootDestination()
     {
-        return config('view.layouts_path');
+        return resource_path('views/layouts');
     }
 }
