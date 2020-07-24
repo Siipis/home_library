@@ -15,9 +15,11 @@ class CreateLibraryUserTable extends Migration
     {
         Schema::create('library_user', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('library_id');
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('library_id');
+            $table->unsignedBigInteger('user_id');
             $table->enum('role', ['owner', 'lender'])->default('lender');
+
+            $table->unique(['library_id', 'user_id']);
         });
     }
 

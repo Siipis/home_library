@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -47,10 +48,32 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function libraries()
     {
         return $this->belongsToMany(Library::class)->withPivot(['role']);
+    }
+
+    /**
+     * @param Library $library
+     * @return bool
+     */
+    public function isMemberOf(Library $library)
+    {
+        if ($this->isAdmin()) return true;
+
+        return $library->members()->where('user.id', '=', $this->id)->count('id') > 0;
+    }
+
+    /**
+     * @param Library $library
+     * @return bool
+     */
+    public function isOwnerOf(Library $library)
+    {
+        if ($this->isAdmin()) return true;
+
+        return $library->members()->where('user.id', '=', $this->id)->where('role', '=', 'owner')->count('id') > 0;
     }
 }

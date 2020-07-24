@@ -21,13 +21,21 @@ Auth::routes([
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', 'HomeController@index')->name('index');
 
+    Route::prefix('library/{library:slug}')->as('library.')->group(function () {
+        Route::get('/', 'LibraryController@index')->name('index');
+
+        Route::post('/search', 'LibraryController@search')->name('search');
+    });
+
     Route::get('/search', function () {
         return view('search');
     });
 
+    /*
     Route::resource('invite', 'InviteController')->only([
         'store', 'show', 'destroy',
     ]);
+    */
 
     Route::prefix('/admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
         Route::get('/', 'HomeController@index')->name('index');

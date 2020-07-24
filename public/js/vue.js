@@ -59240,7 +59240,7 @@ module.exports = {"register":"Rekisteröidy","login":"Kirjaudu sisään","logout
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete":"Poista","submit":"Tallenna","cancel":"Peruuta","are_you_sure":"Haluatko varmasti jatkaa?","name":"Nimi","email":"Sähköposti","password":"Salasana","password_confirmation":"Vahvista salasana","slug":"URL-pääte"};
+module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete":"Poista","submit":"Tallenna","cancel":"Peruuta","are_you_sure":"Haluatko varmasti jatkaa?","search":"Hae","authors":"Tekijät","name":"Nimi","email":"Sähköposti","language":"Kieli","password":"Salasana","password_confirmation":"Vahvista salasana","publisher":"Julkaisija","series":"Sarja","year":"Vuosi","slug":"URL-pääte"};
 
 /***/ }),
 
@@ -59251,7 +59251,7 @@ module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"collection":"Kokoelma|Kokoelmat","role":"Rooli","member":"Jäsen|Jäsenet","owner":"Hallinnoija","lender":"Lainaaja","add_members":"Lisää käyttäjiä"};
+module.exports = {"collection":"Kokoelma|Kokoelmat","role":"Rooli","member":"Jäsen|Jäsenet","owner":"Hallinnoija","lender":"Lainaaja","add_members":"Lisää käyttäjiä","search":"Kirjoita hakusana"};
 
 /***/ }),
 

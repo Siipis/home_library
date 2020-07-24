@@ -6,6 +6,16 @@
 
 {% block content %}
     Tervetuloa!
+
+    <ul>
+        {% for library in libraries %}
+            {% if can('view', library) %}
+                <li>
+                    <a href="{{ route('library.index', library.slug) }}">{{ library.name }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block scripts %}{% endblock %}

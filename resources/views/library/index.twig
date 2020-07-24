@@ -1,0 +1,106 @@
+{% extends 'user'|layout %}
+
+{% set page_title = library.name %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>{{ page_title }}</h3>
+
+    <b-form inline @submit="fetchBooks" v-on:submit.prevent>
+        <b-form-group>
+            <b-form-input v-model="search" placeholder="{{ 'library.search'|trans }}" trim>
+            </b-form-input>
+            <b-button variant="primary" type="submit">
+                <b-icon icon="search"></b-icon>
+                {{ 'fields.search'|trans }}
+            </b-button>
+        </b-form-group>
+    </b-form>
+
+    <b-table class="mt-3" striped hover
+             :fields="fields"
+             :items="allBooks">
+        <template v-slot:cell(selector)="data">
+            <b-button variant="outline-secondary">
+                <b-icon icon="plus"></b-icon>
+            </b-button>
+        </template>
+    </b-table>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        window.Mixin.add('search', {
+            data: {
+                search: '',
+                searchResults: [],
+                books: {{ library.books|vue }},
+
+                fields: [
+                    {
+                        key: 'selector',
+                        label: '',
+                    },
+                    {
+                        key: 'title',
+                        label: '{{ 'fields.name'|trans }}',
+                        sortable: true,
+                    },
+                    {
+                        key: 'series',
+                        label: '{{ 'fields.series'|trans }}',
+                    },
+                    {
+                        key: 'authors',
+                        label: '{{ 'fields.authors'|trans }}',
+                        sortable: true,
+                        formatter: (authors) => (authors.join('; ')),
+                    },
+                    {
+                        key: 'publisher',
+                        label: '{{ 'fields.publisher'|trans }}',
+                        sortable: true,
+                    },
+                    {
+                        key: 'year',
+                        label: '{{ 'fields.year'|trans }}',
+                        sortable: true,
+                    },
+                    {
+                        key: 'language',
+                        label: '{{ 'fields.language'|trans }}',
+                    }
+                ],
+            },
+
+            computed: {
+                allBooks: function () {
+                    if (this.searchResults.length === 0) {
+                        return this.books;
+                    }
+
+                    return this.searchResults.concat(this.books);
+                }
+            },
+
+            methods: {
+                fetchBooks: function () {
+                    if (this.search.length === 0) {
+                        this.searchResults = [];
+                        return;
+                    }
+
+                    axios.post('{{ route('library.search', library.slug) }}', {
+                        search: this.search
+                    }).then(({ data }) => {
+                        this.error = {};
+                        this.searchResults = data;
+                    }).catch(({ response }) => {
+                        this.error = response;
+                    })
+                },
+            },
+        })
+    </script>
+{% endblock %}

@@ -8,4 +8,6 @@ return [
     'lender'        => 'Lainaaja',
 
     'add_members'   => 'Lisää käyttäjiä',
+
+    'search'        => 'Kirjoita hakusana',
 ];

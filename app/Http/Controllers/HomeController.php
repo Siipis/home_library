@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Library;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -19,10 +20,12 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return mixed
      */
     public function index()
     {
-        return view('index');
+        return view('index', [
+            'libraries' => Library::all()
+        ]);
     }
 }

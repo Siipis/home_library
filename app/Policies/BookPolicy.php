@@ -2,18 +2,18 @@
 
 namespace App\Policies;
 
-use App\Library;
+use App\Book;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class LibraryPolicy
+class BookPolicy
 {
     use HandlesAuthorization;
 
     /**
      * Determine whether the user can view any models.
      *
-     * @param User $user
+     * @param  \App\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -24,31 +24,19 @@ class LibraryPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
-     * @param Library $library
+     * @param  \App\User  $user
+     * @param  \App\Book  $book
      * @return mixed
      */
-    public function view(User $user, Library $library)
+    public function view(User $user, Book $book)
     {
-        return $user->isMemberOf($library);
-    }
-
-    /**
-     * Determine whether the user can update the library members.
-     *
-     * @param User $user
-     * @param Library $library
-     * @return bool
-     */
-    public function members(User $user, Library $library)
-    {
-        return $user->isOwnerOf($library);
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can create models.
      *
-     * @param User $user
+     * @param  \App\User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -59,35 +47,35 @@ class LibraryPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
-     * @param Library $library
+     * @param  \App\User  $user
+     * @param  \App\Book  $book
      * @return mixed
      */
-    public function update(User $user, Library $library)
+    public function update(User $user, Book $book)
     {
-        return $user->isOwnerOf($library);
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param User $user
-     * @param Library $library
+     * @param  \App\User  $user
+     * @param  \App\Book  $book
      * @return mixed
      */
-    public function delete(User $user, Library $library)
+    public function delete(User $user, Book $book)
     {
-        return $user->isOwnerOf($library);
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User $user
-     * @param Library $library
+     * @param  \App\User  $user
+     * @param  \App\Book  $book
      * @return mixed
      */
-    public function restore(User $user, Library $library)
+    public function restore(User $user, Book $book)
     {
         return $user->isAdmin();
     }
@@ -95,11 +83,11 @@ class LibraryPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param User $user
-     * @param Library $library
+     * @param  \App\User  $user
+     * @param  \App\Book  $book
      * @return mixed
      */
-    public function forceDelete(User $user, Library $library)
+    public function forceDelete(User $user, Book $book)
     {
         return $user->isAdmin();
     }
