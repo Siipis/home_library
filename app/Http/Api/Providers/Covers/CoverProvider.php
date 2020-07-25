@@ -9,8 +9,6 @@ use App\Http\Api\Providers\ApiProvider;
 
 abstract class CoverProvider extends ApiProvider
 {
-    protected $assoc = false;
-
     /**
      * @inheritDoc
      */
@@ -81,11 +79,17 @@ abstract class CoverProvider extends ApiProvider
     }
 
     /**
-     * @param string $response
+     * @param mixed $response
      * @return bool
      */
-    protected function isValidImage(string $response)
+    protected function isValidImage($response)
     {
+        if (empty($response)) return false;
+
+        if (is_array($response)) {
+            dd($response);
+        }
+
         $info = getimagesizefromstring($response);
 
         if ($info[0] > config('api.covers.minimum.width') && $info[1] > config('api.covers.minimum.height')) {

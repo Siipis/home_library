@@ -4,14 +4,13 @@
 namespace App\Http\Api\Providers;
 
 
+use Str;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 abstract class ApiProvider
 {
     protected $client;
-
-    protected $assoc = true;
 
     /**
      * ApiProvider constructor.
@@ -44,11 +43,47 @@ abstract class ApiProvider
     {
         $response = $this->client->get($url);
 
-        if (!$this->assoc) {
-            return $this->parseResponse($response->getBody()->getContents());
+        $contentType = $response->getHeader('Content-Type');
+        $contents = $response->getBody()->getContents();
+
+        if (!empty($contentType)) {
+            $contentType = is_array($contentType) ? $contentType[0] : $contentType;
+
+            if (Str::contains($contentType, 'application/json')) {
+                return $this->parseResponse(json_decode($contents, true));
+            }
+
+            if (Str::contains($contentType, 'application/xml')) {
+                return $this->parseResponse($this->parseXml($contents));
+            }
         }
 
-        return $this->parseResponse(json_decode($response->getBody()->getContents(), true));
+        return $this->parseResponse($contents);
+    }
+
+    /**
+     * @param $xml
+     * @return array
+     */
+    private function parseXml($xml)
+    {
+        $xml = simplexml_load_string($xml);
+
+        return $this->xmlToArray($xml);
+    }
+
+    /**
+     * @param $xml
+     * @param array $array
+     * @return array
+     */
+    private function xmlToArray($xml, array $array = [])
+    {
+        foreach ((array) $xml as $key => $value) {
+            $array[$key] = (is_object ($value) || is_array ($value)) ? $this->xmlToArray($value) : $value;
+        }
+
+        return $array;
     }
 
     /**

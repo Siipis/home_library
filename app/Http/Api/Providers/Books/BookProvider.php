@@ -56,7 +56,7 @@ abstract class BookProvider extends ApiProvider
     {
         return [
             'provider' => class_basename($this),
-            'response' => $record,
+            'response' => (array) $record,
         ];
     }
 
