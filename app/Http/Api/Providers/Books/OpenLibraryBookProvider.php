@@ -47,6 +47,7 @@ class OpenLibraryBookProvider extends BookProvider
             ->merge($record['person'] ?? [])
             ->merge($record['time'] ?? [])
             ->unique()
+            ->values()
             ->toArray();
     }
 

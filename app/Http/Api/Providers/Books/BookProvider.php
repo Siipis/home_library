@@ -6,6 +6,7 @@ namespace App\Http\Api\Providers\Books;
 
 use App\Book;
 use App\Http\Api\Providers\ApiProvider;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
 
 abstract class BookProvider extends ApiProvider
@@ -31,6 +32,10 @@ abstract class BookProvider extends ApiProvider
         foreach ($records as $record) {
             $book = new Book();
 
+            if (is_null($this->getTitle($record))) {
+                continue;
+            }
+
             $book->title = $this->getTitle($record);
             $book->series = $this->getSeries($record);
             $book->authors = $this->getAuthors($record);
@@ -46,6 +51,16 @@ abstract class BookProvider extends ApiProvider
         }
 
         return $books;
+    }
+
+    protected function handleException(RequestException $exception)
+    {
+        return [
+            "error" => [
+                "message" => "Request returned with response code " . $exception->getResponse()->getStatusCode(),
+                "errors" => $exception->getMessage(),
+            ]
+        ];
     }
 
     /**

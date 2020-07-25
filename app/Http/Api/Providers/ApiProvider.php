@@ -41,24 +41,28 @@ abstract class ApiProvider
      */
     protected function request(string $url)
     {
-        $response = $this->client->get($url);
+        try {
+            $response = $this->client->get($url);
 
-        $contentType = $response->getHeader('Content-Type');
-        $contents = $response->getBody()->getContents();
+            $contentType = $response->getHeader('Content-Type');
+            $contents = $response->getBody()->getContents();
 
-        if (!empty($contentType)) {
-            $contentType = is_array($contentType) ? $contentType[0] : $contentType;
+            if (!empty($contentType)) {
+                $contentType = is_array($contentType) ? $contentType[0] : $contentType;
 
-            if (Str::contains($contentType, 'application/json')) {
-                return $this->parseResponse(json_decode($contents, true));
+                if (Str::contains($contentType, 'application/json')) {
+                    return $this->parseResponse(json_decode($contents, true));
+                }
+
+                if (Str::contains($contentType, 'application/xml')) {
+                    return $this->parseResponse($this->parseXml($contents));
+                }
             }
 
-            if (Str::contains($contentType, 'application/xml')) {
-                return $this->parseResponse($this->parseXml($contents));
-            }
+            return $this->parseResponse($contents);
+        } catch (RequestException $exception) {
+            return $this->handleException($exception);
         }
-
-        return $this->parseResponse($contents);
     }
 
     /**
@@ -79,8 +83,8 @@ abstract class ApiProvider
      */
     private function xmlToArray($xml, array $array = [])
     {
-        foreach ((array) $xml as $key => $value) {
-            $array[$key] = (is_object ($value) || is_array ($value)) ? $this->xmlToArray($value) : $value;
+        foreach ((array)$xml as $key => $value) {
+            $array[$key] = (is_object($value) || is_array($value)) ? $this->xmlToArray($value) : $value;
         }
 
         return $array;
@@ -91,6 +95,12 @@ abstract class ApiProvider
      * @return mixed
      */
     protected abstract function parseResponse($response);
+
+    /**
+     * @param RequestException $exception
+     * @return mixed
+     */
+    protected abstract function handleException(RequestException $exception);
 
     /**
      * @return int

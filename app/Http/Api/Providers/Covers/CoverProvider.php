@@ -6,6 +6,7 @@ namespace App\Http\Api\Providers\Covers;
 
 use App\Book;
 use App\Http\Api\Providers\ApiProvider;
+use GuzzleHttp\Exception\RequestException;
 
 abstract class CoverProvider extends ApiProvider
 {
@@ -39,6 +40,15 @@ abstract class CoverProvider extends ApiProvider
     protected function parseResponse($response)
     {
         return $response;
+    }
+
+    /**
+     * @param RequestException $exception
+     * @return bool
+     */
+    protected function handleException(RequestException $exception)
+    {
+        return false;
     }
 
     /**

@@ -11,9 +11,11 @@ class GoodreadsCoverProvider extends CoverProvider
      */
     protected function getIsbnUrl(string $isbn)
     {
-        $response = $this->request("https://www.goodreads.com/book/isbn/" . $isbn . "?key=" . config('api.goodreads.key'));
+        if ($response = $this->request("https://www.goodreads.com/book/isbn/" . $isbn . "?key=" . config('api.goodreads.key'))) {
+            return $response['book']['image_url'];
+        }
 
-        return $response['book']['image_url'];
+        return false;
     }
 
     /**

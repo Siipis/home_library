@@ -122,6 +122,8 @@
                 setBook: function (book) {
                     this.fillForm('book_form', book);
 
+                    this.cover = '';
+
                     axios.post('{{ route('library.books.cover', library.slug) }}', {
                         title: book.title,
                         isbn: book.isbn,

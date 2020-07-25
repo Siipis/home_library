@@ -62,6 +62,7 @@ class FinnaBookProvider extends BookProvider
             ->merge($record['genres'])
             ->flatten()
             ->unique()
+            ->values()
             ->toArray();
     }
 
