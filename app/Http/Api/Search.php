@@ -6,14 +6,13 @@ namespace App\Http\Api;
 
 use App\Http\Providers\Books\BookApiProvider;
 use App\Library;
-use Illuminate\Support\Collection;
 
 class Search
 {
     /**
      * @param Library $library
      * @param string $search
-     * @return Collection
+     * @return array
      */
     public static function make(Library $library, string $search)
     {
@@ -31,8 +30,6 @@ class Search
             }
         }
 
-        return $result->sortBy(function ($book) {
-            return $book->title;
-        });
+        return $result->toArray();
     }
 }

@@ -9,10 +9,16 @@
 
     <b-form inline @submit="fetchBooks" v-on:submit.prevent>
         <b-form-group>
-            <b-form-input v-model="search" placeholder="{{ 'library.search'|trans }}" trim>
+            <b-form-input trim
+                          v-model="search"
+                          placeholder="{{ 'library.search'|trans }}"
+                          v-on:scan="handleScan"
+                          :disabled="searching"
+            >
             </b-form-input>
-            <b-button variant="primary" type="submit">
-                <b-icon icon="search"></b-icon>
+            <b-button variant="primary" type="submit" :disabled="searching">
+                <b-icon icon="search" v-if="!searching"></b-icon>
+                <b-spinner small v-if="searching"></b-spinner>
                 {{ 'fields.search'|trans }}
             </b-button>
         </b-form-group>
@@ -20,9 +26,9 @@
 
     <b-table class="mt-3" striped hover
              :fields="fields"
-             :items="allBooks">
-        <template v-slot:cell(selector)="data">
-            <b-button variant="outline-secondary">
+             :items="searchResults">
+        <template v-slot:cell(selector)="book">
+            <b-button variant="outline-secondary" class="bg-white" size="sm" @click="addBook(book.item)">
                 <b-icon icon="plus"></b-icon>
             </b-button>
         </template>
@@ -33,6 +39,7 @@
     <script type="text/javascript">
         window.Mixin.add('search', {
             data: {
+                searching: false,
                 search: '',
                 searchResults: [],
                 books: {{ library.books|vue }},
@@ -74,22 +81,20 @@
                 ],
             },
 
-            computed: {
-                allBooks: function () {
-                    if (this.searchResults.length === 0) {
-                        return this.books;
-                    }
-
-                    return this.searchResults.concat(this.books);
-                }
-            },
-
             methods: {
+                handleScan: function (value) {
+                    this.search = value;
+
+                    this.fetchBooks();
+                },
+
                 fetchBooks: function () {
                     if (this.search.length === 0) {
                         this.searchResults = [];
                         return;
                     }
+
+                    this.searching = true;
 
                     axios.post('{{ route('library.search', library.slug) }}', {
                         search: this.search
@@ -98,7 +103,13 @@
                         this.searchResults = data;
                     }).catch(({ response }) => {
                         this.error = response;
-                    })
+                    }).then(() => {
+                        this.searching = false;
+                    });
+                },
+
+                addBook: function (book) {
+                    console.log(book);
                 },
             },
         })

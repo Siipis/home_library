@@ -25,8 +25,30 @@ window.app = new window.Vue({
 
     mixins: window.Mixin.all(),
 
-    data: () => ({
+    data: {
         token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
         error: {},
-    })
+    },
+
+    mounted: function() {
+        document.addEventListener('scan', function (event) {
+            const target = event.target.activeElement;
+
+            if (target.__vue__ !== undefined) {
+                target.__vue__.$emit('scan', event.detail.scanCode);
+            }
+        });
+    }
+});
+
+/**
+ * Add barcode scanner support.
+ * @link https://github.com/axenox/onscan.js
+ */
+
+window.onScan = require('onscan.js');
+
+window.onScan.attachTo(document, {
+    suffixKeyCodes: [13],
+    reactToPaste: true,
 });
