@@ -11,6 +11,14 @@ use Illuminate\Support\Collection;
 abstract class BookApiProvider extends ApiProvider
 {
     /**
+     * @return int
+     */
+    protected function getTimeout()
+    {
+        return config('api.books.timeout');
+    }
+
+    /**
      * @param array $options
      * @return Collection
      */

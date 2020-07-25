@@ -6,11 +6,6 @@ namespace App\Http\Api\Providers\Books;
 
 class FinnaApiProvider extends BookApiProvider
 {
-    protected function getTimeout()
-    {
-        return config('api.books.timeout');
-    }
-
     protected function getUrl(array $options = [])
     {
         return "https://api.finna.fi/api/v1/search?" . implode("&", [

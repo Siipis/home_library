@@ -14,6 +14,7 @@
                           placeholder="{{ 'library.search'|trans }}"
                           v-on:scan="handleScan"
                           :disabled="searching"
+                          ref="search"
             >
             </b-form-input>
             <b-button variant="primary" type="submit" :disabled="searching">
@@ -30,7 +31,7 @@
                      :fields="fields"
                      :items="searchResults">
                 <template v-slot:cell(selector)="book">
-                    <b-button variant="outline-secondary" class="bg-white" size="sm" @click="fillForm('book_form', book.item)">
+                    <b-button variant="outline-secondary" class="bg-white" size="sm" @click="setBook(book.item)">
                         <b-icon icon="plus"></b-icon>
                     </b-button>
                 </template>
@@ -38,7 +39,7 @@
         </b-col>
 
         <b-col>
-            <b-card>
+            <b-card :img-src="cover" img-bottom>
                 {{ form(bookForm) }}
             </b-card>
         </b-col>
@@ -53,6 +54,7 @@
                 search: '',
                 searchResults: [],
                 books: {{ library.books|vue }},
+                cover: '',
 
                 fields: [
                     {
@@ -82,6 +84,10 @@
                 ],
             },
 
+            mounted() {
+                this.$refs.search.focus();
+            },
+
             methods: {
                 handleScan: function (value) {
                     this.search = value;
@@ -102,12 +108,31 @@
                     }).then(({ data }) => {
                         this.error = {};
                         this.searchResults = data;
+
+                        if (data.length > 0) {
+                            this.setBook(data[0]);
+                        }
                     }).catch(({ response }) => {
                         this.error = response;
                     }).then(() => {
                         this.searching = false;
                     });
                 },
+
+                setBook: function (book) {
+                    this.fillForm('book_form', book);
+
+                    axios.post('{{ route('library.books.cover', library.slug) }}', {
+                        title: book.title,
+                        isbn: book.isbn,
+                        original_data: book.original_data,
+                    }).then(({ data }) => {
+                        this.error = {};
+                        this.cover = !data ? '' : data;
+                    }).catch(({ response }) => {
+                        this.error = response;
+                    });
+                }
             },
         })
     </script>

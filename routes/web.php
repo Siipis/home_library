@@ -24,15 +24,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('library/{library:slug}')->as('library.')->group(function () {
         Route::get('/', 'LibraryController@index')->name('index');
 
-        Route::post('/search', 'LibraryController@search')->name('search');
+        Route::post('search', 'LibraryController@search')->name('search');
 
         Route::resource('books', 'Library\BookController', [
             'except' => 'index',
         ]);
-    });
-
-    Route::get('/search', function () {
-        return view('search');
+        Route::post('books/cover', 'Library\BookController@cover')->name('books.cover');
     });
 
     /*
@@ -41,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
     */
 
-    Route::prefix('/admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
+    Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
         Route::get('/', 'HomeController@index')->name('index');
 
         Route::resource('users', 'UserController');

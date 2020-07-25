@@ -9,7 +9,9 @@ use GuzzleHttp\Exception\RequestException;
 
 abstract class ApiProvider
 {
-    private $client;
+    protected $client;
+
+    protected $assoc = true;
 
     /**
      * ApiProvider constructor.
@@ -29,7 +31,22 @@ abstract class ApiProvider
      */
     protected function fetch(array $options = [])
     {
-        $response = $this->client->get($this->getUrl($options));
+        if (!$this->getUrl($options)) return false;
+
+        return $this->request($this->getUrl($options));
+    }
+
+    /**
+     * @param string $url
+     * @return mixed
+     */
+    protected function request(string $url)
+    {
+        $response = $this->client->get($url);
+
+        if (!$this->assoc) {
+            return $this->parseResponse($response->getBody()->getContents());
+        }
 
         return $this->parseResponse(json_decode($response->getBody()->getContents(), true));
     }

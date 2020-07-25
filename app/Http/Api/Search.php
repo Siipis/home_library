@@ -4,7 +4,9 @@
 namespace App\Http\Api;
 
 
+use App\Book;
 use App\Http\Api\Providers\Books\BookApiProvider;
+use App\Http\Api\Providers\Covers\CoverApiProvider;
 use App\Library;
 
 class Search
@@ -14,7 +16,7 @@ class Search
      * @param string $search
      * @return array
      */
-    public static function make(Library $library, string $search)
+    public static function books(Library $library, string $search)
     {
         $providers = config('api.books.providers');
 
@@ -31,5 +33,26 @@ class Search
         }
 
         return $result->toArray();
+    }
+
+    /**
+     * @param Book $book
+     * @return string|bool
+     */
+    public static function cover(Book $book)
+    {
+        $providers = config('api.covers.providers');
+
+        foreach ($providers as $provider) {
+            $provider = new $provider;
+
+            if ($provider instanceof CoverApiProvider) {
+                if ($cover = $provider->cover($book)) {
+                    return $cover;
+                }
+            }
+        }
+
+        return "https://via.placeholder.com/323x500.jpg?text=" . (is_null($book->title) ? '?' : urlencode($book->title));
     }
 }

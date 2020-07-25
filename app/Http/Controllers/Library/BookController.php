@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Library;
 
+use Gate;
 use App\Book;
+use App\Http\Api\Search;
 use App\Http\Forms\BookForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +19,26 @@ class BookController extends Controller
 
     public function __construct()
     {
+        $this->authorizeResource(Book::class);
+
         $this->form = new BookForm();
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function cover(Request $request)
+    {
+        $book = new Book();
+        $book->title = $request->input('title');
+        $book->isbn = $request->input('isbn');
+        $book->original_data = $request->input('original_data');
+
+        Gate::authorize('update', $book);
+
+        return response()->json(Search::cover($book));
     }
 
     /**

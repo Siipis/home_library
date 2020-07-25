@@ -7,14 +7,6 @@ namespace App\Http\Api\Providers\Books;
 class OpenLibraryApiProvider extends BookApiProvider
 {
     /**
-     * @return int
-     */
-    protected function getTimeout()
-    {
-        return config('api.books.timeout');
-    }
-
-    /**
      * @param array $options
      * @return string
      */

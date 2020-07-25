@@ -43,15 +43,18 @@ window.app = new window.Vue({
     methods: {
         fillForm: function(form_name, object) {
             const form = $("form[name='" + form_name + "']");
+            const fields = form.find("[name^='" + form_name + "']");
 
-            form.find("[name^='" + form_name + "']").each((i, field) => {
+            fields.each((i, field) => {
                 const pattern = new RegExp("^" + form_name + "\\[(.*)\\]$");
                 const name = $(field).attr('name').match(pattern)[1];
 
                 if (object[name] !== undefined) {
-                    $(field).val(object[name]);
+                    $(field).val(Array.isArray(object[name]) ? object[name].join(', ') : object[name]);
                 }
             });
+
+            fields[0].focus();
         },
     },
 });

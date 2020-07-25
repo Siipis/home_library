@@ -59763,14 +59763,16 @@ window.app = new window.Vue({
   methods: {
     fillForm: function fillForm(form_name, object) {
       var form = $("form[name='" + form_name + "']");
-      form.find("[name^='" + form_name + "']").each(function (i, field) {
+      var fields = form.find("[name^='" + form_name + "']");
+      fields.each(function (i, field) {
         var pattern = new RegExp("^" + form_name + "\\[(.*)\\]$");
         var name = $(field).attr('name').match(pattern)[1];
 
         if (object[name] !== undefined) {
-          $(field).val(object[name]);
+          $(field).val(Array.isArray(object[name]) ? object[name].join(', ') : object[name]);
         }
       });
+      fields[0].focus();
     }
   }
 });

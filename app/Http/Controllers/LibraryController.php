@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Api\Search;
 use App\Http\Forms\BookForm;
-use Gate;
 use App\Library;
+use Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,7 @@ class LibraryController extends Controller
      * @param Request $request
      * @param Library $library
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function search(Request $request, Library $library)
     {
@@ -44,6 +46,6 @@ class LibraryController extends Controller
             'search' => 'required|string',
         ]);
 
-        return response()->json(Search::make($library, $request->input('search')));
+        return response()->json(Search::books($library, $request->input('search')));
     }
 }
