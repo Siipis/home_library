@@ -5,8 +5,8 @@ namespace App\Http\Api;
 
 
 use App\Book;
-use App\Http\Api\Providers\Books\BookApiProvider;
-use App\Http\Api\Providers\Covers\CoverApiProvider;
+use App\Http\Api\Providers\Books\BookProvider;
+use App\Http\Api\Providers\Covers\CoverProvider;
 use App\Library;
 
 class Search
@@ -25,7 +25,7 @@ class Search
         foreach ($providers as $provider) {
             $provider = new $provider;
 
-            if ($provider instanceof BookApiProvider) {
+            if ($provider instanceof BookProvider) {
                 $result = $result->merge($provider->books([
                     'search' => $search
                 ]));
@@ -46,7 +46,7 @@ class Search
         foreach ($providers as $provider) {
             $provider = new $provider;
 
-            if ($provider instanceof CoverApiProvider) {
+            if ($provider instanceof CoverProvider) {
                 if ($cover = $provider->cover($book)) {
                     return $cover;
                 }

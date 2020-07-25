@@ -5,8 +5,8 @@ return [
         'limit' => 10,
 
         'providers' => [
-            \App\Http\Api\Providers\Books\OpenLibraryApiProvider::class,
-            \App\Http\Api\Providers\Books\FinnaApiProvider::class,
+            \App\Http\Api\Providers\Books\OpenLibraryBookProvider::class,
+            \App\Http\Api\Providers\Books\FinnaBookProvider::class,
         ],
     ],
 
@@ -19,8 +19,8 @@ return [
         ],
 
         'providers' => [
-            \App\Http\Api\Providers\Covers\OpenLibraryApiProvider::class,
-            \App\Http\Api\Providers\Covers\FinnaApiProvider::class,
+            \App\Http\Api\Providers\Covers\OpenLibraryCoverProvider::class,
+            \App\Http\Api\Providers\Covers\FinnaCoverProvider::class,
         ],
     ],
 ];

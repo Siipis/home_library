@@ -7,7 +7,7 @@ namespace App\Http\Api\Providers\Covers;
 use App\Book;
 use App\Http\Api\Providers\ApiProvider;
 
-abstract class CoverApiProvider extends ApiProvider
+abstract class CoverProvider extends ApiProvider
 {
     protected $assoc = false;
 

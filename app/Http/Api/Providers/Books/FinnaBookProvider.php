@@ -4,7 +4,7 @@
 namespace App\Http\Api\Providers\Books;
 
 
-class FinnaApiProvider extends BookApiProvider
+class FinnaBookProvider extends BookProvider
 {
     protected function getUrl(array $options = [])
     {

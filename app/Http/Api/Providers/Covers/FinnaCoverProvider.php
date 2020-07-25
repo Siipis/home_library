@@ -4,7 +4,7 @@
 namespace App\Http\Api\Providers\Covers;
 
 
-class FinnaApiProvider extends CoverApiProvider
+class FinnaCoverProvider extends CoverProvider
 {
     protected function getIsbnUrl(string $isbn)
     {

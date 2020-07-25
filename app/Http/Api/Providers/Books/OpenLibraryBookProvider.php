@@ -4,7 +4,7 @@
 namespace App\Http\Api\Providers\Books;
 
 
-class OpenLibraryApiProvider extends BookApiProvider
+class OpenLibraryBookProvider extends BookProvider
 {
     /**
      * @param array $options

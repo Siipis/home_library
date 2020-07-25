@@ -4,7 +4,7 @@
 namespace App\Http\Api\Providers\Covers;
 
 
-class OpenLibraryApiProvider extends CoverApiProvider
+class OpenLibraryCoverProvider extends CoverProvider
 {
     protected function getIsbnUrl($isbn)
     {

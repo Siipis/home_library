@@ -8,7 +8,7 @@ use App\Book;
 use App\Http\Api\Providers\ApiProvider;
 use Illuminate\Support\Collection;
 
-abstract class BookApiProvider extends ApiProvider
+abstract class BookProvider extends ApiProvider
 {
     /**
      * @return int
