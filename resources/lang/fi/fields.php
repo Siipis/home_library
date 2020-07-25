@@ -19,12 +19,16 @@ return [
 
     'authors'           => 'Tekijät',
     'name'              => 'Nimi',
+    'description'       => 'Kuvaus',
     'email'             => 'Sähköposti',
+    'isbn'              => 'ISBN',
     'language'          => 'Kieli',
+    'keywords'          => 'Avainsanat',
     'password'          => 'Salasana',
     'password_confirmation'  => 'Vahvista salasana',
     'publisher'         => 'Julkaisija',
     'series'            => 'Sarja',
+    'title'             => 'Nimi',
     'year'              => 'Vuosi',
 
     'slug'              => 'URL-pääte',

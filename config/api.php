@@ -5,8 +5,8 @@ return [
         'limit' => 10,
 
         'providers' => [
-            \App\Http\Providers\Books\FinnaApiProvider::class,
-            \App\Http\Providers\Books\OpenLibraryApiProvider::class,
+            \App\Http\Api\Providers\Books\FinnaApiProvider::class,
+            \App\Http\Api\Providers\Books\OpenLibraryApiProvider::class,
         ],
     ]
 ];

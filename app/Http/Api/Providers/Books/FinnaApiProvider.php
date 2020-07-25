@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Providers\Books;
+namespace App\Http\Api\Providers\Books;
 
 
 class FinnaApiProvider extends BookApiProvider

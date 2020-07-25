@@ -4,7 +4,7 @@
 namespace App\Http\Api;
 
 
-use App\Http\Providers\Books\BookApiProvider;
+use App\Http\Api\Providers\Books\BookApiProvider;
 use App\Library;
 
 class Search

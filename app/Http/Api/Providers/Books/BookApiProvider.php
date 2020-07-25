@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Http\Providers\Books;
+namespace App\Http\Api\Providers\Books;
 
 
 use App\Book;
-use App\Http\Providers\ApiProvider;
+use App\Http\Api\Providers\ApiProvider;
 use Illuminate\Support\Collection;
 
 abstract class BookApiProvider extends ApiProvider
@@ -29,8 +29,9 @@ abstract class BookApiProvider extends ApiProvider
             $book->publisher = $this->getPublisher($record);
             $book->description = $this->getDescription($record);
             $book->year = $this->getYear($record);
-            $book->isbn = $this->getYear($record);
+            $book->isbn = $this->getIsbn($record);
             $book->language = $this->getLanguage($record);
+            $book->keywords = $this->getKeywords($record);
             $book->original_data = $this->getOriginalData($record);
 
             $books->add($book);

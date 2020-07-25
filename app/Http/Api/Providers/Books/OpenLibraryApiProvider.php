@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Providers\Books;
+namespace App\Http\Api\Providers\Books;
 
 
 class OpenLibraryApiProvider extends BookApiProvider
@@ -50,10 +50,10 @@ class OpenLibraryApiProvider extends BookApiProvider
     public function getKeywords($record)
     {
         return collect()
-            ->merge($record['subject'])
-            ->merge($record['place'])
-            ->merge($record['person'])
-            ->merge($record['time'])
+            ->merge($record['subject'] ?? [])
+            ->merge($record['place'] ?? [])
+            ->merge($record['person'] ?? [])
+            ->merge($record['time'] ?? [])
             ->unique()
             ->toArray();
     }

@@ -59759,6 +59759,19 @@ window.app = new window.Vue({
         target.__vue__.$emit('scan', event.detail.scanCode);
       }
     });
+  },
+  methods: {
+    fillForm: function fillForm(form_name, object) {
+      var form = $("form[name='" + form_name + "']");
+      form.find("[name^='" + form_name + "']").each(function (i, field) {
+        var pattern = new RegExp("^" + form_name + "\\[(.*)\\]$");
+        var name = $(field).attr('name').match(pattern)[1];
+
+        if (object[name] !== undefined) {
+          $(field).val(object[name]);
+        }
+      });
+    }
   }
 });
 /**
@@ -59792,7 +59805,7 @@ module.exports = {"register":"Rekisteröidy","login":"Kirjaudu sisään","logout
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete":"Poista","submit":"Tallenna","cancel":"Peruuta","are_you_sure":"Haluatko varmasti jatkaa?","search":"Hae","authors":"Tekijät","name":"Nimi","email":"Sähköposti","language":"Kieli","password":"Salasana","password_confirmation":"Vahvista salasana","publisher":"Julkaisija","series":"Sarja","year":"Vuosi","slug":"URL-pääte"};
+module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete":"Poista","submit":"Tallenna","cancel":"Peruuta","are_you_sure":"Haluatko varmasti jatkaa?","search":"Hae","authors":"Tekijät","name":"Nimi","description":"Kuvaus","email":"Sähköposti","isbn":"ISBN","language":"Kieli","keywords":"Avainsanat","password":"Salasana","password_confirmation":"Vahvista salasana","publisher":"Julkaisija","series":"Sarja","title":"Nimi","year":"Vuosi","slug":"URL-pääte"};
 
 /***/ }),
 

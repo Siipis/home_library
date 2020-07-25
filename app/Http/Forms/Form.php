@@ -29,6 +29,11 @@ class Form
     protected $model;
 
     /**
+     * @var string
+     */
+    protected $size = 'default';
+
+    /**
      * @var bool
      */
     private $isInitialized = false;
@@ -108,6 +113,10 @@ class Form
             if (\Lang::has($trans)) {
                 $options['label'] = $trans;
             }
+        }
+
+        if (!array_key_exists('required', $options) && array_key_exists('rules', $options)) {
+            $options['required'] = \Str::contains('required', $options['rules']);
         }
 
         $this->form->add($name, $type, $options);
@@ -220,7 +229,12 @@ class Form
      */
     protected function initForm(array $options = [], Model $model = null)
     {
-        $this->form = $this->createForm(FormType::class, $this->makeModel($model), $options);
+        $this->form = $this->createNamed(\Str::snake(class_basename($this)),
+            FormType::class,
+            $this->makeModel($model),
+            $options
+        );
+
         $this->build();
 
         $this->isInitialized = true;

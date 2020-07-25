@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Api\Search;
+use App\Http\Forms\BookForm;
 use Gate;
 use App\Library;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,16 @@ class LibraryController extends Controller
     {
         Gate::authorize('view', $library);
 
-        return view('library.index', compact('library'));
+        $bookForm = new BookForm();
+
+        return view('library.index', [
+            'library' => $library,
+            'bookForm' => $bookForm->make([
+                'action' => route('library.books.store', [
+                    'library' => $library
+                ])
+            ]),
+        ]);
     }
 
     /**

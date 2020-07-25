@@ -13,7 +13,7 @@ class MakeForm extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:form {name} {model?}';
+    protected $signature = 'make:form {name} {--model=}';
 
     /**
      * The console command description.
@@ -62,7 +62,7 @@ class MakeForm extends GeneratorCommand
 
         $replace = [];
 
-        if ($this->argument('model')) {
+        if ($this->hasOption('model')) {
             $replace = $this->buildModelReplacements($replace);
         } else {
             $replace = $this->buildReplacementsWithoutModel($replace);
@@ -100,7 +100,7 @@ class MakeForm extends GeneratorCommand
      */
     protected function buildModelReplacements(array $replace)
     {
-        $modelClass = $this->parseModel($this->argument('model'));
+        $modelClass = $this->parseModel($this->option('model'));
 
         if (!class_exists($modelClass)) {
             if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
