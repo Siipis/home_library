@@ -114,6 +114,7 @@
                         }
                     }).catch(({ response }) => {
                         this.error = response;
+                        this.searchResults = [];
                     }).then(() => {
                         this.searching = false;
                     });
@@ -122,6 +123,9 @@
                 setBook: function (book) {
                     this.fillForm('book_form', book);
 
+                    this.cover = book.images.length > 0 ? book.images[0] : '';
+
+                    /*
                     this.cover = '';
 
                     axios.post('{{ route('library.books.cover', library.slug) }}', {
@@ -134,6 +138,7 @@
                     }).catch(({ response }) => {
                         this.error = response;
                     });
+                    */
                 }
             },
         })

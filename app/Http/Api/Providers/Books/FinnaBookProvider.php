@@ -14,8 +14,10 @@ class FinnaBookProvider extends BookProvider
                 "lookfor=" . urlencode("\"$options[search]\""),
                 "join=AND",
                 "filter[]=format%3A%221%2FBook%2FBook%2F%22",
+                "field[]=id",
                 "field[]=title",
                 "field[]=series",
+                "field[]=authors",
                 "field[]=primaryAuthors",
                 "field[]=genres",
                 "field[]=subjects",
@@ -24,12 +26,20 @@ class FinnaBookProvider extends BookProvider
                 "field[]=cleanIsbn",
                 "field[]=languages",
                 "field[]=summary",
+                "field[]=images",
+                "field[]=recordPage",
+                "field[]=urls",
             ]);
     }
 
     protected function parseResponse($response)
     {
         return isset($response['records']) ? $response['records'] : [];
+    }
+
+    public function getProviderId($record)
+    {
+        return $record['id'] ?? null;
     }
 
     public function getTitle($record)
@@ -52,6 +62,13 @@ class FinnaBookProvider extends BookProvider
             ->merge($record['primaryAuthors'])
             ->flatten()
             ->unique()
+            ->map(function ($author) {
+                $author = preg_replace('/[, ]+(kirjoittaja|kääntäjä)/i', '', $author);
+                $author = preg_replace('/^([\w. ]+),[ ]?([\w. ]+).*$/i', '$2 $1', $author);
+                $author = preg_replace('/[ ]{2,}/', ' ', $author);
+
+                return $author;
+            })
             ->toArray();
     }
 
@@ -73,7 +90,9 @@ class FinnaBookProvider extends BookProvider
 
     public function getYear($record)
     {
-        return $record['year'] ?? null;
+        if (!isset($record['year'])) return null;
+
+        return intval($record['year']);
     }
 
     public function getIsbn($record)
@@ -89,5 +108,17 @@ class FinnaBookProvider extends BookProvider
     public function getLanguage($record)
     {
         return $record['languages'][0] ?? null;
+    }
+
+    public function getImages($record)
+    {
+        return array_map(function ($image) {
+            return 'https://finna.fi' . $image;
+        }, $record['images']);
+    }
+
+    public function getProviderPage($record)
+    {
+        return 'https://finna.fi' . $record['recordPage'];
     }
 }

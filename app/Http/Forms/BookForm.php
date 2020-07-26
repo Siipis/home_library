@@ -14,28 +14,46 @@ class BookForm extends Form
     public function build()
     {
         $this->add('title', TextType::class, [
-            'rules' => 'required|string'
+            'rules' => 'required|string',
+            'attr' => [
+                'autocomplete' => 'off',
+            ],
         ]);
         $this->add('authors', TextType::class, [
             'rules' => 'string'
         ]);
         $this->add('publisher', TextType::class, [
-            'rules' => 'string'
-        ]);
-        $this->add('description', TextareaType::class, [
-            'rules' => 'string'
+            'rules' => 'string',
         ]);
         $this->add('year', TextType::class, [
-            'rules' => 'string'
+            'rules' => 'string',
         ]);
-        $this->add('isbn', TextType::class, [
-            'rules' => 'string'
-        ]);
-        $this->add('language', TextType::class, [
-            'rules' => 'string'
+        $this->add('description', TextareaType::class, [
+            'rules' => 'string',
+            'attr' => [
+                'autocomplete' => 'off',
+                'class' => 'form-control-sm',
+            ]
         ]);
         $this->add('keywords', TextType::class, [
-            'rules' => 'string'
+            'rules' => 'string',
+            'attr' => [
+                'autocomplete' => 'off',
+                'class' => 'form-control-sm',
+            ]
+        ]);
+        $this->add('isbn', TextType::class, [
+            'rules' => 'string',
+            'attr' => [
+                'autocomplete' => 'off',
+                'class' => 'form-control-sm',
+            ]
+        ]);
+        $this->add('language', TextType::class, [
+            'rules' => 'string',
+            'attr' => [
+                'class' => 'form-control-sm',
+            ]
         ]);
         $this->add($this->model()->id > 0 ? 'save' : 'create', SubmitType::class);
     }

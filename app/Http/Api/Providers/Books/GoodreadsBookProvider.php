@@ -17,7 +17,7 @@ class GoodreadsBookProvider extends BookProvider
             return [];
         }
 
-        if (array_key_first($results) == 0) {
+        if (array_key_first($results) == 0 && !empty($results)) {
             return array_values($results['work']);
         }
 
@@ -70,7 +70,7 @@ class GoodreadsBookProvider extends BookProvider
      */
     public function getKeywords($record)
     {
-        return null;
+        return [];
     }
 
     /**
@@ -86,7 +86,9 @@ class GoodreadsBookProvider extends BookProvider
      */
     public function getYear($record)
     {
-        return $record['original_publication_year'][0] ?? null;
+        if (!isset($record['original_publication_year'][0])) return null;
+
+        return intval($record['original_publication_year'][0]);
     }
 
     /**
@@ -109,6 +111,34 @@ class GoodreadsBookProvider extends BookProvider
      * @inheritDoc
      */
     public function getLanguage($record)
+    {
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProviderId($record)
+    {
+        return $record['id'][0];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getImages($record)
+    {
+        if (!isset($record['best_book']['image_url'])) return [];
+
+        return [
+            $record['best_book']['image_url']
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProviderPage($record)
     {
         return null;
     }

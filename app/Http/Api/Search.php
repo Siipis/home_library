@@ -25,14 +25,13 @@ class Search
         foreach ($providers as $provider) {
             $provider = new $provider;
 
-            if ($provider instanceof BookProvider) {
-                $result = $result->merge($provider->books([
-                    'search' => $search
-                ]));
-            }
+            $result->put(class_basename($provider), $provider->books([
+                'search' => $search,
+            ]));
         }
 
-        return $result->toArray();
+        $parser = new BookResultsParser($library);
+        return $parser->parse($result);
     }
 
     /**

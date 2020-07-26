@@ -53,7 +53,14 @@ abstract class BookProvider extends ApiProvider
             $book->isbn = $this->getIsbn($record);
             $book->language = $this->getLanguage($record);
             $book->keywords = $this->getKeywords($record);
-            $book->original_data = $this->getOriginalData($record);
+            $book->images = $this->getImages($record);
+            $book->providers = collect();
+
+            $book->providers->push([
+                'class' => class_basename($this),
+                'id' => $this->getProviderId($record),
+                'page' => $this->getProviderPage($record),
+            ]);
 
             $books->add($book);
         }
@@ -73,15 +80,9 @@ abstract class BookProvider extends ApiProvider
 
     /**
      * @param $record
-     * @return array
+     * @return mixed
      */
-    protected function getOriginalData($record)
-    {
-        return [
-            'provider' => class_basename($this),
-            'response' => (array) $record,
-        ];
-    }
+    public abstract function getProviderId($record);
 
     /**
      * @param $record
@@ -136,4 +137,16 @@ abstract class BookProvider extends ApiProvider
      * @return string|null
      */
     public abstract function getLanguage($record);
+
+    /**
+     * @param $record
+     * @return string|null
+     */
+    public abstract function getImages($record);
+
+    /**
+     * @param $record
+     * @return string|null
+     */
+    public abstract function getProviderPage($record);
 }

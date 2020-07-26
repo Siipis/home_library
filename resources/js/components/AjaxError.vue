@@ -17,7 +17,7 @@
         props: {
             error: {
                 type: Object,
-                default: {}
+                default: () => ({}),
             },
         },
 

@@ -5,8 +5,8 @@ return [
         'limit' => 10,
 
         'providers' => [
-            \App\Http\Api\Providers\Books\OpenLibraryBookProvider::class,
             \App\Http\Api\Providers\Books\FinnaBookProvider::class,
+            \App\Http\Api\Providers\Books\OpenLibraryBookProvider::class,
             \App\Http\Api\Providers\Books\GoodreadsBookProvider::class,
         ],
 

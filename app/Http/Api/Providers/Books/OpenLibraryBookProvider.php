@@ -58,7 +58,9 @@ class OpenLibraryBookProvider extends BookProvider
 
     public function getYear($record)
     {
-        return $record['first_publish_year'] ?? null;
+        if (!isset($record['first_publish_year'])) return null;
+
+        return intval($record['first_publish_year']);
     }
 
     public function getIsbn($record)
@@ -74,5 +76,24 @@ class OpenLibraryBookProvider extends BookProvider
     public function getLanguage($record)
     {
         return null;
+    }
+
+    public function getProviderId($record)
+    {
+        return $record['key'];
+    }
+
+    public function getImages($record)
+    {
+        if (!isset($response['cover_i'])) return [];
+
+        return [
+            "https://covers.openlibrary.org/b/id/" . $response['cover_i'] . "-L.jpg"
+        ];
+    }
+
+    public function getProviderPage($record)
+    {
+        return "https://openlibrary.org" . $record['key'];
     }
 }
