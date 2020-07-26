@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Category;
 use App\Library;
+use App\Policies\BookPolicy;
+use App\Policies\CategoryPolicy;
 use App\Policies\LibraryPolicy;
 use App\Policies\UserPolicy;
 use App\User;
@@ -17,6 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        Book::class => BookPolicy::class,
+        Category::class => CategoryPolicy::class,
         Library::class => LibraryPolicy::class,
         User::class => UserPolicy::class,
     ];

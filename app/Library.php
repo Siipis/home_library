@@ -34,4 +34,12 @@ class Library extends Model
     {
         return $this->hasMany(Book::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 }

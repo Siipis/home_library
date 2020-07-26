@@ -14117,3 +14117,34 @@ p:last-child {
   margin-bottom: 0;
 }
 
+.category {
+  display: inline-block;
+  color: #fff;
+  border: 1px solid #000;
+  background: #212529;
+  border-radius: 0.25rem;
+  padding: 0.25em 0.4em;
+  min-width: 6em;
+  text-align: center;
+}
+
+.category:hover {
+  text-decoration: none;
+}
+
+.category.lg {
+  font-size: 1.125rem;
+}
+
+.category.sm {
+  font-size: 0.7875rem;
+}
+
+.category.xs {
+  font-size: 0.675rem;
+}
+
+.delete-button {
+  display: inline-block;
+}
+

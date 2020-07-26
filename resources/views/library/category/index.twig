@@ -1,0 +1,27 @@
+{% extends 'user'|layout %}
+
+{% set page_title = library.name ~ ': ' ~ 'category.type'|trans_choice(2) %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>{{ page_title }}</h3>
+
+    <nav class="mb-3">
+        <category href="{{ route('library.categories.index', library.slug) }}">
+            {{ 'category.all'|trans }}
+        </category>
+
+        {% for category in library.categories %}
+            <category color="{{ category.color }}" href="{{ route('library.categories.show', [library.slug, category.id]) }}">
+                {{ category.name }}
+            </category>
+        {% endfor %}
+    </nav>
+
+    <b-button variant="primary" href="{{ route('library.categories.create', library.slug) }}">
+        {{ 'fields.create'|trans ~ ' ' ~ 'category.type'|trans_choice(1)|lower }}
+    </b-button>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

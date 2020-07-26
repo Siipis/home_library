@@ -16,6 +16,12 @@
                     <a class="nav-link" href="{{ route('admin.index') }}">Hallintapaneeli</a>
                 </li>
             {% endif %}
+
+            {% if library is defined %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('library.categories.index', library.slug) }}">Kategoriat</a>
+                </li>
+            {% endif %}
         {% endblock %}
     {% endembed %}
 

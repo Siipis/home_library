@@ -87,6 +87,10 @@ class Form
     {
         $this->initForm([], $model);
 
+        if (!$this->form->isSubmitted()) {
+            $this->form->submit($request->get($this->form->getName()));
+        }
+
         $this->form->handleRequest($request);
 
         if ($this->isValid($request)) {

@@ -25,4 +25,14 @@ mix.webpackConfig({
 
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/vue.js', 'public/js')
+    .extract([
+        'axios',
+        'vue',
+        'bootstrap-vue',
+        'popper.js',
+        'lang.js',
+        'tinycolor2',
+        'jquery',
+        'onscan.js',
+    ])
     .sass('resources/sass/app.scss', 'public/css');

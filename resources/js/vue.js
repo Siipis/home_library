@@ -3,6 +3,7 @@ import { RoutePlugin } from "./route";
 import { LangPlugin } from "./localization";
 import AjaxError from "./components/AjaxError";
 import DeleteButton from "./components/DeleteButton";
+import Category from "./components/Category";
 
 /**
  * Import Vue and configure it.
@@ -19,6 +20,7 @@ window.Vue.use(LangPlugin);
 
 window.Vue.component('ajax-error', AjaxError);
 window.Vue.component('delete-button', DeleteButton);
+window.Vue.component('category', Category);
 
 window.app = new window.Vue({
     'el': '#app',

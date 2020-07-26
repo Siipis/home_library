@@ -1,0 +1,29 @@
+{% extends 'user'|layout %}
+
+{% set page_title = 'category.type'|trans_choice(1) ~ ': ' ~ category.name %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>
+        <b-icon icon="circle-fill" style="color: {{ category.color }}"></b-icon>
+        {{ page_title }}
+
+        {% if can('update', category) %}
+            <b-button variant="link" size="lg"
+                      href="{{ route('library.categories.edit', [category.library.slug, category.id]) }}">
+                <b-icon icon="gear"></b-icon>
+            </b-button>
+        {% endif %}
+
+        {% if can('delete', category) %}
+            <delete-button variant="link" icon="trash" size="lg"
+                           action="{{ route('library.categories.destroy', [category.library.slug, category.id]) }}">
+            </delete-button>
+        {% endif %}
+    </h3>
+
+    Hello world.
+{% endblock %}
+
+{% block scripts %}{% endblock %}

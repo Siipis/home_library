@@ -19,6 +19,7 @@ return [
 
     'authors'           => 'Tekijät',
     'name'              => 'Nimi',
+    'color'             => 'Väri',
     'description'       => 'Kuvaus',
     'email'             => 'Sähköposti',
     'isbn'              => 'ISBN',
@@ -28,8 +29,7 @@ return [
     'password_confirmation'  => 'Vahvista salasana',
     'publisher'         => 'Julkaisija',
     'series'            => 'Sarja',
+    'slug'              => 'URL-pääte',
     'title'             => 'Nimi',
     'year'              => 'Vuosi',
-
-    'slug'              => 'URL-pääte',
 ];

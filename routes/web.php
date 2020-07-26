@@ -30,13 +30,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'except' => 'index',
         ]);
         Route::post('books/cover', 'Library\BookController@cover')->name('books.cover');
-    });
 
-    /*
-    Route::resource('invite', 'InviteController')->only([
-        'store', 'show', 'destroy',
-    ]);
-    */
+        Route::resource('categories', 'Library\CategoryController');
+    });
 
     Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
         Route::get('/', 'HomeController@index')->name('index');

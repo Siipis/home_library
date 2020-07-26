@@ -14,3 +14,34 @@
 p:last-child {
     margin-bottom: 0;
 }
+
+.category {
+    display: inline-block;
+    color: $white;
+    border: $border-width solid $black;
+    background: $gray-900;
+    border-radius: $badge-border-radius;
+    padding: $badge-padding-y $badge-padding-x;
+    min-width: 6em;
+    text-align: center;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &.lg {
+        font-size: $font-size-lg;
+    }
+
+    &.sm {
+        font-size: $font-size-sm;
+    }
+
+    &.xs {
+        font-size: $font-size-xs;
+    }
+}
+
+.delete-button {
+    display: inline-block;
+}

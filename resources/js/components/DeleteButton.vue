@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="delete-button">
         <b-modal centered no-stacking :ref="modalId"
                  header-bg-variant="danger"
                  header-text-variant="light"
@@ -15,8 +15,8 @@
         <form method="post" :action="action" :ref="formId">
             <input type="hidden" name="_token" :value="$root.token">
             <input type="hidden" name="_method" value="delete">
-            <b-button variant="danger" @click="$refs[modalId].show()">
-                <b-icon icon="x"></b-icon>
+            <b-button :variant="variant" :size="size" @click="$refs[modalId].show()">
+                <b-icon :icon="icon"></b-icon>
             </b-button>
         </form>
     </div>
@@ -25,13 +25,41 @@
 <script>
     export default {
         name: "DeleteButton",
-        props: ['action', 'id'],
+
+        props: {
+            action: {
+                type: String,
+            },
+            id: {
+                type: String,
+            },
+            variant: {
+                type: String,
+                default: 'danger',
+            },
+            icon: {
+                type: String,
+                default: 'x',
+            },
+            size: {
+                type: String,
+            }
+        },
+
         computed: {
             modalId: function () {
-                return 'delete-' + this.id;
+                if (this.id === undefined) {
+                    return 'delete';
+                }
+
+                return 'delete' + this.id;
             },
 
             formId: function () {
+                if (this.id === undefined) {
+                    return 'form-delete';
+                }
+
                 return 'form-delete-' + this.id;
             }
         }

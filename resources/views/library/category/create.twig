@@ -1,0 +1,13 @@
+{% extends 'user'|layout %}
+
+{% set page_title = 'fields.create'|trans ~ ' ' ~ 'category.type'|trans_choice(1) %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>{{ page_title }}</h3>
+
+    {{ form(form) }}
+{% endblock %}
+
+{% block scripts %}{% endblock %}
