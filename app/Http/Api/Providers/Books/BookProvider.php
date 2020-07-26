@@ -20,6 +20,14 @@ abstract class BookProvider extends ApiProvider
     }
 
     /**
+     * @return array
+     */
+    protected function getCacheConfig()
+    {
+        return config('api.books.cache');
+    }
+
+    /**
      * @param array $options
      * @return Collection
      */

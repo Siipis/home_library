@@ -4,6 +4,7 @@
 namespace App\Http\Api\Providers;
 
 
+use Cache;
 use Str;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -11,6 +12,12 @@ use GuzzleHttp\Exception\RequestException;
 abstract class ApiProvider
 {
     protected $client;
+
+    /**
+     * Overriding this value disables all caching.
+     * @var bool
+     */
+    protected $cache = true;
 
     /**
      * ApiProvider constructor.
@@ -38,31 +45,51 @@ abstract class ApiProvider
     /**
      * @param string $url
      * @return mixed
+     * @link http://docs.guzzlephp.org/en/stable/quickstart.html
      */
     protected function request(string $url)
     {
+        if ($this->hasCache() && Cache::has($url)) {
+            return Cache::get($url);
+        }
+
         try {
             $response = $this->client->get($url);
 
-            $contentType = $response->getHeader('Content-Type');
-            $contents = $response->getBody()->getContents();
+            $handled = $this->handleResponse($response);
 
-            if (!empty($contentType)) {
-                $contentType = is_array($contentType) ? $contentType[0] : $contentType;
-
-                if (Str::contains($contentType, 'application/json')) {
-                    return $this->parseResponse(json_decode($contents, true));
-                }
-
-                if (Str::contains($contentType, 'application/xml')) {
-                    return $this->parseResponse($this->parseXml($contents));
-                }
+            if ($this->hasCache()) {
+                Cache::put($url, $handled, $this->getCacheExpiry());
             }
 
-            return $this->parseResponse($contents);
+            return $handled;
         } catch (RequestException $exception) {
             return $this->handleException($exception);
         }
+    }
+
+    /**
+     * @param $response
+     * @return mixed
+     */
+    private function handleResponse($response)
+    {
+        $contentType = $response->getHeader('Content-Type');
+        $contents = $response->getBody()->getContents();
+
+        if (!empty($contentType)) {
+            $contentType = is_array($contentType) ? $contentType[0] : $contentType;
+
+            if (Str::contains($contentType, 'application/json')) {
+                return $this->parseResponse(json_decode($contents, true));
+            }
+
+            if (Str::contains($contentType, 'application/xml')) {
+                return $this->parseResponse($this->parseXml($contents));
+            }
+        }
+
+        return $this->parseResponse($contents);
     }
 
     /**
@@ -91,6 +118,46 @@ abstract class ApiProvider
     }
 
     /**
+     * @return bool
+     */
+    private function hasCache()
+    {
+        if (!$this->cache) return false;
+
+        return !empty($this->getCacheConfig());
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getCacheExpiry()
+    {
+        $config = $this->getCacheConfig();
+
+        if (empty($config)) return null;
+
+        $time = now();
+
+        if (isset($config['days'])) {
+            return $time->addDays($config['days']);
+        }
+
+        if (isset($config['hours'])) {
+            return $time->addHours($config['hours']);
+        }
+
+        if (isset($config['minutes'])) {
+            return $time->addMinutes($config['minutes']);
+        }
+
+        if (isset($config['seconds'])) {
+            return $time->addSeconds($config['seconds']);
+        }
+
+        return $time;
+    }
+
+    /**
      * @param $response
      * @return mixed
      */
@@ -106,6 +173,11 @@ abstract class ApiProvider
      * @return int
      */
     protected abstract function getTimeout();
+
+    /**
+     * @return array
+     */
+    protected abstract function getCacheConfig();
 
     /**
      * @param array $options

@@ -19,6 +19,14 @@ abstract class CoverProvider extends ApiProvider
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function getCacheConfig()
+    {
+        return config('api.covers.cache');
+    }
+
+    /**
      * @param Book $book
      * @return bool|mixed
      */
