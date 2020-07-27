@@ -44,6 +44,15 @@
                     {
                         key: 'isbn',
                         label: Lang.get('fields.isbn'),
+                        formatter: function (isbn, key, book) {
+                            if (isbn === null) return isbn;
+
+                            if (book.other_isbn.length > 0) {
+                                return isbn + '*';
+                            }
+
+                            return isbn;
+                        },
                     }
                 ],
             }

@@ -78,9 +78,10 @@
                 setBook: function (book) {
                     book.cover = book.images.length > 0 ? book.images[0] : '';
                     book.local_id = null;
+                    book.providers = JSON.stringify(book.providers);
 
                     this.images = book.images;
-                    this.other_isbn = book.other_isbn;
+                    this.other_isbn = [...book.other_isbn, book.isbn];
 
                     this.fillForm('book_form', book);
                     this.loadCover(book);
@@ -100,6 +101,8 @@
                     }).then(({ data }) => {
                         this.error = {};
                         this.cover = data;
+
+                        $('#book_form_cover').val(data);
                     }).catch(({ response }) => {
                         this.error = response;
                     });

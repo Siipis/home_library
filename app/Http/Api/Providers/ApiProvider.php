@@ -13,11 +13,7 @@ abstract class ApiProvider
 {
     protected $client;
 
-    /**
-     * Setting this to false disables all caching.
-     * @var bool
-     */
-    protected $cache = false;
+    protected $cache;
 
     /**
      * Setting this to true ignores all responses from the provider.
@@ -34,7 +30,7 @@ abstract class ApiProvider
             'timeout' => $this->getTimeout(),
         ]);
 
-        $this->cache = \Env::production();
+        $this->cache = config('api.cache_apis');
     }
 
     /**

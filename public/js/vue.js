@@ -224,7 +224,16 @@ __webpack_require__.r(__webpack_exports__);
         sortable: true
       }, {
         key: 'isbn',
-        label: Lang.get('fields.isbn')
+        label: Lang.get('fields.isbn'),
+        formatter: function formatter(isbn, key, book) {
+          if (isbn === null) return isbn;
+
+          if (book.other_isbn.length > 0) {
+            return isbn + '*';
+          }
+
+          return isbn;
+        }
       }]
     };
   }

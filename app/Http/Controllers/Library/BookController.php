@@ -68,16 +68,21 @@ class BookController extends Controller
     public function store(Request $request, Library $library)
     {
         $book = $this->form->get($request);
+        $category = null;
 
         if ($book instanceof Book) {
-            if ($request->has('category_id')) {
-                $category = Category::findOrFail($request->input('category_id'));
-
-                $book->categories()->attach($category);
+            if ($request->has('book_form.category_id')) {
+                $category = Category::find($request->input('book_form.category_id'));
+                unset($book->category_id);
             }
 
-            $book->library()->associate($library);
             $book->save();
+
+            $book->library()->associate($library);
+
+            if ($category !== null) {
+                $book->categories()->attach($category);
+            }
         }
 
         return redirect()->route('library.index', $library->slug);

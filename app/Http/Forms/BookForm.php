@@ -6,6 +6,7 @@ use App\Book;
 use App\Category;
 use Illuminate\Validation\Rule;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,7 +26,7 @@ class BookForm extends Form
             'data' => \Request::route()->hasParameter('category') ?
                 \Request::route()->parameter('category') : null,
 
-            'rules' => 'exists:categories',
+            'rules' => 'exists:categories,id',
         ]);
         $this->add('local_id', TextType::class, [
             'rules' => [
@@ -75,6 +76,9 @@ class BookForm extends Form
         ]);
         $this->add('language', TextType::class, [
             'rules' => 'string',
+        ]);
+        $this->add('providers', HiddenType::class, [
+            'rules' => 'json',
         ]);
         $this->add($this->model()->id > 0 ? 'save' : 'create', SubmitType::class);
     }

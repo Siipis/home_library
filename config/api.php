@@ -1,5 +1,7 @@
 <?php
 return [
+    'cache_apis' => env('CACHE_APIS', true),
+
     'books' => [
         'timeout' => 60, // seconds
         'limit' => 10,
