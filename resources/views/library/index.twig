@@ -9,6 +9,8 @@
 {% block content %}
     <h3>{{ page_title }}</h3>
 
+    <books library="{{ library.id }}"></books>
+
     {{ block('search_form') }}
 {% endblock %}
 

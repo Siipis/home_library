@@ -77,12 +77,13 @@ class BookController extends Controller
             }
 
             $book->save();
-
             $book->library()->associate($library);
 
             if ($category !== null) {
                 $book->categories()->attach($category);
             }
+
+            $book->save();
         }
 
         return redirect()->route('library.index', $library->slug);

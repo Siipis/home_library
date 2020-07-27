@@ -5,6 +5,7 @@ import AjaxError from "./components/AjaxError";
 import DeleteButton from "./components/DeleteButton";
 import Category from "./components/Category";
 import SearchResults from "./components/SearchResults";
+import Books from "./components/Books";
 
 /**
  * Import Vue and configure it.
@@ -23,6 +24,7 @@ window.Vue.component('ajax-error', AjaxError);
 window.Vue.component('delete-button', DeleteButton);
 window.Vue.component('category', Category);
 window.Vue.component('search-results', SearchResults);
+window.Vue.component('books', Books);
 
 window.app = new window.Vue({
     'el': '#app',

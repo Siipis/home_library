@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('library/{library:slug}')->as('library.')->group(function () {
         Route::get('/', 'LibraryController@index')->name('index');
+        Route::post('/', 'LibraryController@books')->name('books');
 
         Route::post('search', 'LibraryController@search')->name('search');
         Route::post('details', 'LibraryController@details')->name('details');

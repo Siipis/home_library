@@ -8,6 +8,7 @@ use App\Http\Forms\BookForm;
 use App\Library;
 use Exception;
 use Gate;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -36,12 +37,32 @@ class LibraryController extends Controller
     {
         Gate::authorize('view', $library);
 
-        $bookForm = new BookForm();
-
         return view('library.index', [
             'library' => $library,
             'book_form' => self::getStoreForm($library),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Paginator
+     */
+    public function books(Request $request)
+    {
+        $request->validate([
+            'library' => 'exists:libraries,id',
+            'category' => 'exists:categories,id|nullable',
+        ]);
+
+        $library = Library::findOrFail($request->get('library'));
+        Gate::authorize('view', $library);
+
+        $category = null;
+        if ($request->has('category')) {
+           // $category = $library->categories()->findOrFail($request->get('category'));
+        }
+
+        return $library->books()->simplePaginate(10);
     }
 
     /**
