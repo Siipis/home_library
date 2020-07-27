@@ -1,0 +1,154 @@
+{% block search_form %}
+    <b-form inline @submit="fetchBooks" v-on:submit.prevent>
+        <b-form-group>
+            <b-form-input trim
+                          v-model="search"
+                          placeholder="{{ 'library.search'|trans }}"
+                          v-on:scan="handleScan"
+                          :disabled="searching"
+                          ref="search"
+            >
+            </b-form-input>
+            <b-button variant="primary" type="submit" :disabled="searching">
+                <b-icon icon="search" v-if="!searching"></b-icon>
+                <b-spinner small v-if="searching"></b-spinner>
+                {{ 'fields.search'|trans }}
+            </b-button>
+        </b-form-group>
+    </b-form>
+
+    <b-row class="mt-3">
+        <b-col>
+            <search-results :items="searchResults"></search-results>
+        </b-col>
+
+        <b-col>
+            <b-card :img-src="cover" img-bottom>
+                {% include 'templates.blocks.book_form' %}
+            </b-card>
+        </b-col>
+    </b-row>
+{% endblock %}
+
+{% block search_form_scripts %}
+    <script type="text/javascript">
+        window.Mixin.add('search', {
+            data: {
+                searching: false,
+                search: '',
+                searchResults: [],
+                books: {{ library.books|vue }},
+                cover: '',
+                other_isbn: [],
+                images: [],
+            },
+
+            methods: {
+                handleScan: function (value) {
+                    this.search = value;
+
+                    this.fetchBooks();
+                },
+
+                fetchBooks: function () {
+                    if (this.search.length === 0) {
+                        this.searchResults = [];
+                        return;
+                    }
+
+                    this.searching = true;
+
+                    axios.post('{{ route('library.search', library.slug) }}', {
+                        search: this.search
+                    }).then(({ data }) => {
+                        this.error = {};
+                        this.searchResults = data;
+
+                        if (data.length > 0) {
+                            this.setBook(data[0]);
+                        }
+                    }).catch(({ response }) => {
+                        this.error = response;
+                        this.searchResults = [];
+                    }).then(() => {
+                        this.searching = false;
+                    });
+                },
+
+                setBook: function (book) {
+                    book.cover = book.images.length > 0 ? book.images[0] : '';
+                    book.local_id = null;
+
+                    this.images = book.images;
+                    this.other_isbn = book.other_isbn;
+
+                    this.fillForm('book_form', book);
+                    this.loadCover(book);
+                },
+
+                loadCover: function (book) {
+                    if (book.cover.length > 0) {
+                        this.cover = book.cover;
+                        return;
+                    }
+
+                    this.cover = '';
+
+                    axios.post('{{ route('library.cover', library.slug) }}', {
+                        title: book.title,
+                        isbn: book.isbn,
+                    }).then(({ data }) => {
+                        this.error = {};
+                        this.cover = data;
+                    }).catch(({ response }) => {
+                        this.error = response;
+                    });
+                },
+
+                loadIsbn: function (isbn) {
+                    if (isbn.length === 0) return;
+
+                    const icon = $(this.$refs.loadIsbn.querySelector('.b-icon'));
+
+                    icon.addClass('b-icon-animation-spin');
+
+                    axios.post('{{ route('library.details', library.slug) }}', {
+                        isbn: isbn
+                    }).then(({ data }) => {
+                        this.setBook(data);
+                    }).catch(({ response }) => {
+                        this.error = response;
+                    }).then(() => {
+                        icon.removeClass('b-icon-animation-spin');
+                    });
+                },
+            },
+
+            created() {
+                this.$on('select_book', this.setBook);
+            },
+
+            mounted() {
+                const vue = this;
+
+                vue.$refs.search.focus();
+
+                $(vue.$refs.loadIsbn).click(function (e) {
+                    e.preventDefault();
+
+                    vue.loadIsbn($('#book_form_isbn').val());
+                });
+
+                $('#book_form_cover').on('change', function () {
+                    const book = {
+                        title: $('#book_form_title').val(),
+                        isbn: $('#book_form_isbn').val(),
+                        cover: $(this).val(),
+                    };
+
+                    vue.loadCover(book);
+                });
+            },
+        })
+    </script>
+{% endblock %}
