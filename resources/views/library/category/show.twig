@@ -1,11 +1,12 @@
 {% extends 'user'|layout %}
+{% use 'templates.blocks.search_form' %}
 
 {% set page_title = 'category.type'|trans_choice(1) ~ ': ' ~ category.name %}
 
 {% block head %}{% endblock %}
 
 {% block content %}
-    <h3>
+    <h3 class="mb-3">
         <b-icon icon="circle-fill" style="color: {{ category.color }}"></b-icon>
         {{ page_title }}
 
@@ -23,7 +24,9 @@
         {% endif %}
     </h3>
 
-    Hello world.
+    {{ block('search_form') }}
 {% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+    {{ block('search_form_scripts') }}
+{% endblock %}

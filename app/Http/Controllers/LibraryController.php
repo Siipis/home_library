@@ -8,12 +8,26 @@ use App\Http\Forms\BookForm;
 use App\Library;
 use Exception;
 use Gate;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LibraryController extends Controller
 {
+    /**
+     * @param Library $library
+     * @return \Symfony\Component\Form\Form
+     */
+    public static function getStoreForm(Library $library)
+    {
+        $bookForm = new BookForm();
+
+        return $bookForm->make([
+            'action' => route('library.books.store', [
+                'library' => $library
+            ])
+        ]);
+    }
+
     /**
      * @param Library $library
      * @return mixed
@@ -26,11 +40,7 @@ class LibraryController extends Controller
 
         return view('library.index', [
             'library' => $library,
-            'book_form' => $bookForm->make([
-                'action' => route('library.books.store', [
-                    'library' => $library
-                ])
-            ]),
+            'book_form' => self::getStoreForm($library),
         ]);
     }
 

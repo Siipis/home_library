@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Library;
 
 use App\Category;
+use App\Http\Controllers\LibraryController;
 use App\Http\Forms\CategoryForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
@@ -77,7 +78,11 @@ class CategoryController extends Controller
      */
     public function show(Library $library, Category $category)
     {
-        return view('library.category.show', compact(['library', 'category']));
+        return view('library.category.show', [
+            'library' => $library,
+            'category' => $category,
+            'book_form' => LibraryController::getStoreForm($library),
+        ]);
     }
 
     /**

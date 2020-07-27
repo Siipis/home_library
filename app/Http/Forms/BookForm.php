@@ -22,6 +22,9 @@ class BookForm extends Form
             'choice_label' => 'name',
             'required' => false,
 
+            'data' => \Request::route()->hasParameter('category') ?
+                \Request::route()->parameter('category') : null,
+
             'rules' => 'exists:categories',
         ]);
         $this->add('local_id', TextType::class, [
