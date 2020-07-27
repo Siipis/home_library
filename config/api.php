@@ -23,9 +23,9 @@ return [
         'timeout' => 60, // seconds
 
         'providers' => [
+            \App\Http\Api\Providers\Covers\FinnaCoverProvider::class,
             \App\Http\Api\Providers\Covers\OpenLibraryCoverProvider::class,
             \App\Http\Api\Providers\Covers\GoodreadsCoverProvider::class,
-            \App\Http\Api\Providers\Covers\FinnaCoverProvider::class,
         ],
 
         /**

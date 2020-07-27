@@ -14,10 +14,16 @@ abstract class ApiProvider
     protected $client;
 
     /**
-     * Overriding this value disables all caching.
+     * Setting this to false disables all caching.
      * @var bool
      */
-    protected $cache = true;
+    protected $cache = false;
+
+    /**
+     * Setting this to true ignores all responses from the provider.
+     * @var bool
+     */
+    protected $disabled = false;
 
     /**
      * ApiProvider constructor.
@@ -27,6 +33,8 @@ abstract class ApiProvider
         $this->client = new Client([
             'timeout' => $this->getTimeout(),
         ]);
+
+        $this->cache = \Env::production();
     }
 
     /**
@@ -37,7 +45,7 @@ abstract class ApiProvider
      */
     protected function fetch(array $options = [])
     {
-        if (!$this->getUrl($options)) return false;
+        if (!$this->getUrl($options) || $this->disabled) return false;
 
         return $this->request($this->getUrl($options));
     }
@@ -49,6 +57,8 @@ abstract class ApiProvider
      */
     protected function request(string $url)
     {
+        if ($this->disabled) return false;
+
         if ($this->hasCache() && Cache::has($url)) {
             return Cache::get($url);
         }
@@ -110,8 +120,21 @@ abstract class ApiProvider
      */
     private function xmlToArray($xml, array $array = [])
     {
-        foreach ((array)$xml as $key => $value) {
-            $array[$key] = (is_object($value) || is_array($value)) ? $this->xmlToArray($value) : $value;
+        foreach ((array) $xml as $key => $value) {
+            if (is_iterable($value)) {
+                if ($value instanceof \SimpleXMLElement) {
+                    if (count($value) === 0) {
+                        $array[$key] = trim((string) $value);
+                        continue;
+                    }
+                }
+
+                $array[$key] = $this->xmlToArray($value);
+                continue;
+            }
+
+
+            $array[$key] = $value;
         }
 
         return $array;

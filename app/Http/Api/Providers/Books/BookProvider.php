@@ -33,36 +33,35 @@ abstract class BookProvider extends ApiProvider
      */
     public function books(array $options = [])
     {
-        $records = $this->fetch($options);
-
         $books = collect();
 
-        foreach ($records as $record) {
-            $book = new Book();
+        if ($records = $this->fetch($options)) {
+            foreach ($records as $record) {
+                $book = new Book();
 
-            if (is_null($this->getTitle($record))) {
-                continue;
+                if (is_null($this->getTitle($record))) {
+                    continue;
+                }
+
+                $book->title = $this->getTitle($record);
+                $book->series = $this->getSeries($record);
+                $book->authors = $this->getAuthors($record);
+                $book->publisher = $this->getPublisher($record);
+                $book->description = $this->getDescription($record);
+                $book->year = $this->getYear($record);
+                $book->language = $this->getLanguage($record);
+                $book->keywords = $this->getKeywords($record);
+                $book->isbn = $this->getIsbn($record);
+                $book->other_isbn = $this->getOtherIsbn($record);
+                $book->images = $this->getImages($record);
+                $book->providers = array([
+                    'class' => class_basename($this),
+                    'id' => $this->getProviderId($record),
+                    'page' => $this->getProviderPage($record),
+                ]);
+
+                $books->add($book);
             }
-
-            $book->title = $this->getTitle($record);
-            $book->series = $this->getSeries($record);
-            $book->authors = $this->getAuthors($record);
-            $book->publisher = $this->getPublisher($record);
-            $book->description = $this->getDescription($record);
-            $book->year = $this->getYear($record);
-            $book->isbn = $this->getIsbn($record);
-            $book->language = $this->getLanguage($record);
-            $book->keywords = $this->getKeywords($record);
-            $book->images = $this->getImages($record);
-            $book->providers = collect();
-
-            $book->providers->push([
-                'class' => class_basename($this),
-                'id' => $this->getProviderId($record),
-                'page' => $this->getProviderPage($record),
-            ]);
-
-            $books->add($book);
         }
 
         return $books;
@@ -125,6 +124,12 @@ abstract class BookProvider extends ApiProvider
      * @return string|null
      */
     public abstract function getIsbn($record);
+
+    /**
+     * @param $record
+     * @return array
+     */
+    public abstract function getOtherIsbn($record);
 
     /**
      * @param $record

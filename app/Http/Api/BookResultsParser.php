@@ -31,7 +31,7 @@ class BookResultsParser
      * @param Collection $result
      * @return array
      */
-    public function parse(Collection $result)
+    public function parseSearchResults(Collection $result)
     {
         $books = collect();
         $result = $this->spreadResults($result);
@@ -53,6 +53,24 @@ class BookResultsParser
     }
 
     /**
+     * @param Collection $result
+     * @return array
+     */
+    public function parseDetailResults(Collection $result)
+    {
+        $book = new Book();
+        $result = $this->spreadResults($result);
+
+        while ($result->isNotEmpty()) {
+            $otherBook = $result->shift();
+
+            $book = $this->mergeRecords($book, $otherBook);
+        }
+
+        return $book->toArray();
+    }
+
+    /**
      * @param Collection $results
      * @return Collection
      */
@@ -60,7 +78,7 @@ class BookResultsParser
     {
         $books = collect();
 
-        while ($results->count() > 0) {
+        while ($results->isNotEmpty()) {
             foreach ($results as $provider => $result) {
                 if ($result->isEmpty()) {
                     $results->forget($provider);
@@ -106,26 +124,62 @@ class BookResultsParser
      */
     private function mergeRecords(Book $book1, Book $book2)
     {
-        foreach ($book1->getAttributes() as $attribute => $value) {
-            $newValue = $value;
-            $otherValue = $book2->getAttribute($attribute);
+        if (empty($book1->getAttributes())) {
+            return $book2;
+        }
 
-            if (empty($value)) {
-                $newValue = $otherValue;
-            } else if (is_array($value)) {
-                $newValue = $this->mergeArrays($value, $otherValue);
-            } else if (is_string($value)) {
-                if ($this->compare($value, $newValue) >= $this->similarityThreshold) {
-                    $newValue = strlen($value) > strlen($otherValue) ? $value : $otherValue;
-                } else {
-                    $newValue = $value . '; ' . $otherValue;
-                }
-            }
+        if (empty($book2->getAttributes())) {
+            return $book1;
+        }
 
-            $book1->setAttribute($attribute, $newValue);
+        $attributes = array_merge($book1->getAttributes(), $book2->getAttributes());
+
+        foreach (array_keys($attributes) as $attribute) {
+            $book1->setAttribute($attribute, $this->getCanonicalValue(
+                $book1->getAttribute($attribute),
+                $book2->getAttribute($attribute),
+                $attribute
+            ));
         }
 
         return $book1;
+    }
+
+    /**
+     * @param $v1
+     * @param $v2
+     * @param string $attribute
+     * @return mixed
+     */
+    private function getCanonicalValue($v1, $v2, string $attribute)
+    {
+        if (empty($v1)) {
+            return $v2;
+        }
+
+        if (empty($v2)) {
+            return $v1;
+        }
+
+        if (is_array($v1) || is_array($v2)) {
+            if ($attribute === 'providers' || $attribute == 'images') {
+                return array_merge(array_values($v1), array_values($v2));
+            }
+
+            return $this->mergeArrays((array)$v1, (array)$v2);
+        }
+
+        if (is_numeric($v1) || is_numeric($v2)) {
+            return $v1 < $v2 ? $v2 : $v1;
+        }
+
+        if (is_string($v1)) {
+            if ($this->compare($v1, $v2) >= $this->similarityThreshold) {
+                return strlen($v1) > strlen($v2) ? $v1 : $v2;
+            }
+        }
+
+        return $v1 . '; ' . $v2;
     }
 
     /**
@@ -135,7 +189,11 @@ class BookResultsParser
      */
     private function mergeArrays(array $array1, array $array2)
     {
-        return array_values(array_unique(array_merge($array1, $array2)));
+        $merged = array_merge($array1, $array2);
+
+        if (empty($merged[0])) return [];
+
+        return array_values(array_unique($merged));
     }
 
     /**
@@ -157,6 +215,18 @@ class BookResultsParser
 
         if (is_array($s2)) {
             $s2 = implode(';', $s2);
+        }
+
+        $length1 = strlen($s1);
+        $length2 = strlen($s2);
+
+        // Avoid running algorithmic comparisons on large strings.
+        if ($length1 > 40 || $length2 > 40) {
+            return $length1 / $length2;
+        }
+
+        if (\Str::startsWith($s1, $s2) || \Str::startsWith($s2, $s1)) {
+            return 1;
         }
 
         $score = levenshtein($s1, $s2, 1, 2, 1);

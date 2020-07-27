@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Library;
 
+use App\Category;
 use Gate;
 use App\Book;
 use App\Http\Api\Search;
@@ -32,13 +33,11 @@ class BookController extends Controller
     public function cover(Request $request)
     {
         $book = new Book();
-        $book->title = $request->input('title');
         $book->isbn = $request->input('isbn');
-        $book->original_data = $request->input('original_data');
 
         Gate::authorize('update', $book);
 
-        return response()->json(Search::cover($book));
+        return response()->json(Search::covers($book));
     }
 
     /**
@@ -71,6 +70,12 @@ class BookController extends Controller
         $book = $this->form->get($request);
 
         if ($book instanceof Book) {
+            if ($request->has('category_id')) {
+                $category = Category::findOrFail($request->input('category_id'));
+
+                $book->categories()->attach($category);
+            }
+
             $book->library()->associate($library);
             $book->save();
         }

@@ -15,7 +15,8 @@
         "rcrowe/twigbridge": "^0.12.1",
         "ext-json": "*",
         "ext-gd": "*",
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+        "ext-xml": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.7",

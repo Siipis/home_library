@@ -6,140 +6,192 @@ namespace App\Http\Api\Providers\Books;
 
 class GoodreadsBookProvider extends BookProvider
 {
-    /**
-     * @inheritDoc
-     */
     protected function parseResponse($response)
     {
-        $results = $response['search']['results'];
-
-        if (!isset($results)) {
-            return [];
+        if (isset($response['book'])) {
+            return array($response['book']);
         }
 
-        if (array_key_first($results) == 0 && !empty($results)) {
-            return array_values($results['work']);
+        if (isset($response['search']['results'])) {
+            $results = $response['search']['results'];
+
+            if (!isset($results)) {
+                return [];
+            }
+
+            if (array_key_first($results) == 0 && !empty($results)) {
+                return array_values($results['work']);
+            }
+
+            return $results;
         }
 
-        return $results;
+        return "Unknown response format.";
     }
 
-    /**
-     * @inheritDoc
-     */
     protected function getUrl(array $options = [])
     {
+        if (isset($options['isbn'])) {
+            return "https://www.goodreads.com/book/isbn/" . urlencode($options['isbn']) . "?" . implode("&", [
+                    "key=" . config('api.goodreads.key'),
+                ]);
+        }
+
         return "https://www.goodreads.com/search/index.xml?" . implode("&", [
                 "key=" . config('api.goodreads.key'),
                 "q=" . urlencode($options['search']),
             ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getTitle($record)
     {
-        if (!isset($record['best_book'])) return null;
+        if (isset($record['title'])) {
+            return $record['title'];
+        }
 
-        return $record['best_book']['title'] ?? null;
+        if (isset($record['best_book'])) {
+            return $record['best_book']['title'] ?? null;
+        }
+
+        return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getSeries($record)
     {
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getAuthors($record)
     {
-        if (!isset($record['best_book'])) return [];
+        if (isset($record['authors'])) {
+            $authors = [];
 
-        return [
-            $record['best_book']['author']['name']
-        ];
+            foreach ($record['authors'] as $author) {
+                if (isset($author['name'])) {
+                    array_push($authors, $author['name']);
+                    continue;
+                }
+
+                if (is_array($author)) {
+                    foreach ($author as $coauthor) {
+                        if (isset($coauthor['name'])) {
+                            array_push($authors, $coauthor['name']);
+                        }
+                    }
+                }
+            }
+
+            return array_values(array_unique($authors));
+        }
+
+        if (isset($record['best_book']['author']['name'])) {
+            return array($record['best_book']['author']['name']);
+        }
+
+        return [];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getKeywords($record)
     {
         return [];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getPublisher($record)
     {
+        if (isset($record['publisher'])) {
+            return $record['publisher'];
+        }
+
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getYear($record)
     {
-        if (!isset($record['original_publication_year'][0])) return null;
+        if (isset($record['publication_year'])) {
+            return intval($record['publication_year']);
+        }
 
-        return intval($record['original_publication_year'][0]);
+        if (isset($record['original_publication_year'])) {
+            return intval($record['original_publication_year']);
+        }
+
+        return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getIsbn($record)
     {
+        if (isset($record['isbn13'])) {
+            return $record['isbn13'];
+        }
+
+        if (isset($record['isbn'])) {
+            return $record['isbn'];
+        }
+
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
+    public function getOtherIsbn($record)
+    {
+        $otherIsbn = [];
+
+        if (isset($record['isbn13'])) {
+            array_push($otherIsbn, $record['isbn13']);
+        }
+
+        if (isset($record['isbn'])) {
+            array_push($otherIsbn, $record['isbn']);
+        }
+
+        return $otherIsbn;
+    }
+
     public function getDescription($record)
     {
+        if (isset($record['description'])) {
+            return $record['description'];
+        }
+
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getLanguage($record)
     {
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getProviderId($record)
     {
+        if (!is_array($record['id'])) {
+            return $record['id'];
+        }
+
         return $record['id'][0];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getImages($record)
     {
-        if (!isset($record['best_book']['image_url'])) return [];
+        if (isset($record['image_url'])) {
+            return array($record['image_url']);
+        }
 
-        return [
-            $record['best_book']['image_url']
-        ];
+        if (isset($record['best_book']['image_url'])) {
+            return array($record['best_book']['image_url']);
+        }
+
+        return [];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getProviderPage($record)
     {
+        if (isset($record['url'])) {
+            return $record['url'];
+        }
+
+        if (isset($record['link'])) {
+            return $record['link'];
+        }
+
         return null;
     }
 }

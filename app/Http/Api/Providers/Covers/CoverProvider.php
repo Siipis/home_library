@@ -33,9 +33,7 @@ abstract class CoverProvider extends ApiProvider
     public function cover(Book $book)
     {
         $result = $this->fetch([
-            "title" => $book->title,
             "isbn" => $book->isbn,
-            "original_data" => $book->original_data,
         ]);
 
         return $result ?? false;
@@ -65,8 +63,10 @@ abstract class CoverProvider extends ApiProvider
      */
     protected function fetch(array $options = [])
     {
-        foreach (['isbn', 'original_data', 'title'] as $field) {
-            if ($response = $this->attemptOption($field, $options)) {
+        foreach ($options as $field => $value) {
+            if (empty($value)) return false;
+            
+            if ($response = $this->attemptOption($field, $value)) {
                 return $response;
             }
         }
@@ -76,15 +76,15 @@ abstract class CoverProvider extends ApiProvider
 
     /**
      * @param string $option
-     * @param array $options
+     * @param string $value
      * @return bool
      */
-    private function attemptOption(string $option, array $options)
+    private function attemptOption(string $option, string $value)
     {
-        if (is_null($options[$option])) return false;
+        if (is_null($value)) return false;
 
         $url = $this->getUrl([
-            $option => $options[$option]
+            $option => $value
         ]);
 
         if (!$url) return false;
@@ -103,10 +103,6 @@ abstract class CoverProvider extends ApiProvider
     protected function isValidImage($response)
     {
         if (empty($response)) return false;
-
-        if (is_array($response)) {
-            dd($response);
-        }
 
         $info = getimagesizefromstring($response);
 
@@ -134,16 +130,4 @@ abstract class CoverProvider extends ApiProvider
      * @return string|bool
      */
     protected abstract function getIsbnUrl(string $isbn);
-
-    /**
-     * @param array $response
-     * @return string|bool
-     */
-    protected abstract function getOriginalDataUrl(array $response);
-
-    /**
-     * @param string $title
-     * @return string|bool
-     */
-    protected abstract function getTitleUrl(string $title);
 }

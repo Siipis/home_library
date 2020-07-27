@@ -8,11 +8,25 @@ class FinnaBookProvider extends BookProvider
 {
     protected function getUrl(array $options = [])
     {
-        return "https://api.finna.fi/api/v1/search?" . implode("&", [
-                "limit=" . config('api.books.limit'),
-                "sort=relevance",
+        $lookFor = [];
+
+        if (isset($options['isbn'])) {
+            $lookFor = [
+                "lookfor=" . urlencode("\"$options[isbn]\""),
+                "type=isbn",
+                "join=AND",
+            ];
+        } else if (isset($options['search'])) {
+            $lookFor = [
                 "lookfor=" . urlencode("\"$options[search]\""),
                 "join=AND",
+            ];
+        }
+
+        return "https://api.finna.fi/api/v1/search?" . implode("&", array_merge([
+                "limit=" . config('api.books.limit'),
+                "sort=relevance",
+            ], $lookFor, [
                 "filter[]=format%3A%221%2FBook%2FBook%2F%22",
                 "field[]=id",
                 "field[]=title",
@@ -24,12 +38,13 @@ class FinnaBookProvider extends BookProvider
                 "field[]=publishers",
                 "field[]=year",
                 "field[]=cleanIsbn",
+                "field[]=isbns",
                 "field[]=languages",
                 "field[]=summary",
                 "field[]=images",
                 "field[]=recordPage",
                 "field[]=urls",
-            ]);
+            ]));
     }
 
     protected function parseResponse($response)
@@ -98,6 +113,11 @@ class FinnaBookProvider extends BookProvider
     public function getIsbn($record)
     {
         return $record['cleanIsbn'] ?? null;
+    }
+
+    public function getOtherIsbn($record)
+    {
+        return $record['isbns'] ?? [];
     }
 
     public function getDescription($record)

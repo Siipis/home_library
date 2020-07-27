@@ -25,11 +25,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', 'LibraryController@index')->name('index');
 
         Route::post('search', 'LibraryController@search')->name('search');
+        Route::post('details', 'LibraryController@details')->name('details');
+        Route::post('cover', 'LibraryController@cover')->name('cover');
 
         Route::resource('books', 'Library\BookController', [
             'except' => 'index',
         ]);
-        Route::post('books/cover', 'Library\BookController@cover')->name('books.cover');
 
         Route::resource('categories', 'Library\CategoryController');
     });

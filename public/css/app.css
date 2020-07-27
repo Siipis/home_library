@@ -14117,6 +14117,10 @@ p:last-child {
   margin-bottom: 0;
 }
 
+.text-transparent {
+  color: transparent;
+}
+
 .category {
   display: inline-block;
   color: #fff;

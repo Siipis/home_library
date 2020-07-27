@@ -4,6 +4,7 @@ import { LangPlugin } from "./localization";
 import AjaxError from "./components/AjaxError";
 import DeleteButton from "./components/DeleteButton";
 import Category from "./components/Category";
+import SearchResults from "./components/SearchResults";
 
 /**
  * Import Vue and configure it.
@@ -21,6 +22,7 @@ window.Vue.use(LangPlugin);
 window.Vue.component('ajax-error', AjaxError);
 window.Vue.component('delete-button', DeleteButton);
 window.Vue.component('category', Category);
+window.Vue.component('search-results', SearchResults);
 
 window.app = new window.Vue({
     'el': '#app',
@@ -70,5 +72,5 @@ window.onScan = require('onscan.js');
 
 window.onScan.attachTo(document, {
     suffixKeyCodes: [13],
-    reactToPaste: true,
+    reactToPaste: false,
 });
