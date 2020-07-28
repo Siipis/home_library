@@ -38,7 +38,6 @@ class LibraryController extends Controller
         Gate::authorize('view', $library);
 
         return view('library.index', [
-            'library' => $library,
             'book_form' => self::getStoreForm($library),
         ]);
     }

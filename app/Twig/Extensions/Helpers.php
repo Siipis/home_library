@@ -10,11 +10,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Twig\Extension\AbstractExtension;
-use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class Helpers extends AbstractExtension implements GlobalsInterface
+class Helpers extends AbstractExtension
 {
     public function getFunctions()
     {
@@ -81,17 +80,6 @@ class Helpers extends AbstractExtension implements GlobalsInterface
                     "or " . EloquentCollection::class . "." .
                     get_class($model) . " given.");
             }, ['is_safe' => ['html']]),
-        ];
-    }
-
-    public function getGlobals()
-    {
-        return [
-            'app_name' => config('app.name'),
-            'app_locale' => str_replace('_', '-', config('app.locale')),
-            'app_timezone' => config('app.timezone'),
-
-            'auth' => \Auth::user(),
         ];
     }
 

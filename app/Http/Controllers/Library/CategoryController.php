@@ -29,7 +29,7 @@ class CategoryController extends Controller
      */
     public function index(Library $library)
     {
-        return view('library.category.index', compact('library'));
+        return view('library.category.index');
     }
 
     /**
@@ -41,7 +41,6 @@ class CategoryController extends Controller
     public function create(Library $library)
     {
         return view('library.category.create', [
-            'library' => $library,
             'form' => $this->form->make([
                 'action' => route('library.categories.store', $library)
             ])
@@ -79,8 +78,6 @@ class CategoryController extends Controller
     public function show(Library $library, Category $category)
     {
         return view('library.category.show', [
-            'library' => $library,
-            'category' => $category,
             'book_form' => LibraryController::getStoreForm($library),
         ]);
     }
@@ -95,8 +92,6 @@ class CategoryController extends Controller
     public function edit(Library $library, Category $category)
     {
         return view('library.category.edit', [
-            'library' => $library,
-            'category' => $category,
             'form' => $this->form->make([
                 'action' => route('library.categories.update', [$library, $category]),
                 'method' => 'put',

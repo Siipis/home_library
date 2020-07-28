@@ -135,6 +135,7 @@ return [
              * App Specific Extensions
              */
             \App\Twig\Extensions\Helpers::class,
+            \App\Twig\Extensions\GlobalVariables::class,
         ],
 
         /*
