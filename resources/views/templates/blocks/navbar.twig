@@ -1,13 +1,31 @@
 {% block navbar %}
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <b-navbar type="dark" variant="dark" class="mb-4">
+        <b-navbar-brand href="{{ route('index') }}">{{ app_name }}</b-navbar-brand>
 
-        <div class="collapse navbar-collapse" id="mainMenu">
-            <ul class="navbar-nav mr-auto">
-                {% block auto %}{% endblock %}
-            </ul>
-        </div>
-    </nav>
+        <b-collapse id="mainMenu" is-nav>
+            <b-navbar-nav class="mr-auto">
+                {% block left %}{% endblock %}
+            </b-navbar-nav>
+
+            <b-navbar-nav class="ml-auto">
+                {% block right %}{% endblock %}
+            </b-navbar-nav>
+
+            {% if auth is not empty %}
+                <b-navbar-nav right>
+                    <b-nav-item-dropdown right>
+                        <template v-slot:button-content>
+                            {{ auth.name }}
+                        </template>
+                        <b-dropdown-item @click="$root.$refs.logout.submit()">
+                            <form method="post" action="{{ route('logout') }}" ref="logout">
+                                {% token %}
+                            </form>
+                            {{ 'auth.logout'|trans }}
+                        </b-dropdown-item>
+                    </b-nav-item-dropdown>
+                </b-navbar-nav>
+            {% endif %}
+        </b-collapse>
+    </b-navbar>
 {% endblock %}

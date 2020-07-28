@@ -6,16 +6,10 @@
 
 {% block body %}
     {% embed 'navbar'|block %}
-        {% block auto %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('index') }}">Etusivu</a>
-            </li>
-
-            {% if can('access-backend') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.index') }}">Hallintapaneeli</a>
-                </li>
-            {% endif %}
+        {% block left %}
+            <b-nav-item href="{{ route('admin.index') }}">
+                {{ 'library.admin_panel'|trans }}
+            </b-nav-item>
         {% endblock %}
     {% endembed %}
 

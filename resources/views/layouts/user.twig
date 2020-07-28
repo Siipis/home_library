@@ -6,21 +6,34 @@
 
 {% block body %}
     {% embed 'navbar'|block %}
-        {% block auto %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('index') }}">Etusivu</a>
-            </li>
+        {% block left %}
+            {% if library is defined %}
+                <b-nav-item href="{{ route('library.index', library.slug) }}">
+                    {{ library.name }}
+                </b-nav-item>
+                <b-nav-item href="{{ route('library.categories.index', library.slug) }}">
+                    {{ 'category.type'|trans_choice(2) }}
+                </b-nav-item>
+                {% for category in library.categories %}
+                    <b-nav-item href="{{ route('library.categories.show', [library.slug, category.id]) }}">
+                        <b-icon icon="circle-fill" style="color: {{ category.color }}"></b-icon>
+                        {{ category.name }}
+                    </b-nav-item>
+                {% endfor %}
+            {% endif %}
+        {% endblock %}
 
-            {% if can('access-backend') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.index') }}">Hallintapaneeli</a>
-                </li>
+        {% block right %}
+            {% if library is defined %}
+                {% if can('update', library) %}
+                    <b-nav-item href="{{ route('library.books.create', library.slug) }}">
+                        {{ 'fields.add'|trans ~ ' ' ~ 'library.book'|trans_choice(1)|lower }}
+                    </b-nav-item>
+                {% endif %}
             {% endif %}
 
-            {% if library is defined %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('library.categories.index', library.slug) }}">Kategoriat</a>
-                </li>
+            {% if can('access-backend') %}
+                <b-nav-item href="{{ route('admin.index') }}">{{ 'library.admin_panel'|trans }}</b-nav-item>
             {% endif %}
         {% endblock %}
     {% endembed %}

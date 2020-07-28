@@ -8,6 +8,7 @@ return [
     |
     */
 
+    'add'               => 'Lisää',
     'create'            => 'Luo uusi',
     'edit'              => 'Muokkaa',
     'save'              => 'Tallenna',
