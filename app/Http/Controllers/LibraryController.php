@@ -8,7 +8,7 @@ use App\Http\Forms\BookForm;
 use App\Library;
 use Exception;
 use Gate;
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -44,7 +44,8 @@ class LibraryController extends Controller
 
     /**
      * @param Request $request
-     * @return Paginator
+     * @return mixed
+     * @throws AuthorizationException
      */
     public function books(Request $request)
     {
@@ -61,7 +62,15 @@ class LibraryController extends Controller
            // $category = $library->categories()->findOrFail($request->get('category'));
         }
 
-        return $library->books()->simplePaginate(10);
+        $paginator = $library->books()->simplePaginate(10);
+
+        $paginator->getCollection()->transform(function (Book $book) {
+            $book->link = route('library.books.show', [$book->library, $book]);
+
+            return $book;
+        });
+
+        return $paginator;
     }
 
     /**

@@ -1,27 +1,6 @@
 {{ form_start(book_form) }}
 {% set f = book_form %}
 
-{{ form_row(f.category_id) }}
-
-<div class="row">
-    <div class="col-md-6">
-        {{ form_row(f.local_id) }}
-    </div>
-
-    <div class="col-md-6 d-flex">
-        {{ form_row(f.isbn, { 'attr': { 'list': 'other_isbn' } }) }}
-
-        <div class="form-group">
-            <label class="text-transparent">.</label>
-            <b-button variant="link" ref="loadIsbn">
-                <b-icon icon="arrow-repeat"></b-icon>
-            </b-button>
-        </div>
-
-        <b-form-datalist id="other_isbn" :options="other_isbn"></b-form-datalist>
-    </div>
-</div>
-
 {{ form_row(f.title) }}
 
 {{ form_row(f.authors) }}
@@ -40,11 +19,31 @@
     </div>
 </div>
 
+{{ form_row(f.cover, { 'attr': { 'list': 'images' }}) }}
+<b-form-datalist id="images" :options="images"></b-form-datalist>
+
+{{ form_row(f.category_id) }}
+
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(f.local_id) }}
+    </div>
+
+    <div class="col-md-6 d-flex justify-content-between align-content-stretch">
+        {{ form_row(f.isbn, { 'attr': { 'list': 'other_isbn' } }) }}
+
+        <div class="form-group align-self-end flex-grow-0">
+            <b-button variant="link" ref="loadIsbn" class="pr-0">
+                <b-icon icon="arrow-repeat"></b-icon>
+            </b-button>
+        </div>
+
+        <b-form-datalist id="other_isbn" :options="other_isbn"></b-form-datalist>
+    </div>
+</div>
+
 {{ form_row(f.description) }}
 
 {{ form_row(f.keywords) }}
-
-{{ form_row(f.cover, { 'attr': { 'list': 'images' }}) }}
-<b-form-datalist id="images" :options="images"></b-form-datalist>
 
 {{ form_end(book_form) }}

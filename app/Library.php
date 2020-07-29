@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Library extends Model
 {
+    protected $hidden = [
+        'id', 'created_at', 'updated_at',
+    ];
+
     /**
      * @return BelongsToMany
      */

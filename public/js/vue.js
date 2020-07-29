@@ -76,6 +76,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Books",
   props: ['library', 'category'],
@@ -1465,15 +1471,35 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "books my-3 d-flex flex-row flex-wrap" },
+    { staticClass: "books my-3" },
     _vm._l(_vm.books, function(book) {
       return _c(
         "b-card",
         {
-          staticClass: "text-center m-1 col-md-3 col-sm-6",
-          attrs: { title: book.title, "img-src": book.cover, "img-top": "" }
+          key: book.id,
+          staticClass: "text-center col-3 d-inline-block",
+          attrs: { "img-src": book.cover, "img-top": "" }
         },
-        [_vm._v("\n        " + _vm._s(book.authors) + "\n    ")]
+        [
+          _c(
+            "b-card-body",
+            [
+              _c("b-card-title", [
+                _c("a", { attrs: { href: book.link } }, [
+                  _vm._v(_vm._s(book.title))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("b-card-sub-title", [
+                _vm._v(
+                  "\n                " + _vm._s(book.authors) + "\n            "
+                )
+              ])
+            ],
+            1
+          )
+        ],
+        1
       )
     }),
     1
@@ -2327,7 +2353,7 @@ module.exports = {"register":"Rekisteröidy","login":"Kirjaudu sisään","logout
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete":"Poista","submit":"Tallenna","cancel":"Peruuta","are_you_sure":"Haluatko varmasti jatkaa?","search":"Hae","authors":"Tekijät","name":"Nimi","category_id":"Kategoria","color":"Väri","cover":"Kansikuva","description":"Kuvaus","email":"Sähköposti","isbn":"ISBN","language":"Kieli","local_id":"Paikallinen tunniste","keywords":"Avainsanat","password":"Salasana","password_confirmation":"Vahvista salasana","publisher":"Julkaisija","series":"Sarja","slug":"URL-pääte","title":"Nimi","year":"Vuosi"};
+module.exports = {"add":"Lisää","create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete":"Poista","submit":"Tallenna","cancel":"Peruuta","are_you_sure":"Haluatko varmasti jatkaa?","search":"Hae","authors":"Tekijät","name":"Nimi","category_id":"Kategoria","color":"Väri","cover":"Kansikuva","description":"Kuvaus","email":"Sähköposti","isbn":"ISBN","language":"Kieli","local_id":"Paikallinen tunniste","keywords":"Avainsanat","password":"Salasana","password_confirmation":"Vahvista salasana","publisher":"Julkaisija","series":"Sarja","slug":"URL-pääte","title":"Nimi","year":"Vuosi"};
 
 /***/ }),
 
@@ -2338,7 +2364,7 @@ module.exports = {"create":"Luo uusi","edit":"Muokkaa","save":"Tallenna","delete
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"collection":"Kokoelma|Kokoelmat","role":"Rooli","member":"Jäsen|Jäsenet","owner":"Hallinnoija","lender":"Lainaaja","add_members":"Lisää käyttäjiä","search":"Kirjoita hakusana"};
+module.exports = {"home":"Etusivu","admin_panel":"Hallintapaneeli","role":"Rooli","member":"Jäsen|Jäsenet","owner":"Hallinnoija","lender":"Lainaaja","add_members":"Lisää käyttäjiä","collection":"Kokoelma|Kokoelmat","book":"Kirja|Kirjat","search":"Kirjoita hakusana"};
 
 /***/ }),
 

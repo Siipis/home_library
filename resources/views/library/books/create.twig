@@ -1,0 +1,16 @@
+{% extends 'user'|layout %}
+{% use 'templates.blocks.search_form' %}
+
+{% set page_title = 'fields.add'|trans ~ ' ' ~ 'library.book'|trans_choice(1)|lower %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>{{ page_title }}</h3>
+
+    {{ block('search_form') }}
+{% endblock %}
+
+{% block scripts %}
+    {{ block('search_form_scripts') }}
+{% endblock %}

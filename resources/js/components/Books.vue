@@ -1,11 +1,17 @@
 <template>
-    <div class="books my-3 d-flex flex-row flex-wrap">
-        <b-card v-for="book in books"
-                class="text-center m-1 col-md-3 col-sm-6"
-                :title="book.title"
+    <div class="books my-3">
+        <b-card v-for="book in books" :key="book.id"
+                class="text-center col-3 d-inline-block"
                 :img-src="book.cover"
         img-top>
-            {{ book.authors }}
+            <b-card-body>
+                <b-card-title>
+                    <a :href="book.link">{{ book.title }}</a>
+                </b-card-title>
+                <b-card-sub-title>
+                    {{ book.authors }}
+                </b-card-sub-title>
+            </b-card-body>
         </b-card>
     </div>
 </template>

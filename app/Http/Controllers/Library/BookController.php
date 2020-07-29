@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Library;
 
-use App\Category;
-use Gate;
 use App\Book;
+use App\Category;
 use App\Http\Api\Search;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\LibraryController;
 use App\Http\Forms\BookForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
+use Gate;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
@@ -26,18 +27,17 @@ class BookController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
+     * @param Book $book
+     * @return mixed
      * @throws AuthorizationException
      */
-    public function cover(Request $request)
+    public function cover(Library $library, Book $book)
     {
-        $book = new Book();
-        $book->isbn = $request->input('isbn');
+        Gate::authorize('view', $book);
 
-        Gate::authorize('update', $book);
-
-        return response()->json(Search::covers($book));
+        return response()->file(\Storage::path($book::$coverPath . '/' . $book->id . '.png'), [
+            'Content-Type' => 'image/png'
+        ]);
     }
 
     /**
@@ -49,11 +49,7 @@ class BookController extends Controller
     public function create(Library $library)
     {
         return view('library.books.create', [
-            'form' => $this->form->make([
-                'action' => route('library.books.store', [
-                    'library' => $library
-                ])
-            ])
+            'book_form' => LibraryController::getStoreForm($library),
         ]);
     }
 
@@ -70,23 +66,11 @@ class BookController extends Controller
         $book = $this->form->get($request);
         $category = null;
 
-        if ($book instanceof Book) {
-            if ($request->has('book_form.category_id')) {
-                $category = Category::find($request->input('book_form.category_id'));
-                unset($book->category_id);
-            }
+        $library->books()->save($book);
 
-            $book->save();
-            $book->library()->associate($library);
+        $this->bindRelations($request, $book);
 
-            if ($category !== null) {
-                $book->categories()->attach($category);
-            }
-
-            $book->save();
-        }
-
-        return redirect()->route('library.index', $library->slug);
+        return redirect()->back();
     }
 
     /**
@@ -98,7 +82,7 @@ class BookController extends Controller
      */
     public function show(Library $library, Book $book)
     {
-        //
+        return view('library.books.show');
     }
 
     /**
@@ -110,7 +94,12 @@ class BookController extends Controller
      */
     public function edit(Library $library, Book $book)
     {
-        //
+        return view('library.books.edit', [
+            'book_form' => $this->form->make([
+                'method' => 'put',
+                'action' => route('library.books.update', [$library, $book])
+            ], $book)
+        ]);
     }
 
     /**
@@ -123,7 +112,12 @@ class BookController extends Controller
      */
     public function update(Request $request, Library $library, Book $book)
     {
-        //
+        $book = $this->form->get($request, $book);
+
+        $this->bindRelations($request, $book);
+        $book->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -136,5 +130,21 @@ class BookController extends Controller
     public function destroy(Library $library, Book $book)
     {
         //
+    }
+
+    /**
+     * @param Request $request
+     * @param Book $book
+     */
+    private function bindRelations(Request $request, Book $book)
+    {
+        $category_id = $request->input('book_form.category_id');
+
+        if ($category_id > 0) {
+            $category = Category::findOrFail($category_id);
+            unset($book->category_id);
+
+            $category->books()->save($book);
+        }
     }
 }

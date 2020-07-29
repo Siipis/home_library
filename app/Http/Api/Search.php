@@ -7,7 +7,6 @@ namespace App\Http\Api;
 use App\Book;
 use App\Http\Api\Providers\Books\BookProvider;
 use App\Http\Api\Providers\Covers\CoverProvider;
-use App\Http\Api\Providers\Details\DetailsProvider;
 use App\Library;
 use Exception;
 use Illuminate\Support\Collection;

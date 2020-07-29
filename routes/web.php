@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('books', 'Library\BookController', [
             'except' => 'index',
         ]);
+        Route::get('books/{book}/cover', 'Library\BookController@cover')->name('books.cover');
 
         Route::resource('categories', 'Library\CategoryController');
     });

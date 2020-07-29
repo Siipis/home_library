@@ -65,7 +65,7 @@ abstract class CoverProvider extends ApiProvider
     {
         foreach ($options as $field => $value) {
             if (empty($value)) return false;
-            
+
             if ($response = $this->attemptOption($field, $value)) {
                 return $response;
             }

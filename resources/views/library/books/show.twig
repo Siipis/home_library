@@ -1,0 +1,29 @@
+{% extends 'user'|layout %}
+
+{% set page_title = book.title %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <b-row>
+        <b-col class="col-auto">
+            <img src="{{ book.cover }}" alt="" />
+        </b-col>
+
+        <b-col class="col-auto">
+            <h3>
+                {{ book.title }}
+                {% if can('update', book) %}
+                    <b-button size="sm" href="{{ route('library.books.edit', [library.slug, book.id]) }}">
+                        <b-icon icon="pencil"></b-icon>
+                    </b-button>
+                {% endif %}
+            </h3>
+            <h5 class="text-muted">{{ book.authors }}</h5>
+
+            Hello world.
+        </b-col>
+    </b-row>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'user'|layout %}
+
+{% set page_title = book.title %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <h3>{{ book.title }}</h3>
+    <h5 class="text-muted">{{ book.authors }}</h5>
+
+    <b-row class="py-3">
+        <div class="col-md-6 col-auto">
+            {% include 'templates.blocks.book_form' %}
+        </div>
+
+        <div class="col-md-6 col-auto">
+            <img src="{{ book.cover }}" alt="">
+        </div>
+    </b-row>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

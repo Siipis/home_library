@@ -25,7 +25,7 @@ class CreateBooksTable extends Migration
             $table->string('language')->nullable();
             $table->text('keywords')->nullable();
             $table->string('isbn')->nullable();
-            $table->text('providers');
+            $table->text('providers')->nullable();
             $table->binary('cover');
 
             $table->unsignedBigInteger('library_id')->nullable();
