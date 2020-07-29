@@ -17,6 +17,7 @@
         "imagesloaded": "^4.1.4",
         "isotope-layout": "^3.0.6",
         "jquery": "^3.2",
+        "jquery-bridget": "^2.0.1",
         "lang.js": "^1.1.14",
         "laravel-localization-loader": "^1.0.5",
         "laravel-mix": "^5.0.1",
@@ -29,8 +30,8 @@
         "tinycolor2": "^1.4.1",
         "vue": "^2.5.17",
         "vue-images-loaded": "^1.1.2",
+        "vue-infinite-scroll": "^2.0.2",
         "vue-template-compiler": "^2.6.10",
-        "vueisotope": "^3.1.2",
-        "jquery-bridget": "^2.0.1"
+        "vueisotope": "^3.1.2"
     }
 }

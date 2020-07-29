@@ -1,6 +1,7 @@
 <template>
     <isotope :options="options" :list="allBooks" class="books my-3"
-             ref="grid" v-images-loaded:on.progress="layout">
+             ref="grid" v-images-loaded:on.progress="layout"
+             v-infinitescroll="loadBooks" infinite-scroll-disabled="loading">
         <div v-for="book in allBooks" :key="book.id" class="book col-3 p-1">
             <b-card class="book-card text-center"
                     :img-src="book.cover"
@@ -24,6 +25,7 @@
     // Load dependencies
     import isotope from 'vueisotope';
     import imagesLoaded from 'vue-images-loaded';
+    import infinitescroll from 'vue-infinite-scroll';
 
     export default {
         name: "Books",
@@ -36,6 +38,7 @@
 
         data() {
             return {
+                loading: false,
                 loadedBooks: [],
                 next_page_url: this.paginator.next_page_url,
                 options: {
@@ -68,23 +71,22 @@
             loadBooks() {
                 if (this.next_page_url === null) return;
 
+                this.loading = true;
+
                 axios.post(this.next_page_url).then(({ data }) => {
                     this.error = {};
                     this.next_page_url = data.next_page_url;
                     this.loadedBooks = this.loadedBooks.concat(data.data);
                 }).catch(({ response }) => {
                     this.error = response;
-                })
+                }).then(() => {
+                    this.loading = false;
+                });
             },
         },
 
-        mounted() {
-            // TODO: implement infinite scroll
-            this.loadBooks();
-        },
-
         directives: {
-            imagesLoaded
+            imagesLoaded, infinitescroll
         },
 
         components: {
