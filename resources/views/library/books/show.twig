@@ -18,6 +18,10 @@
                         <b-icon icon="pencil"></b-icon>
                     </b-button>
                 {% endif %}
+
+                {% if can('delete', book) %}
+                    <delete-button size="sm" action="{{ route('library.books.destroy', [library.slug, book.id]) }}"></delete-button>
+                {% endif %}
             </h3>
             <h5 class="text-muted">{{ book.authors }}</h5>
 
