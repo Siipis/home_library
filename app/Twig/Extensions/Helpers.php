@@ -6,8 +6,8 @@ namespace App\Twig\Extensions;
 
 
 use App\Twig\TokenParser\Token_TokenParser;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -58,27 +58,19 @@ class Helpers extends AbstractExtension
             }),
 
             new TwigFilter('vue', function ($model) {
+                if ($model instanceof Jsonable) {
+                    return $model->toJson();
+                }
+
+                if ($model instanceof Arrayable) {
+                    return json_encode($model->toArray());
+                }
+
                 if (is_array($model)) {
                     return json_encode($model);
                 }
 
-                if ($model instanceof Model) {
-                    return $model->toJson();
-                }
-
-                if ($model instanceof Collection) {
-                    return $model->toJson();
-                }
-
-                if ($model instanceof EloquentCollection) {
-                    return $model->toJson();
-                }
-
-                throw new \Exception("Unrecognized data type. Must be an instance of " .
-                    Model::class . ", " .
-                    Collection::class . " " .
-                    "or " . EloquentCollection::class . "." .
-                    get_class($model) . " given.");
+                throw new \Exception("Unrecognized data type " . typeOf($model));
             }, ['is_safe' => ['html']]),
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Category;
 use App\Http\Api\Search;
 use App\Http\Forms\BookForm;
 use App\Library;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 
 class LibraryController extends Controller
 {
+
     /**
      * @param Library $library
      * @return \Symfony\Component\Form\Form
@@ -32,14 +34,13 @@ class LibraryController extends Controller
     /**
      * @param Library $library
      * @return mixed
+     * @throws AuthorizationException
      */
     public function index(Library $library)
     {
         Gate::authorize('view', $library);
 
-        return view('library.index', [
-            'book_form' => self::getStoreForm($library),
-        ]);
+        return view('library.index');
     }
 
     /**
@@ -47,30 +48,15 @@ class LibraryController extends Controller
      * @return mixed
      * @throws AuthorizationException
      */
-    public function books(Request $request)
+    public function books(Request $request, Library $library)
     {
-        $request->validate([
-            'library' => 'exists:libraries,id',
-            'category' => 'exists:categories,id|nullable',
-        ]);
-
-        $library = Library::findOrFail($request->get('library'));
         Gate::authorize('view', $library);
 
-        $category = null;
         if ($request->has('category')) {
-           // $category = $library->categories()->findOrFail($request->get('category'));
+            return Category::whereLibraryId($library->id)->books()->simplePaginate(Library::$paginate);
         }
 
-        $paginator = $library->books()->simplePaginate(10);
-
-        $paginator->getCollection()->transform(function (Book $book) {
-            $book->link = route('library.books.show', [$book->library, $book]);
-
-            return $book;
-        });
-
-        return $paginator;
+        return $library->books()->simplePaginate(Library::$paginate);
     }
 
     /**

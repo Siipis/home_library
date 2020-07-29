@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Paginated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Library extends Model
 {
+    use Paginated;
+
     protected $hidden = [
         'id', 'created_at', 'updated_at',
     ];

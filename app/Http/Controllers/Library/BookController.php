@@ -144,8 +144,6 @@ class BookController extends Controller
 
         if ($category_id > 0) {
             $category = Category::findOrFail($category_id);
-            unset($book->category_id);
-
             $category->books()->save($book);
         }
     }

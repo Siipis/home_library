@@ -73,6 +73,9 @@ class BookForm extends Form
         ]);
         $this->add('cover', TextType::class, [
             'rules' => 'url',
+            'attr' => [
+                'autocomplete' => 'off',
+            ]
         ]);
         $this->add('language', TextType::class, [
             'rules' => 'string',

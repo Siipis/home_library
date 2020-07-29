@@ -24,9 +24,8 @@
         {% endif %}
     </h3>
 
-    {{ block('search_form') }}
+    <books :paginator='{{ category.paginate()|vue }}'></books>
 {% endblock %}
 
 {% block scripts %}
-    {{ block('search_form_scripts') }}
 {% endblock %}
