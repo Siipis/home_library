@@ -17,6 +17,11 @@ class Book extends Model
         'link',
     ];
 
+    public static $searchable = [
+        'title', 'series', 'authors', 'publisher',
+        'description', 'keywords', 'isbn'
+    ];
+
     public static $coverPath = 'images/books/cover';
 
     // @link https://laravel.com/docs/7.x/eloquent#events
@@ -44,6 +49,8 @@ class Book extends Model
         $provider = new ImageCast();
 
         $this->cover = $provider->cast($this, 'cover');
+
+        \Cache::forget($this->getCacheId());
     }
 
     /**
@@ -78,5 +85,13 @@ class Book extends Model
         if (empty($this->id)) return null;
 
         return route('library.books.show', [$this->library, $this]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheId()
+    {
+        return "cover" . $this->id;
     }
 }

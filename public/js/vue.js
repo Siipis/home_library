@@ -91,6 +91,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // @link https://isotope.metafizzy.co/layout-modes/masonry.html
 // Load dependencies
 
@@ -106,6 +124,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       loading: false,
+      search: '',
       loadedBooks: [],
       next_page_url: this.paginator.next_page_url,
       options: {
@@ -149,6 +168,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.loading = false;
       });
     }
+  },
+  mounted: function mounted() {
+    this.search = new URL(location.href).searchParams.get('search');
+    this.$refs.search.focus();
   },
   directives: {
     imagesLoaded: vue_images_loaded__WEBPACK_IMPORTED_MODULE_1___default.a,
@@ -5187,60 +5210,52 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "isotope",
-    {
-      directives: [
-        {
-          name: "images-loaded",
-          rawName: "v-images-loaded:on.progress",
-          value: _vm.layout,
-          expression: "layout",
-          arg: "on",
-          modifiers: { progress: true }
-        },
-        {
-          name: "infinitescroll",
-          rawName: "v-infinitescroll",
-          value: _vm.loadBooks,
-          expression: "loadBooks"
-        }
-      ],
-      ref: "grid",
-      staticClass: "books my-3",
-      attrs: {
-        options: _vm.options,
-        list: _vm.allBooks,
-        "infinite-scroll-disabled": "loading"
-      }
-    },
-    _vm._l(_vm.allBooks, function(book) {
-      return _c(
-        "div",
-        { key: book.id, staticClass: "book col-3 p-1" },
+    "div",
+    [
+      _c(
+        "b-row",
         [
           _c(
-            "b-card",
-            {
-              staticClass: "book-card text-center",
-              attrs: { "img-src": book.cover, "img-top": "" }
-            },
+            "b-form",
+            { staticClass: "col-md-6 col-sm-12" },
             [
               _c(
-                "b-card-body",
+                "b-form-group",
                 [
-                  _c("b-card-title", [
-                    _c("a", { attrs: { href: book.link } }, [
-                      _vm._v(_vm._s(book.title))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("b-card-sub-title", [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(book.authors) +
-                        "\n                "
-                    )
-                  ])
+                  _c(
+                    "b-input-group",
+                    [
+                      _c("b-input", {
+                        ref: "search",
+                        attrs: {
+                          name: "search",
+                          placeholder: _vm._f("trans")("library.search")
+                        },
+                        model: {
+                          value: _vm.search,
+                          callback: function($$v) {
+                            _vm.search = $$v
+                          },
+                          expression: "search"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "b-button",
+                        { attrs: { type: "submit", variant: "primary" } },
+                        [
+                          _c("b-icon", { attrs: { icon: "search" } }),
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm._f("trans")("fields.search")) +
+                              "\n                    "
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
                 ],
                 1
               )
@@ -5249,9 +5264,77 @@ var render = function() {
           )
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "isotope",
+        {
+          directives: [
+            {
+              name: "images-loaded",
+              rawName: "v-images-loaded:on.progress",
+              value: _vm.layout,
+              expression: "layout",
+              arg: "on",
+              modifiers: { progress: true }
+            },
+            {
+              name: "infinitescroll",
+              rawName: "v-infinitescroll",
+              value: _vm.loadBooks,
+              expression: "loadBooks"
+            }
+          ],
+          ref: "grid",
+          staticClass: "books my-3",
+          attrs: {
+            options: _vm.options,
+            list: _vm.allBooks,
+            "infinite-scroll-disabled": "loading"
+          }
+        },
+        _vm._l(_vm.allBooks, function(book) {
+          return _c(
+            "div",
+            { key: book.id, staticClass: "book col-3 p-1" },
+            [
+              _c(
+                "b-card",
+                {
+                  staticClass: "book-card text-center",
+                  attrs: { "img-src": book.cover, "img-top": "" }
+                },
+                [
+                  _c(
+                    "b-card-body",
+                    [
+                      _c("b-card-title", [
+                        _c("a", { attrs: { href: book.link } }, [
+                          _vm._v(_vm._s(book.title))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("b-card-sub-title", [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(book.authors) +
+                            "\n                    "
+                        )
+                      ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        }),
+        0
       )
-    }),
-    0
+    ],
+    1
   )
 }
 var staticRenderFns = []

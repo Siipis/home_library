@@ -1,49 +1,156 @@
-{{ form_start(book_form) }}
-{% set f = book_form %}
+{% block book_form %}
+    {{ form_start(book_form) }}
+    {% set f = book_form %}
 
-{{ form_row(f.title) }}
+    {{ form_row(f.title) }}
 
-{{ form_row(f.authors) }}
+    {{ form_row(f.authors) }}
 
-<div class="row">
-    <div class="col-md-4">
-        {{ form_row(f.publisher) }}
-    </div>
-
-    <div class="col-md-4">
-        {{ form_row(f.year) }}
-    </div>
-
-    <div class="col-md-4">
-        {{ form_row(f.language) }}
-    </div>
-</div>
-
-{{ form_row(f.cover, { 'attr': { 'list': 'images' }}) }}
-<b-form-datalist id="images" :options="images"></b-form-datalist>
-
-{{ form_row(f.category_id) }}
-
-<div class="row">
-    <div class="col-md-6">
-        {{ form_row(f.local_id) }}
-    </div>
-
-    <div class="col-md-6 d-flex justify-content-between align-content-stretch">
-        {{ form_row(f.isbn, { 'attr': { 'list': 'other_isbn' } }) }}
-
-        <div class="form-group align-self-end flex-grow-0">
-            <b-button variant="link" ref="loadIsbn" class="pr-0">
-                <b-icon icon="arrow-repeat"></b-icon>
-            </b-button>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(f.publisher) }}
         </div>
 
-        <b-form-datalist id="other_isbn" :options="other_isbn"></b-form-datalist>
+        <div class="col-md-4">
+            {{ form_row(f.year) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(f.language) }}
+        </div>
     </div>
-</div>
 
-{{ form_row(f.description) }}
+    {{ form_row(f.cover, { 'attr': { 'list': 'images' }}) }}
+    <b-form-datalist id="images" :options="images"></b-form-datalist>
 
-{{ form_row(f.keywords) }}
+    {{ form_row(f.category_id) }}
 
-{{ form_end(book_form) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(f.local_id) }}
+        </div>
+
+        <div class="col-md-6 d-flex justify-content-between align-content-stretch">
+            {{ form_row(f.isbn, { 'attr': { 'list': 'other_isbn' }}) }}
+
+            <div class="form-group align-self-end flex-grow-0">
+                <b-button variant="link" @click="loadIsbn" :disabled="loadingIsbn">
+                    <b-icon icon="arrow-repeat" :class="{ 'b-icon-animation-spin': loadingIsbn }"></b-icon>
+                </b-button>
+            </div>
+
+            <b-form-datalist id="other_isbn" :options="other_isbn"></b-form-datalist>
+        </div>
+    </div>
+
+    {{ form_row(f.description) }}
+
+    {{ form_row(f.keywords) }}
+
+    {{ form_end(book_form) }}
+{% endblock %}
+
+{% block book_form_scripts %}
+    <script type="text/javascript">
+        window.Mixin.add('book_form', {
+            data: {
+                cover: '',
+                isbn: '',
+                other_isbn: [],
+                images: [],
+                loadingIsbn: false,
+            },
+
+            methods: {
+                setBook: function (book) {
+                    book.cover = book.images.length > 0 ? book.images[0] : '';
+                    book.local_id = null;
+                    book.providers = JSON.stringify(book.providers);
+
+                    this.images = book.images;
+                    this.other_isbn = [ ...book.other_isbn, book.isbn ];
+
+                    this.fillForm('book_form', book);
+                    this.loadCover(book);
+                },
+
+                loadCover: function (book) {
+                    if (book.cover.length > 0) {
+                        this.cover = book.cover;
+                        return;
+                    }
+
+                    this.cover = '';
+
+                    axios.post('{{ route('library.cover', library.slug) }}', {
+                        title: book.title,
+                        isbn: book.isbn,
+                    }).then(({ data }) => {
+                        this.cover = data;
+                        $('#book_form_cover').val(data);
+                    });
+                },
+
+                loadIsbn: function () {
+                    const isbn = $('#book_form_isbn').val();
+
+                    if (isbn.length === 0) return;
+
+                    axios.post('{{ route('library.details', library.slug) }}', {
+                        isbn: isbn
+                    }).then(({ data }) => {
+                        this.setBook(data);
+                    });
+                },
+            },
+
+            watch: {
+                loadingIsbn: (value) => {
+                    const button = document.getElementById('book_form_create');
+
+                    if (button !== null) {
+                        button.disabled = value;
+                    }
+                },
+            },
+
+            mounted() {
+                const vue = this;
+
+                vue.$on('select_book', vue.setBook);
+
+                $('#book_form_cover').on('change', function () {
+                    const book = {
+                        title: $('#book_form_title').val(),
+                        isbn: $('#book_form_isbn').val(),
+                        cover: $(this).val(),
+                    };
+
+                    vue.loadCover(book);
+                });
+
+                axios.interceptors.request.use((config) => {
+                    vue.loadingIsbn = true;
+
+                    return config;
+                }, (error) => {
+                    vue.error = error.response;
+                    vue.loadingIsbn = false;
+
+                    return Promise.reject(error);
+                });
+
+                axios.interceptors.response.use((response) => {
+                    vue.loadingIsbn = false;
+
+                    return response;
+                }, (error) => {
+                    vue.loadingIsbn = false;
+                    vue.error = error.response;
+
+                    return Promise.reject(error);
+                });
+            },
+        });
+    </script>
+{% endblock %}

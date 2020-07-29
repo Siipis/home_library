@@ -10,7 +10,8 @@
 
     <b-row class="py-3">
         <div class="col-md-6 col-auto">
-            {% include 'templates.blocks.book_form' %}
+            {% use 'templates.blocks.book_form' %}
+            {{ block('book_form') }}
         </div>
 
         <div class="col-md-6 col-auto">
@@ -19,4 +20,6 @@
     </b-row>
 {% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+    {{ block('book_form_scripts') }}
+{% endblock %}

@@ -56,7 +56,7 @@ class LibraryController extends Controller
             return Category::whereLibraryId($library->id)->books()->simplePaginate(Library::$paginate);
         }
 
-        return $library->books()->simplePaginate(Library::$paginate);
+        return $library->paginate();
     }
 
     /**

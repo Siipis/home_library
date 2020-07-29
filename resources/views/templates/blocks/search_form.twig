@@ -24,22 +24,22 @@
 
         <b-col>
             <b-card :img-src="cover" img-bottom>
-                {% include 'templates.blocks.book_form' %}
+                {% use 'templates.blocks.book_form' %}
+                {{ block('book_form') }}
             </b-card>
         </b-col>
     </b-row>
 {% endblock %}
 
 {% block search_form_scripts %}
+    {{ block('book_form_scripts') }}
+
     <script type="text/javascript">
         window.Mixin.add('search', {
             data: {
                 searching: false,
                 search: '',
                 searchResults: [],
-                cover: '',
-                other_isbn: [],
-                images: [],
             },
 
             methods: {
@@ -55,101 +55,55 @@
                         return;
                     }
 
-                    this.searching = true;
-
                     axios.post('{{ route('library.search', library.slug) }}', {
                         search: this.search
                     }).then(({ data }) => {
-                        this.error = {};
                         this.searchResults = data;
 
                         if (data.length > 0) {
                             this.setBook(data[0]);
                         }
-                    }).catch(({ response }) => {
-                        this.error = response;
+                    }).catch(() => {
                         this.searchResults = [];
-                    }).then(() => {
-                        this.searching = false;
                     });
                 },
-
-                setBook: function (book) {
-                    book.cover = book.images.length > 0 ? book.images[0] : '';
-                    book.local_id = null;
-                    book.providers = JSON.stringify(book.providers);
-
-                    this.images = book.images;
-                    this.other_isbn = [...book.other_isbn, book.isbn];
-
-                    this.fillForm('book_form', book);
-                    this.loadCover(book);
-                },
-
-                loadCover: function (book) {
-                    if (book.cover.length > 0) {
-                        this.cover = book.cover;
-                        return;
-                    }
-
-                    this.cover = '';
-
-                    axios.post('{{ route('library.cover', library.slug) }}', {
-                        title: book.title,
-                        isbn: book.isbn,
-                    }).then(({ data }) => {
-                        this.error = {};
-                        this.cover = data;
-
-                        $('#book_form_cover').val(data);
-                    }).catch(({ response }) => {
-                        this.error = response;
-                    });
-                },
-
-                loadIsbn: function (isbn) {
-                    if (isbn.length === 0) return;
-
-                    const icon = $(this.$refs.loadIsbn.querySelector('.b-icon'));
-
-                    icon.addClass('b-icon-animation-spin');
-
-                    axios.post('{{ route('library.details', library.slug) }}', {
-                        isbn: isbn
-                    }).then(({ data }) => {
-                        this.setBook(data);
-                    }).catch(({ response }) => {
-                        this.error = response;
-                    }).then(() => {
-                        icon.removeClass('b-icon-animation-spin');
-                    });
-                },
-            },
-
-            created() {
-                this.$on('select_book', this.setBook);
             },
 
             mounted() {
                 const vue = this;
+                this.$refs.search.focus();
 
-                vue.$refs.search.focus();
+                axios.interceptors.request.use((config) => {
+                    vue.searching = true;
 
-                $(vue.$refs.loadIsbn).click(function (e) {
-                    e.preventDefault();
+                    return config;
+                }, (error) => {
+                    vue.error = error.response;
+                    vue.searching = false;
 
-                    vue.loadIsbn($('#book_form_isbn').val());
+                    return Promise.reject(error);
                 });
 
-                $('#book_form_cover').on('change', function () {
-                    const book = {
-                        title: $('#book_form_title').val(),
-                        isbn: $('#book_form_isbn').val(),
-                        cover: $(this).val(),
-                    };
+                axios.interceptors.response.use((response) => {
+                    vue.searching = false;
 
-                    vue.loadCover(book);
+                    return response;
+                }, (error) => {
+                    vue.searching = false;
+                    vue.error = error.response;
+
+                    return Promise.reject(error);
                 });
+            },
+
+            watch: {
+                searching: (value) => {
+                    const button = document.getElementById('book_form_create');
+
+                    if (button !== null) {
+                        button.disabled = value;
+                    }
+                },
             },
         })
     </script>

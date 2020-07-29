@@ -1,0 +1,4 @@
+{% set parent = category is defined ? category : library %}
+{% set books = parent.paginate() %}
+
+<books :paginator='{{ books|vue }}'></books>

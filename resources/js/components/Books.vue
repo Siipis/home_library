@@ -1,22 +1,40 @@
 <template>
-    <isotope :options="options" :list="allBooks" class="books my-3"
-             ref="grid" v-images-loaded:on.progress="layout"
-             v-infinitescroll="loadBooks" infinite-scroll-disabled="loading">
-        <div v-for="book in allBooks" :key="book.id" class="book col-3 p-1">
-            <b-card class="book-card text-center"
-                    :img-src="book.cover"
-                    img-top>
-                <b-card-body>
-                    <b-card-title>
-                        <a :href="book.link">{{ book.title }}</a>
-                    </b-card-title>
-                    <b-card-sub-title>
-                        {{ book.authors }}
-                    </b-card-sub-title>
-                </b-card-body>
-            </b-card>
-        </div>
-    </isotope>
+    <div>
+        <b-row>
+            <b-form class="col-md-6 col-sm-12">
+                <b-form-group>
+                    <b-input-group>
+                        <b-input name="search" v-model="search" ref="search"
+                                 :placeholder="'library.search'|trans"
+                        ></b-input>
+                        <b-button type="submit" variant="primary">
+                            <b-icon icon="search"></b-icon>
+                            {{ 'fields.search'|trans }}
+                        </b-button>
+                    </b-input-group>
+                </b-form-group>
+            </b-form>
+        </b-row>
+
+        <isotope :options="options" :list="allBooks" class="books my-3"
+                 ref="grid" v-images-loaded:on.progress="layout"
+                 v-infinitescroll="loadBooks" infinite-scroll-disabled="loading">
+            <div v-for="book in allBooks" :key="book.id" class="book col-3 p-1">
+                <b-card class="book-card text-center"
+                        :img-src="book.cover"
+                        img-top>
+                    <b-card-body>
+                        <b-card-title>
+                            <a :href="book.link">{{ book.title }}</a>
+                        </b-card-title>
+                        <b-card-sub-title>
+                            {{ book.authors }}
+                        </b-card-sub-title>
+                    </b-card-body>
+                </b-card>
+            </div>
+        </isotope>
+    </div>
 </template>
 
 <script>
@@ -39,6 +57,7 @@
         data() {
             return {
                 loading: false,
+                search: '',
                 loadedBooks: [],
                 next_page_url: this.paginator.next_page_url,
                 options: {
@@ -83,6 +102,12 @@
                     this.loading = false;
                 });
             },
+        },
+
+        mounted() {
+            this.search = (new URL(location.href)).searchParams.get('search');
+
+            this.$refs.search.focus();
         },
 
         directives: {

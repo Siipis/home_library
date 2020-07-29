@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Library;
 
 use App\Book;
 use App\Category;
-use App\Http\Api\Search;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LibraryController;
 use App\Http\Forms\BookForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
+use Cache;
 use Gate;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -29,15 +27,24 @@ class BookController extends Controller
     /**
      * @param Book $book
      * @return mixed
-     * @throws AuthorizationException
      */
     public function cover(Library $library, Book $book)
     {
         Gate::authorize('view', $book);
 
-        return response()->file(\Storage::path($book::$coverPath . '/' . $book->id . '.png'), [
+        $contentType = [
             'Content-Type' => 'image/png'
-        ]);
+        ];
+
+        if (Cache::has($book->getCacheId())) {
+            return response()->file(Cache::get("cover$book->id"), $contentType);
+        }
+
+        $file = \Storage::path($book::$coverPath . '/' . $book->id . '.png');
+
+        Cache::put($book->getCacheId(), $file, now()->addDays(30));
+
+        return response()->file($file, $contentType);
     }
 
     /**
@@ -109,6 +116,7 @@ class BookController extends Controller
      * @param Library $library
      * @param Book $book
      * @return mixed
+     * @throws UnsentFormException
      */
     public function update(Request $request, Library $library, Book $book)
     {
@@ -126,6 +134,7 @@ class BookController extends Controller
      * @param Library $library
      * @param Book $book
      * @return mixed
+     * @throws \Exception
      */
     public function destroy(Library $library, Book $book)
     {

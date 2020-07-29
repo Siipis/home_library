@@ -9,7 +9,7 @@
 {% block content %}
     <h3>{{ page_title }}</h3>
 
-    <books :paginator='{{ library.paginate()|vue }}'></books>
+    {% include 'templates.blocks.books' %}
 {% endblock %}
 
 {% block scripts %}
