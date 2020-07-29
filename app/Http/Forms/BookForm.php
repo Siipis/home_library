@@ -17,14 +17,12 @@ class BookForm extends Form
 
     public function build()
     {
-        $this->add('category_id', ChoiceType::class, [
-            'choices' => Category::all(),
-            'choice_value' => 'id',
-            'choice_label' => 'name',
+        $this->add('category_choices', ChoiceType::class, [
+            'choices' => $this->getChoices(),
+            'data' => $this->getSelected(),
             'required' => false,
-
-            'data' => \Request::route()->hasParameter('category') ?
-                \Request::route()->parameter('category') : null,
+            'multiple' => true,
+            'label' => trans_choice('category.type', 2),
 
             'rules' => 'exists:categories,id',
         ]);
@@ -87,5 +85,33 @@ class BookForm extends Form
             'rules' => 'json',
         ]);
         $this->add($this->model()->id > 0 ? 'save' : 'create', SubmitType::class);
+    }
+
+    /**
+     * @return array
+     */
+    private function getChoices()
+    {
+        $choices = [];
+
+        $library = \Request::route()->parameter('library');
+
+        foreach ($library->categories as $category) {
+            $choices[$category->name] = $category->id;
+        }
+
+        return $choices;
+    }
+
+    /**
+     * @return array
+     */
+    private function getSelected()
+    {
+        if ($this->model()->id > 0) {
+            return $this->model()->categories->pluck('id')->toArray();
+        }
+
+        return [];
     }
 }

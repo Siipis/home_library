@@ -28,7 +28,7 @@ class Book extends Model
     protected static function booted()
     {
         static::saving(function (Book $book) {
-            unset($book->category_id);
+            unset($book->category_choices);
         });
 
         static::saved(function (Book $book) {

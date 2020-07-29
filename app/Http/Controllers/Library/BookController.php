@@ -75,7 +75,7 @@ class BookController extends Controller
 
         $library->books()->save($book);
 
-        $this->bindRelations($request, $book);
+        $book->categories()->sync($request->input('book_form.category_choices'));
 
         return redirect()->back();
     }
@@ -122,7 +122,7 @@ class BookController extends Controller
     {
         $book = $this->form->get($request, $book);
 
-        $this->bindRelations($request, $book);
+        $book->categories()->sync($request->input('book_form.category_choices'));
         $book->save();
 
         return redirect()->route('library.books.show', [$library, $book]);
@@ -149,7 +149,7 @@ class BookController extends Controller
      */
     private function bindRelations(Request $request, Book $book)
     {
-        $category_id = $request->input('book_form.category_id');
+        $category_id = $request->input('book_form.category_choices');
 
         if ($category_id > 0) {
             $category = Category::findOrFail($category_id);

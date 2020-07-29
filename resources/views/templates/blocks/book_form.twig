@@ -32,7 +32,7 @@
     {{ form_row(f.cover, { 'attr': { 'list': 'images' }}) }}
     <b-form-datalist id="images" :options="images"></b-form-datalist>
 
-    {{ form_row(f.category_id) }}
+    {{ form_row(f.category_choices) }}
 
     <div class="row">
         <div class="col-md-6">
@@ -63,6 +63,7 @@
     <script type="text/javascript">
         window.Mixin.add('book_form', {
             data: {
+                categories: {{ library.categories|vue }},
                 cover: '',
                 isbn: '',
                 other_isbn: [],
