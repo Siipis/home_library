@@ -53,6 +53,9 @@ class BookForm extends Form
                 'autocomplete' => 'off',
             ],
         ]);
+        $this->add('series', TextType::class, [
+            'rules' => 'string'
+        ]);
         $this->add('authors', TextType::class, [
             'rules' => 'string'
         ]);

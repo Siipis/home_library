@@ -2,7 +2,16 @@
     {{ form_start(book_form) }}
     {% set f = book_form %}
 
-    {{ form_row(f.title) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(f.title) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_row(f.series) }}
+        </div>
+    </div>
+
 
     {{ form_row(f.authors) }}
 

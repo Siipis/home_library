@@ -125,7 +125,7 @@ class BookController extends Controller
         $this->bindRelations($request, $book);
         $book->save();
 
-        return redirect()->back();
+        return redirect()->route('library.books.show', [$library, $book]);
     }
 
     /**
