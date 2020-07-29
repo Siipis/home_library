@@ -107,7 +107,7 @@ class FinnaBookProvider extends BookProvider
     {
         if (!isset($record['year'])) return null;
 
-        return intval($record['year']);
+        return $record['year'];
     }
 
     public function getIsbn($record)

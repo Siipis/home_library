@@ -52,7 +52,9 @@ abstract class BookProvider extends ApiProvider
                 $book->language = $this->getLanguage($record);
                 $book->keywords = $this->getKeywords($record);
                 $book->isbn = $this->getIsbn($record);
-                $book->other_isbn = $this->getOtherIsbn($record);
+                $book->other_isbn = array_filter(
+                    array_merge(array($book->isbn), $this->getOtherIsbn($record)),
+                    'is_string');
                 $book->images = $this->getImages($record);
                 $book->providers = array([
                     'class' => class_basename($this),

@@ -10,12 +10,12 @@ use Illuminate\Support\Collection;
 
 class BookResultsParser
 {
-    protected $similarityThreshold = 0.8;
+    protected $similarityThreshold = 0.7;
 
     protected $library;
 
     protected $compared = [
-        'isbn', 'year|authors|publisher',
+        'year|title|authors|publisher',
     ];
 
     /**
@@ -41,12 +41,14 @@ class BookResultsParser
 
             $existingIndex = $this->exists($books, $book);
 
+            $book->existingIndex = $existingIndex;
+
             if ($existingIndex !== false) {
-                $this->mergeRecords($books->get($existingIndex), $book);
-                continue;
+              $this->mergeRecords($books->get($existingIndex), $book);
+              continue;
             }
 
-            $books->push($book);
+           $books->push($book);
         }
 
         return array_values($books->take(config('api.books.limit'))->toArray());
@@ -170,7 +172,7 @@ class BookResultsParser
         }
 
         if (is_numeric($v1) || is_numeric($v2)) {
-            return $v1 < $v2 ? $v2 : $v1;
+            return intval($v1) < intval($v2) ? intval($v2) : intval($v1);
         }
 
         if (is_string($v1)) {
@@ -203,10 +205,14 @@ class BookResultsParser
      */
     private function compare($s1, $s2)
     {
-        if (empty($s1) && !empty($s2) || empty($s2) && !empty($s1)) return 0;
+        if (empty($s1) && !empty($s2) || empty($s2) && !empty($s1)) return 1;
 
-        if (is_numeric($s1) && is_numeric($s2)) {
-            return $s1 == $s2 ? 1 : 0;
+        if (is_numeric($s1) || is_numeric($s2)) {
+            return intval($s1) === intval($s2) ? 1 : 0;
+        }
+
+        if (is_array($s1) && is_array($s2)) {
+            return count(array_intersect($s1, $s2)) > 0;
         }
 
         if (is_array($s1)) {
@@ -216,6 +222,9 @@ class BookResultsParser
         if (is_array($s2)) {
             $s2 = implode(';', $s2);
         }
+
+        $s1 = strtolower($s1);
+        $s2 = strtolower($s2);
 
         $length1 = strlen($s1);
         $length2 = strlen($s2);

@@ -91,7 +91,7 @@ class OpenLibraryBookProvider extends BookProvider
     public function getYear($record)
     {
         if (isset($record['first_publish_year'])) {
-            return intval($record['first_publish_year']);
+            return $record['first_publish_year'];
         }
 
         if (isset($record['publish_date'])) {

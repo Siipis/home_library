@@ -108,11 +108,11 @@ class GoodreadsBookProvider extends BookProvider
     public function getYear($record)
     {
         if (isset($record['publication_year'])) {
-            return intval($record['publication_year']);
+            return $record['publication_year'];
         }
 
         if (isset($record['original_publication_year'])) {
-            return intval($record['original_publication_year']);
+            return $record['original_publication_year'];
         }
 
         return null;

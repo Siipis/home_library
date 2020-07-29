@@ -88,6 +88,50 @@ class Book extends Model
     }
 
     /**
+     * @param $year
+     * @return void
+     */
+    public function setYearAttribute($year)
+    {
+        if (is_numeric($year)) {
+            $year = intval($year);
+        }
+
+        $this->attributes['year'] = $year;
+    }
+
+    /**
+     * @param $isbn
+     */
+    public function setIsbnAttribute($isbn)
+    {
+        $this->attributes['isbn'] = $this->cleanIsbn($isbn);
+    }
+
+    /**
+     * @param array $isbns
+     */
+    public function setOtherIsbnAttribute(array $isbns)
+    {
+        $this->attributes['other_isbn'] = array_filter(array_map(function ($isbn) {
+            return $this->cleanIsbn($isbn);
+        }, $isbns), 'is_string');
+    }
+
+    /**
+     * @param $isbn
+     * @return string|null
+     */
+    public function cleanIsbn($isbn)
+    {
+        if (empty($isbn)) return null;
+
+        preg_match('/^([0-9-X]+)/', $isbn, $matches);
+
+        return $matches[1];
+    }
+
+    /**
      * @return string
      */
     public function getCacheId()

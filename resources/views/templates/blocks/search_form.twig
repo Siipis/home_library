@@ -86,6 +86,7 @@
 
                 axios.interceptors.response.use((response) => {
                     vue.searching = false;
+                    vue.error = {};
 
                     return response;
                 }, (error) => {
