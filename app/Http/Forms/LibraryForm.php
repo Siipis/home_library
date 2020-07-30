@@ -14,8 +14,6 @@ class LibraryForm extends Form
 
     public function build()
     {
-        $library = $this->model();
-
         $this->add('name', TextType::class, [
             'rules' => 'required|string'
         ]);
@@ -23,10 +21,10 @@ class LibraryForm extends Form
         $this->add('slug', TextType::class, [
             'rules' => [
                 'required', 'slug', 'min:3',
-                Rule::unique('libraries')->ignore($library),
+                Rule::unique('libraries')->ignore($this->model()),
             ]
         ]);
 
-        $this->add(($library->id > 0) ? 'save' : 'create', SubmitType::class);
+        $this->add($this->modelExists() ? 'save' : 'create', SubmitType::class);
     }
 }

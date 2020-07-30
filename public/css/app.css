@@ -14148,3 +14148,8 @@ p:last-child {
   display: inline-block;
 }
 
+label.required:after {
+  content: " *";
+  color: #e3342f;
+}
+

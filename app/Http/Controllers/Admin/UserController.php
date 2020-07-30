@@ -60,10 +60,6 @@ class UserController extends Controller
     {
         $user = $this->form->get($request);
 
-        unset($user->password_confirmation);
-
-        $user->password = \Hash::make($user->password);
-
         $user->save();
 
         return redirect()->route('admin.users.show', $user->id);

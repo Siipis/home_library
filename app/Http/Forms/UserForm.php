@@ -3,6 +3,7 @@
 namespace App\Http\Forms;
 
 use App\User;
+use Illuminate\Validation\Rule;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,14 +19,35 @@ class UserForm extends Form
             'rules' => 'required|string'
         ]);
         $this->add('email', EmailType::class, [
-            'rules' => 'required|email'
+            'rules' => [
+                'required', 'email',
+                Rule::unique('users')->ignore($this->model()),
+            ]
         ]);
         $this->add('password', PasswordType::class, [
-            'rules' => 'required|confirmed',
+            'rules' => $this->getPasswordRules(),
+            'label' => trans('fields.' . ($this->modelExists() ? 'password_change' : 'password')),
+            'empty_data' => $this->model()->password,
         ]);
         $this->add('password_confirmation', PasswordType::class, [
-            'rules' => 'required',
+            'rules' => 'required_with:password',
         ]);
-        $this->add('create', SubmitType::class);
+        $this->add($this->modelExists() ? 'save' : 'create', SubmitType::class);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getPasswordRules()
+    {
+        $rules = [
+            'confirmed',
+        ];
+
+        if ($this->modelIsNew()) {
+            array_push($rules, 'required');
+        }
+
+        return $rules;
     }
 }

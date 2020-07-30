@@ -26,7 +26,7 @@ mix.webpackConfig({
                 loader: 'laravel-localization-loader',
             },
         ]
-    }
+    },
 });
 
 mix.js('resources/js/app.js', 'public/js')
@@ -43,3 +43,13 @@ mix.js('resources/js/app.js', 'public/js')
         'lodash',
     ])
     .sass('resources/sass/app.scss', 'public/css');
+
+if (mix.inProduction()) {
+    mix.version();
+
+    mix.options({
+        purifyCss: true,
+    });
+} else {
+    mix.browserSync(process.env.APP_URL);
+}

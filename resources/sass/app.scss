@@ -45,3 +45,8 @@ p:last-child {
 .delete-button {
     display: inline-block;
 }
+
+label.required:after {
+    content: ' *';
+    color: $danger;
+}

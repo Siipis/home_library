@@ -19,6 +19,6 @@ class CategoryForm extends Form
         $this->add('color', ColorType::class, [
             'rules' => 'required|string'
         ]);
-        $this->add($this->model()->id > 0 ? 'save' : 'create', SubmitType::class);
+        $this->add($this->modelExists() ? 'save' : 'create', SubmitType::class);
     }
 }

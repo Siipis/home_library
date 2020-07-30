@@ -17,6 +17,9 @@
                         <template v-slot:button-content>
                             {{ auth.name }}
                         </template>
+                        <b-dropdown-item href="{{ route('settings') }}">
+                            {{ 'fields.settings'|trans }}
+                        </b-dropdown-item>
                         <b-dropdown-item @click="$root.$refs.logout.submit()">
                             <form method="post" action="{{ route('logout') }}" ref="logout">
                                 {% token %}

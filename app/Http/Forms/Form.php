@@ -163,6 +163,22 @@ class Form
     }
 
     /**
+     * @return bool
+     */
+    public function modelExists()
+    {
+        return $this->model()->exists;
+    }
+
+    /**
+     * @return bool
+     */
+    public function modelIsNew()
+    {
+        return !$this->modelExists();
+    }
+
+    /**
      * Get the form data as an array.
      *
      * @return array

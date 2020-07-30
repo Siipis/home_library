@@ -39,6 +39,17 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_admin' => 'boolean',
     ];
 
+    // @link https://laravel.com/docs/7.x/eloquent#events
+    protected static function booted()
+    {
+        static::saving(function (User $user) {
+            if ($user->isDirty('password')) {
+                $user->password = \Hash::make($user->password);
+            }
+            unset($user->password_confirmation);
+        });
+    }
+
     /**
      * @return bool
      */

@@ -17,6 +17,7 @@ return [
     'cancel'            => 'Peruuta',
     'are_you_sure'      => 'Haluatko varmasti jatkaa?',
     'search'            => 'Hae',
+    'settings'          => 'Asetukset',
 
     'authors'           => 'Tekijät',
     'name'              => 'Nimi',
@@ -30,6 +31,7 @@ return [
     'local_id'          => 'Paikallinen tunniste',
     'keywords'          => 'Avainsanat',
     'password'          => 'Salasana',
+    'password_change'   => 'Vaihda salasana',
     'password_confirmation'  => 'Vahvista salasana',
     'publisher'         => 'Julkaisija',
     'series'            => 'Sarja',

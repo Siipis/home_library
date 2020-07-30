@@ -20,6 +20,8 @@ Auth::routes([
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', 'HomeController@index')->name('index');
+    Route::get('settings', 'HomeController@settings')->name('settings');
+    Route::post('updateAccount', 'HomeController@updateAccount')->name('settings.account');
 
     Route::prefix('library/{library:slug}')->as('library.')->group(function () {
         Route::get('/', 'LibraryController@index')->name('index');

@@ -29,11 +29,7 @@ class BookForm extends Form
         $this->add('local_id', TextType::class, [
             'rules' => [
                 'string',
-                Rule::unique('books')->where(function ($query) {
-                    if (isset($this->model()->id)) {
-                        $query->where('local_id', '!=', $this->model()->id);
-                    }
-                })
+                Rule::unique('books')->ignore($this->model())
             ],
             'attr' => [
                 'autocomplete' => 'off',
@@ -84,7 +80,7 @@ class BookForm extends Form
         $this->add('providers', HiddenType::class, [
             'rules' => 'json',
         ]);
-        $this->add($this->model()->id > 0 ? 'save' : 'create', SubmitType::class);
+        $this->add($this->modelExists() ? 'save' : 'create', SubmitType::class);
     }
 
     /**
@@ -108,7 +104,7 @@ class BookForm extends Form
      */
     private function getSelected()
     {
-        if ($this->model()->id > 0) {
+        if ($this->modelExists()) {
             return $this->model()->categories->pluck('id')->toArray();
         }
 

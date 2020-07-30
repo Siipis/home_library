@@ -16,6 +16,6 @@ class {{ class }} extends Form
         $this->add('name', TextType::class, [
             'rules' => 'required|string'
         ]);
-        $this->add('submit', SubmitType::class);
+        $this->add($this->modelExists() ? 'save' : 'create', SubmitType::class);
     }
 }
