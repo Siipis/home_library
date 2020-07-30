@@ -13,15 +13,18 @@
         </category>
 
         {% for category in library.categories %}
-            <category color="{{ category.color }}" href="{{ route('library.categories.show', [library.slug, category.id]) }}">
+            <category color="{{ category.color }}"
+                      href="{{ route('library.categories.show', [library.slug, category.id]) }}">
                 {{ category.name }}
             </category>
         {% endfor %}
     </nav>
 
-    <b-button variant="primary" href="{{ route('library.categories.create', library.slug) }}">
-        {{ 'fields.create'|trans ~ ' ' ~ 'category.type'|trans_choice(1)|lower }}
-    </b-button>
+    {% if can('create', 'App\\Category') %}
+        <b-button variant="primary" href="{{ route('library.categories.create', library.slug) }}">
+            {{ 'fields.create'|trans ~ ' ' ~ 'category.type'|trans_choice(1)|lower }}
+        </b-button>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}{% endblock %}

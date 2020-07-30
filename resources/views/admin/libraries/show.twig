@@ -55,7 +55,7 @@
     <script type="text/javascript">
         window.Mixin.add('library.view', {
             data: {
-                members: {{ library.members|vue }},
+                members: {{ members|vue }},
                 nonMembers: {{ nonMembers|vue }},
                 roles: [
                     { value: 'lender', text: '{{ 'library.lender'|trans }}' },

@@ -8,6 +8,8 @@
 # Dependencies
 /node_modules
 /vendor
+/public/js/vendor.js.LICENSE.txt
+/public/js/vue.js.LICENSE.txt
 npm-debug.log
 yarn-error.log
 

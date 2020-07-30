@@ -1,6 +1,6 @@
 {% extends 'admin'|layout %}
 
-{% set page_title = 'user.user'|trans_choice(2) %}
+{% set page_title = 'user.type'|trans_choice(2) %}
 
 {% block head %}{% endblock %}
 
@@ -41,7 +41,7 @@
     </table>
 
     <b-button variant="primary" href="{{ route('admin.users.create') }}">
-        {{ 'fields.create'|trans ~ ' ' ~ 'user.user'|trans_choice(1)|lower }}
+        {{ 'fields.create'|trans ~ ' ' ~ 'user.type'|trans_choice(1)|lower }}
     </b-button>
 {% endblock %}
 

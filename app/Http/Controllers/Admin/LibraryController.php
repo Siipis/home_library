@@ -8,6 +8,7 @@ use App\Http\Forms\Exceptions\FormException;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\LibraryForm;
 use App\Library;
+use App\User;
 use Gate;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -79,6 +80,13 @@ class LibraryController extends Controller
     {
         return view('admin.libraries.show', [
             'library' => $library,
+            'members' => $library->members()
+                ->withPivot('role')->get()
+                ->map(function (User $user) {
+                    $user->role = $user->pivot->role;
+
+                    return $user;
+                }),
             'nonMembers' => $library->nonMembers(),
         ]);
     }
@@ -98,11 +106,13 @@ class LibraryController extends Controller
 
         foreach ($request->input('data.members') as $member) {
             $members[$member['id']] = [
-                'role' => $member['role']]
-            ;
+                'role' => $member['role']
+            ];
         }
 
         $library->members()->sync($members);
+
+        return response()->json($library->members);
     }
 
     /**

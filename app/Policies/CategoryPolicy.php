@@ -19,7 +19,7 @@ class CategoryPolicy
 
     public function __construct(Request $request)
     {
-        $this->library = $request->route('library');
+        $this->library = $request->route()->parameter('library');
     }
 
     /**

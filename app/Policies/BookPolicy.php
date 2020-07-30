@@ -3,12 +3,21 @@
 namespace App\Policies;
 
 use App\Book;
+use App\Library;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Request;
 
 class BookPolicy
 {
     use HandlesAuthorization;
+
+    private $library;
+
+    public function __construct(Request $request)
+    {
+        $this->library = $request->route()->parameter('library');
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -18,7 +27,7 @@ class BookPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->isAdmin();
+        return $user->isMemberOf($this->library);
     }
 
     /**
@@ -30,7 +39,7 @@ class BookPolicy
      */
     public function view(User $user, Book $book)
     {
-        return $user->isAdmin();
+        return $user->isMemberOf($book->library);
     }
 
     /**
@@ -41,7 +50,7 @@ class BookPolicy
      */
     public function create(User $user)
     {
-        return $user->isAdmin();
+        return $user->isOwnerOf($this->library);
     }
 
     /**
@@ -53,7 +62,7 @@ class BookPolicy
      */
     public function update(User $user, Book $book)
     {
-        return $user->isAdmin();
+        return $user->isOwnerOf($book->library);
     }
 
     /**
@@ -65,7 +74,7 @@ class BookPolicy
      */
     public function delete(User $user, Book $book)
     {
-        return $user->isAdmin();
+        return $user->isOwnerOf($book->library);
     }
 
     /**
@@ -77,7 +86,7 @@ class BookPolicy
      */
     public function restore(User $user, Book $book)
     {
-        return $user->isAdmin();
+        return $user->isOwnerOf($book->library);
     }
 
     /**
@@ -89,6 +98,6 @@ class BookPolicy
      */
     public function forceDelete(User $user, Book $book)
     {
-        return $user->isAdmin();
+        return $user->isOwnerOf($book->library);
     }
 }
