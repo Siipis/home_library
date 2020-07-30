@@ -51,12 +51,12 @@ return [
             // An absolute path where to store the compiled templates, or false to disable caching. If null
             // then the cache file path is used.
             // default: cache file storage path
-            'cache' => null,
+            'cache' => env('APP_ENV') === 'production' ? storage_path('framework/views') : null,
 
             // When developing with Twig, it's useful to recompile the template
             // whenever the source code changes. If you don't provide a value
             // for the auto_reload option, it will be determined automatically based on the debug value.
-            'auto_reload' => true,
+            'auto_reload' => null,
 
             // If set to false, Twig will silently ignore invalid variables
             // (variables and or attributes/methods that do not exist) and
