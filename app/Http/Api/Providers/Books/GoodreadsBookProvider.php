@@ -15,11 +15,11 @@ class GoodreadsBookProvider extends BookProvider
         if (isset($response['search']['results'])) {
             $results = $response['search']['results'];
 
-            if (!isset($results)) {
+            if (!isset($results) || empty($results)) {
                 return [];
             }
 
-            if (array_key_first($results) == 0 && !empty($results)) {
+            if (array_key_first($results) == 0) {
                 return array_values($results['work']);
             }
 
