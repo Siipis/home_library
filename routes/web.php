@@ -23,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('settings', 'HomeController@settings')->name('settings');
     Route::post('updateAccount', 'HomeController@updateAccount')->name('settings.account');
 
+    Route::get('cover/placeholder', 'Library\BookController@noCover')->name('books.no_cover');
+
     Route::prefix('library/{library:slug}')->as('library.')->group(function () {
         Route::get('/', 'LibraryController@index')->name('index');
         Route::post('/', 'LibraryController@books')->name('books');

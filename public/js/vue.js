@@ -6241,7 +6241,7 @@ module.exports = {"add":"Lisää","create":"Luo uusi","edit":"Muokkaa","save":"T
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = {"home":"Etusivu","admin_panel":"Hallintapaneeli","role":"Rooli","member":"Jäsen|Jäsenet","owner":"Hallinnoija","lender":"Lainaaja","add_members":"Lisää käyttäjiä","collection":"Kokoelma|Kokoelmat","book":"Kirja|Kirjat","search":"Kirjoita hakusana"};
+module.exports = {"home":"Etusivu","admin_panel":"Hallintapaneeli","role":"Rooli","member":"Jäsen|Jäsenet","owner":"Hallinnoija","lender":"Lainaaja","add_members":"Lisää käyttäjiä","collection":"Kokoelma|Kokoelmat","book":"Kirja|Kirjat","search":"Kirjoita hakusana","no_results":"Haulla ei löytynyt yhtään tulosta"};
 
 /***/ }),
 

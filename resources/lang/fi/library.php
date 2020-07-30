@@ -12,4 +12,5 @@ return [
     'collection'    => 'Kokoelma|Kokoelmat',
     'book'          => 'Kirja|Kirjat',
     'search'        => 'Kirjoita hakusana',
+    'no_results'    => 'Haulla ei löytynyt yhtään tulosta',
 ];

@@ -19,7 +19,13 @@
 
     <b-row class="mt-3">
         <b-col>
-            <search-results :items="searchResults"></search-results>
+            <search-results v-if="searchResults.length > 0"
+                            :items="searchResults">
+            </search-results>
+
+            <p v-if="showEmptyResultMessage">
+                {{ 'library.no_results'|trans }}.
+            </p>
         </b-col>
 
         <b-col>
@@ -40,13 +46,23 @@
                 searching: false,
                 search: '',
                 searchResults: [],
+                submittedOnce: false,
             },
 
             methods: {
                 handleScan: function (value) {
                     this.search = value;
 
-                    this.fetchBooks();
+                    this.fetchBooks(true);
+                },
+
+                rememberSearch: function() {
+                    this.submittedOnce = true;
+
+                    // Store the search to the local ids datalist
+                    if (!this.local_ids.includes(this.search)) {
+                        this.local_ids = this.local_ids.concat(this.search);
+                    }
                 },
 
                 fetchBooks: function () {
@@ -55,13 +71,18 @@
                         return;
                     }
 
+                    this.rememberSearch();
+
                     axios.post('{{ route('library.search', library.slug) }}', {
                         search: this.search
                     }).then(({ data }) => {
                         this.searchResults = data;
 
                         if (data.length > 0) {
-                            this.setBook(data[0]);
+                            book = data[0];
+                            book.local_id = this.search;
+
+                            this.setBook(book);
                         }
                     }).catch(() => {
                         this.searchResults = [];
@@ -95,6 +116,12 @@
 
                     return Promise.reject(error);
                 });
+            },
+
+            computed: {
+                showEmptyResultMessage() {
+                    return this.submittedOnce === true && this.searching === false && this.searchResults.length === 0;
+                }
             },
 
             watch: {

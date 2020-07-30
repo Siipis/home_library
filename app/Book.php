@@ -19,10 +19,8 @@ class Book extends Model
 
     public static $searchable = [
         'title', 'series', 'authors', 'publisher',
-        'description', 'keywords', 'isbn'
+        'description', 'keywords', 'isbn', 'local_id',
     ];
-
-    public static $coverPath = 'images/books/cover';
 
     // @link https://laravel.com/docs/7.x/eloquent#events
     protected static function booted()
@@ -46,9 +44,13 @@ class Book extends Model
 
     private function storeImage()
     {
-        $provider = new ImageCast();
+        if ($this->cover === route('books.no_cover')) {
+            \Storage::disk('covers')->delete("$this->id.png");
+        } else {
+            $provider = new ImageCast();
 
-        $this->cover = $provider->cast($this, 'cover');
+            $this->cover = $provider->cast($this, 'cover');
+        }
 
         \Cache::forget($this->getCacheId());
     }

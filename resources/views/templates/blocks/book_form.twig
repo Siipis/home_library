@@ -36,7 +36,8 @@
 
     <div class="row">
         <div class="col-md-6">
-            {{ form_row(f.local_id) }}
+            {{ form_row(f.local_id, { 'attr': { 'list': 'local_ids' } }) }}
+            <b-form-datalist id="local_ids" :options="local_ids"></b-form-datalist>
         </div>
 
         <div class="col-md-6 d-flex justify-content-between align-content-stretch">
@@ -68,13 +69,13 @@
                 isbn: '',
                 other_isbn: [],
                 images: [],
+                local_ids: [],
                 loadingIsbn: false,
             },
 
             methods: {
                 setBook: function (book) {
                     book.cover = book.images.length > 0 ? book.images[0] : '';
-                    book.local_id = null;
                     book.providers = JSON.stringify(book.providers);
 
                     this.images = book.images;
@@ -90,7 +91,7 @@
                         return;
                     }
 
-                    this.cover = '';
+                    this.cover = '{{ route('books.no_cover') }}';
 
                     axios.post('{{ route('library.cover', library.slug) }}', {
                         title: book.title,
@@ -138,6 +139,12 @@
 
                     vue.loadCover(book);
                 });
+
+                const coverImage = $('img[data-cover]').data('cover');
+
+                if (coverImage !== undefined) {
+                    this.cover = coverImage;
+                }
 
                 axios.interceptors.request.use((config) => {
                     vue.loadingIsbn = true;

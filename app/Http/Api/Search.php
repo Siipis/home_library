@@ -87,6 +87,6 @@ class Search
             }
         }
 
-        return "https://via.placeholder.com/323x500.jpg?text=" . (is_null($book->title) ? '?' : urlencode(strtoupper($book->title)));
+        return route('books.no_cover');
     }
 }

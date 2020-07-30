@@ -25,29 +25,6 @@ class BookController extends Controller
     }
 
     /**
-     * @param Book $book
-     * @return mixed
-     */
-    public function cover(Library $library, Book $book)
-    {
-        Gate::authorize('view', $book);
-
-        $contentType = [
-            'Content-Type' => 'image/png'
-        ];
-
-        if (Cache::has($book->getCacheId())) {
-            return response()->file(Cache::get("cover$book->id"), $contentType);
-        }
-
-        $file = \Storage::path($book::$coverPath . '/' . $book->id . '.png');
-
-        Cache::put($book->getCacheId(), $file, now()->addDays(30));
-
-        return response()->file($file, $contentType);
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param Library $library
@@ -141,6 +118,50 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->route('library.index', $library);
+    }
+
+    /**
+     * @param Book $book
+     * @return mixed
+     */
+    public function cover(Library $library, Book $book)
+    {
+        Gate::authorize('view', $book);
+
+        if ($book->getRawOriginal('cover') === route('books.no_cover')) {
+            return $this->noCover();
+        }
+
+        return $this->serveImage(
+            \Storage::disk('covers')->path("$book->id.png"),
+            $book->getCacheId()
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function noCover()
+    {
+        return $this->serveImage(
+            \Storage::disk('assets')->path('no_cover.png'),
+            'no_cover'
+        );
+    }
+
+    private function serveImage($image, string $cacheId)
+    {
+        $contentType = [
+            'Content-Type' => 'image/png'
+        ];
+
+        if (Cache::has($cacheId)) {
+            return response()->file(Cache::get($cacheId), $contentType);
+        }
+
+        Cache::put($cacheId, $image, now()->addDays(30));
+
+        return response()->file($image, $contentType);
     }
 
     /**
