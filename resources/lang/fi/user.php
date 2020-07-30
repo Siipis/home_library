@@ -1,5 +1,5 @@
 <?php
 return [
-    'user'          => 'Käyttäjä|Käyttäjät',
+    'type'          => 'Käyttäjä|Käyttäjät',
     'admin'         => 'Hallinnoija',
 ];

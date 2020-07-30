@@ -1,5 +1,6 @@
 <?php
 return [
+    'type'          => 'Kokoelma|Kokoelmat',
     'home'          => 'Etusivu',
     'admin_panel'   => 'Hallintapaneeli',
 

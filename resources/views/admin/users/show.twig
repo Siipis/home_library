@@ -1,11 +1,30 @@
 {% extends 'admin'|layout %}
 
-{% set page_title = '' %}
+{% set page_title = 'user.type'|trans_choice(1) ~ ': ' ~ user.name %}
 
 {% block head %}{% endblock %}
 
 {% block content %}
-    {{ dump(user) }}
+    <h3>{{ page_title }}</h3>
+
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>{{ 'fields.name'|trans }}</th>
+            <td>{{ user.name }}</td>
+        </tr>
+
+        <tr>
+            <th>{{ 'fields.email'|trans }}</th>
+            <td>{{ user.email }}</td>
+        </tr>
+
+        <tr>
+            <th>{{ 'library.type'|trans_choice(2) }}</th>
+            <td>{{ user.libraries.pluck('name').join(', ') }}</td>
+        </tr>
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block scripts %}{% endblock %}
