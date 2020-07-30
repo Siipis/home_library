@@ -235,6 +235,7 @@ return [
 
         // App Specific
         'Env' => App\Facades\EnvFacade::class,
+        'Alert' => App\Facades\AlertFacade::class,
 
         // Third Party
         'Twig' => TwigBridge\Facade\Twig::class,

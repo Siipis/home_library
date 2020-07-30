@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Gate;
+use Alert;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\Exceptions\FormException;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\LibraryForm;
 use App\Library;
+use Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class LibraryController extends Controller
@@ -60,7 +62,11 @@ class LibraryController extends Controller
 
         $library->save();
 
-        return redirect()->route('admin.libraries.index');
+        return redirect()->route('admin.libraries.index')->with(
+            Alert::success('library.added',
+                route('admin.libraries.show', $library)
+            )
+        );
     }
 
     /**
@@ -71,12 +77,6 @@ class LibraryController extends Controller
      */
     public function show(Library $library)
     {
-        $library->members = collect($library->members)->map(function ($member) {
-            $member->role = $member->pivot->role;
-
-            return $member;
-        });
-
         return view('admin.libraries.show', [
             'library' => $library,
             'nonMembers' => $library->nonMembers(),
@@ -88,7 +88,7 @@ class LibraryController extends Controller
      *
      * @param Request $request
      * @param Library $library
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function members(Request $request, Library $library)
     {
@@ -135,7 +135,9 @@ class LibraryController extends Controller
 
         $library->save();
 
-        return redirect()->route('admin.libraries.index');
+        return redirect()->route('admin.libraries.index')->with(
+            Alert::success('library.saved')
+        );
     }
 
     /**
@@ -149,6 +151,8 @@ class LibraryController extends Controller
     {
         $library->delete();
 
-        return redirect()->route('admin.libraries.index');
+        return redirect()->route('admin.libraries.index')->with(
+            Alert::info('library.deleted')
+        );
     }
 }

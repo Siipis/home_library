@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Rules\Slug;
+use App\Facades\Classes\Alert;
 use Validator;
 use App\Facades\Classes\Env;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('env', function () {
             return new Env();
+        });
+
+        $this->app->bind('alert', function () {
+            return new Alert();
         });
     }
 

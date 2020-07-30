@@ -1,0 +1,14 @@
+{% if session('alerts') is not empty %}
+    <div class="mb-4">
+        {% for alert in session('alerts') %}
+            <flashable variant="{{ alert.type }}">
+                {{ alert.message }}
+                {% if alert.url is not empty %}
+                    <a class="alert-link" href="{{ alert.url }}">
+                        {{ 'alerts.link_text'|trans }}.
+                    </a>
+                {% endif %}
+            </flashable>
+        {% endfor %}
+    </div>
+{% endif %}

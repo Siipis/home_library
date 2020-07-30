@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use Auth;
 use App\Http\Forms\UserForm;
@@ -60,6 +61,8 @@ class HomeController extends Controller
 
         $user->save();
 
-        return redirect()->back();
+        return redirect()->back()->with(
+            Alert::success('settings.saved')
+        );
     }
 }

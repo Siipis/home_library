@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Library;
 
+use Alert;
 use App\Category;
 use App\Http\Controllers\LibraryController;
 use App\Http\Forms\CategoryForm;
@@ -65,7 +66,12 @@ class CategoryController extends Controller
             $category->save();
         }
 
-        return redirect()->route('library.categories.index', $library);
+        return redirect()->route('library.categories.index', $library)->with(
+            Alert::success('category.added',
+                route('library.categories.show', [$library, $category]
+                )
+            )
+        );
     }
 
     /**
@@ -114,7 +120,9 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return redirect()->route('library.categories.show', [$library, $category]);
+        return redirect()->route('library.categories.show', [$library, $category])->with(
+            Alert::success('category.saved')
+        );
     }
 
     /**
@@ -129,6 +137,8 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('library.categories.index', $library);
+        return redirect()->route('library.categories.index', $library)->with(
+            Alert::info('category.deleted')
+        );
     }
 }

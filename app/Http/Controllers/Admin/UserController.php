@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Alert;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\UserForm;
 use App\User;
@@ -62,7 +63,9 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.users.show', $user->id);
+        return redirect()->route('admin.users.show', $user->id)->with(
+            Alert::success('user.added')
+        );
     }
 
     /**
@@ -122,7 +125,9 @@ class UserController extends Controller
             return response()->json($user);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with(
+            Alert::success('user.saved')
+        );
     }
 
     /**
@@ -135,6 +140,8 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index')->with(
+            Alert::info('user.deleted')
+        );
     }
 }

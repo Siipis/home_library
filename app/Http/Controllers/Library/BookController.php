@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Library;
 
+use Alert;
 use App\Book;
 use App\Category;
 use App\Http\Controllers\Controller;
@@ -54,7 +55,11 @@ class BookController extends Controller
 
         $book->categories()->sync($request->input('book_form.category_choices'));
 
-        return redirect()->back();
+        return redirect()->back()->with(
+            Alert::success('book.added',
+                route('library.books.show', [$library, $book])
+            )
+        );
     }
 
     /**
@@ -102,7 +107,8 @@ class BookController extends Controller
         $book->categories()->sync($request->input('book_form.category_choices'));
         $book->save();
 
-        return redirect()->route('library.books.show', [$library, $book]);
+        return redirect()->route('library.books.show', [$library, $book])
+            ->with(Alert::success('book.saved'));
     }
 
     /**
@@ -117,7 +123,8 @@ class BookController extends Controller
     {
         $book->delete();
 
-        return redirect()->route('library.index', $library);
+        return redirect()->route('library.index', $library)
+            ->with(Alert::danger('book.deleted'));
     }
 
     /**

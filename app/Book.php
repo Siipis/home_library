@@ -130,6 +130,8 @@ class Book extends Model
 
         preg_match('/^([0-9-X]+)/', $isbn, $matches);
 
+        if (empty($matches)) return null;
+
         return $matches[1];
     }
 

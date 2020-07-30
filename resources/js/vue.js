@@ -2,10 +2,11 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import { RoutePlugin } from "./route";
 import { LangPlugin } from "./localization";
 import AjaxError from "./components/AjaxError";
-import DeleteButton from "./components/DeleteButton";
-import Category from "./components/Category";
-import SearchResults from "./components/SearchResults";
 import Books from "./components/Books";
+import Category from "./components/Category";
+import DeleteButton from "./components/DeleteButton";
+import Flashable from "./components/Flashable";
+import SearchResults from "./components/SearchResults";
 
 /**
  * Import Vue and configure it.
@@ -21,10 +22,11 @@ window.Vue.use(RoutePlugin);
 window.Vue.use(LangPlugin);
 
 window.Vue.component('ajax-error', AjaxError);
-window.Vue.component('delete-button', DeleteButton);
-window.Vue.component('category', Category);
-window.Vue.component('search-results', SearchResults);
 window.Vue.component('books', Books);
+window.Vue.component('category', Category);
+window.Vue.component('delete-button', DeleteButton);
+window.Vue.component('flashable', Flashable);
+window.Vue.component('search-results', SearchResults);
 
 window.app = new window.Vue({
     'el': '#app',
