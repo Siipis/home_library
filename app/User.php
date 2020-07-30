@@ -74,7 +74,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->isAdmin()) return true;
 
-        return $library->members()->where('user.id', '=', $this->id)->count('id') > 0;
+        return $library->members()
+                ->where('users.id', '=', $this->id)
+                ->count('users.id') > 0;
     }
 
     /**
@@ -85,6 +87,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->isAdmin()) return true;
 
-        return $library->members()->where('user.id', '=', $this->id)->where('role', '=', 'owner')->count('id') > 0;
+        return $library->members()
+                ->where('users.id', '=', $this->id)
+                ->where('role', '=', 'owner')
+                ->count('users.id') > 0;
     }
 }
