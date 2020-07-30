@@ -46,10 +46,6 @@ mix.js('resources/js/app.js', 'public/js')
 
 if (mix.inProduction()) {
     mix.version();
-
-    mix.options({
-        purifyCss: true,
-    });
 } else {
     mix.browserSync(process.env.APP_URL);
 }
