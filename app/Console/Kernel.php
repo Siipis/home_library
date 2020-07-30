@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\MakeView::class,
         \App\Console\Commands\MakeLayout::class,
         \App\Console\Commands\MakeView::class,
+        \App\Console\Commands\Production::class,
     ];
 
     /**
