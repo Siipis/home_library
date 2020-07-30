@@ -10,8 +10,6 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.1",
         "rcrowe/twigbridge": "^0.12.1",
         "ext-json": "*",
         "ext-gd": "*",
@@ -19,6 +17,8 @@
         "ext-xml": "*"
     },
     "require-dev": {
+        "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.1",
         "barryvdh/laravel-ide-helper": "^2.7",
         "facade/ignition": "^2.0",
         "fzaninotto/faker": "^1.9.1",
@@ -66,8 +66,6 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
         ]
     }
 }
