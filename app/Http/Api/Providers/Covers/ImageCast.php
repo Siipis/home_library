@@ -27,7 +27,7 @@ class ImageCast extends ApiProvider
             }
 
             imagepng(imagescale(
-                    imagecreatefromstring($response), 500, -1, IMG_BICUBIC),
+                    imagecreatefromstring($response), 500, -1),
             Storage::path($path));
 
             return $filename;
