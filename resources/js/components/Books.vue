@@ -19,7 +19,7 @@
         <isotope :options="options" :list="allBooks" class="books my-3"
                  ref="grid" v-images-loaded:on.progress="layout"
                  v-infinitescroll="loadBooks" infinite-scroll-disabled="loading">
-            <div v-for="book in allBooks" :key="book.id" class="book col-3 p-1">
+            <div v-for="book in allBooks" :key="book.id" class="book col-xl-3 col-md-4 col-sm-6 col-xs-12 p-1">
                 <b-card class="book-card text-center"
                         :img-src="book.cover"
                         img-top>
