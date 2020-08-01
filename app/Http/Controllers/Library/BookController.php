@@ -11,8 +11,10 @@ use App\Http\Forms\BookForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
 use Cache;
+use DB;
 use Gate;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BookController extends Controller
 {
@@ -45,15 +47,18 @@ class BookController extends Controller
      * @param Library $library
      * @return mixed
      * @throws UnsentFormException
+     * @throws \Throwable
      */
     public function store(Request $request, Library $library)
     {
+        DB::beginTransaction();
         $book = $this->form->get($request);
         $category = null;
 
         $library->books()->save($book);
 
         $book->categories()->sync($request->input('book_form.category_choices'));
+        DB::commit();
 
         return redirect()->back()->with(
             Alert::success('book.added',
@@ -102,10 +107,12 @@ class BookController extends Controller
      */
     public function update(Request $request, Library $library, Book $book)
     {
+        DB::beginTransaction();
         $book = $this->form->get($request, $book);
 
         $book->categories()->sync($request->input('book_form.category_choices'));
         $book->save();
+        DB::commit();
 
         return redirect()->route('library.books.show', [$library, $book])
             ->with(Alert::success('book.saved'));
@@ -124,7 +131,7 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->route('library.index', $library)
-            ->with(Alert::danger('book.deleted'));
+            ->with(Alert::warning('book.deleted'));
     }
 
     /**
@@ -156,6 +163,11 @@ class BookController extends Controller
         );
     }
 
+    /**
+     * @param $image
+     * @param string $cacheId
+     * @return BinaryFileResponse
+     */
     private function serveImage($image, string $cacheId)
     {
         $contentType = [
@@ -169,19 +181,5 @@ class BookController extends Controller
         Cache::put($cacheId, $image, now()->addDays(30));
 
         return response()->file($image, $contentType);
-    }
-
-    /**
-     * @param Request $request
-     * @param Book $book
-     */
-    private function bindRelations(Request $request, Book $book)
-    {
-        $category_id = $request->input('book_form.category_choices');
-
-        if ($category_id > 0) {
-            $category = Category::findOrFail($category_id);
-            $category->books()->save($book);
-        }
     }
 }
