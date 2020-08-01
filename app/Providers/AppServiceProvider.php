@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use App\Facades\Classes\Alert;
+use App\Facades\Classes\Alert as AlertClass;
+use App\Facades\Classes\Env as EnvClass;
+use Env;
 use Illuminate\Database\Schema\Builder;
-use Validator;
-use App\Facades\Classes\Env;
 use Illuminate\Support\ServiceProvider;
+use URL;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,11 +25,11 @@ class AppServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton('env', function () {
-            return new Env();
+            return new EnvClass();
         });
 
         $this->app->bind('alert', function () {
-            return new Alert();
+            return new AlertClass();
         });
     }
 
@@ -38,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (Env::notLive()) {
+            URL::forceScheme('https');
+        }
+
         Builder::defaultStringLength(191);
 
         Validator::extend('slug', function ($attribute, $value, $parameters, $validator) {
