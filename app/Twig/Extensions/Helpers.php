@@ -57,17 +57,23 @@ class Helpers extends AbstractExtension
                 return "App\\" . $string;
             }),
 
-            new TwigFilter('vue', function ($model) {
+            new TwigFilter('vue', function ($model, string $mode = 'json') {
                 if ($model instanceof Jsonable) {
-                    return $model->toJson();
+                    return $this->escapeJson(
+                        $model->toJson(), $mode
+                    );
                 }
 
                 if ($model instanceof Arrayable) {
-                    return json_encode($model->toArray());
+                    return $this->escapeJson(
+                        json_encode($model->toArray()), $mode
+                    );
                 }
 
                 if (is_array($model)) {
-                    return json_encode($model);
+                    return $this->escapeJson(
+                        json_encode($model), $mode
+                    );
                 }
 
                 throw new \Exception("Unrecognized data type " . typeOf($model));
@@ -80,5 +86,14 @@ class Helpers extends AbstractExtension
         return [
             new Token_TokenParser(),
         ];
+    }
+
+    private function escapeJson(string $json, string $mode = 'json')
+    {
+        if ($mode === 'html') {
+            return htmlentities($json);
+        }
+
+        return $json;
     }
 }

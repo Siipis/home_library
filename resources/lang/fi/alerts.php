@@ -13,4 +13,7 @@ return [
     'library'       => 'Kokoelma',
     'settings'      => 'Asetukset',
     'user'          => 'Käyttäjä',
+
+    // Exceptions
+    'error'         => 'Pyynnön käsittelyssä tapahtui virhe. Ole yhteydessä ylläpitäjään.',
 ];

@@ -9,8 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
-    protected $hidden = [
-        'providers', 'library_id',
+    protected $visible = [
+        'id', 'local_id', 'link', 'title', 'series',
+        'authors', 'publisher', 'year', 'language',
+        'isbn', 'other_isbn', 'cover', 'images',
+        'providers',
     ];
 
     protected $appends = [
@@ -103,6 +106,14 @@ class Book extends Model
     }
 
     /**
+     * @param $description
+     */
+    public function setDescriptionAttribute($description)
+    {
+        $this->attributes['description'] = preg_replace("/<br[ ]?\/>/i", "\n", $description);
+    }
+
+    /**
      * @param $isbn
      */
     public function setIsbnAttribute($isbn)
@@ -124,7 +135,7 @@ class Book extends Model
      * @param $isbn
      * @return string|null
      */
-    public function cleanIsbn($isbn)
+    private function cleanIsbn($isbn)
     {
         if (empty($isbn)) return null;
 

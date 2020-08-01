@@ -12,3 +12,13 @@
         {% endfor %}
     </div>
 {% endif %}
+
+{% if errors is not empty %}
+    <div class="mb-4">
+        {% for error in errors.all() %}
+            <flashable variant="danger">
+                {{ error }}
+            </flashable>
+        {% endfor %}
+    </div>
+{% endif %}

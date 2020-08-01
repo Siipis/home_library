@@ -69,10 +69,13 @@ class BookForm extends Form
             ]
         ]);
         $this->add('cover', TextType::class, [
-            'rules' => 'url',
+            'rules' => 'url|nullable',
             'attr' => [
                 'autocomplete' => 'off',
-            ]
+            ],
+
+            'data' => null,
+            'empty_data' => $this->modelExists() ? $this->model()->cover : route('books.no_cover'),
         ]);
         $this->add('language', TextType::class, [
             'rules' => 'string',

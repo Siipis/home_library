@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -29,10 +34,10 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Throwable  $exception
+     * @param Throwable $exception
      * @return void
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function report(Throwable $exception)
     {
@@ -42,14 +47,48 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @param Throwable $exception
+     * @return Response
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function render($request, Throwable $exception)
     {
+        // Don't show detailed errors unless debug is on.
+        $message = config('app.debug')
+            ? $exception->getMessage()
+            : trans('alert.error');
+
+        // Serve JSON to Ajax requests
+        if ($request->expectsJson()) {
+            return response()->json([
+                'errors' => array($message)
+            ]);
+        }
+
+        // Otherwise flash the error through the session
+        if ($request->acceptsHtml()) {
+            // Redirect forms back, or...
+            if (!empty($request->input())) {
+                return redirect()->back()->withErrors($message);
+            }
+
+            // ...create a message bag manually
+            $errors = $request->session()->get('errors', new ViewErrorBag);
+
+            if (!$errors instanceof ViewErrorBag) {
+                $errors = new ViewErrorBag;
+            }
+
+            $request->session()->flash('errors',
+                $errors->put('default', new MessageBag([
+                    'exception' => $message
+                ]))
+            );
+        }
+
+        // Fallback to Laravel's default behaviour
         return parent::render($request, $exception);
     }
 }
