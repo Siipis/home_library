@@ -1,8 +1,10 @@
 {% block navbar %}
-    <b-navbar type="dark" variant="dark" class="mb-4">
+    <b-navbar toggleable="md" type="dark" variant="dark" class="mb-4">
         <b-navbar-brand href="{{ route('index') }}">{{ app_name }}</b-navbar-brand>
 
-        <b-collapse id="mainMenu" is-nav>
+        <b-navbar-toggle target="main_menu"></b-navbar-toggle>
+
+        <b-collapse id="main_menu" is-nav>
             <b-navbar-nav class="mr-auto">
                 {% block left %}{% endblock %}
             </b-navbar-nav>

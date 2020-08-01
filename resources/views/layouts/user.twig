@@ -15,7 +15,7 @@
                     {{ 'category.type'|trans_choice(2) }}
                 </b-nav-item>
                 {% for category in library.categories %}
-                    <b-nav-item href="{{ route('library.categories.show', [library.slug, category.id]) }}">
+                    <b-nav-item class="d-none d-md-block" href="{{ route('library.categories.show', [library.slug, category.id]) }}">
                         <b-icon icon="circle-fill" style="color: {{ category.color }}"></b-icon>
                         {{ category.name }}
                     </b-nav-item>

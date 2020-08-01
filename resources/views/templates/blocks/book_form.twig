@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    {{ form_row(f.cover, { 'attr': { 'list': 'images' }}) }}
+    {{ form_row(f.cover, { 'attr': { 'list': 'images', '@change': 'coverIsDirty = true' }}) }}
     <b-form-datalist id="images" :options="images"></b-form-datalist>
 
     {{ form_row(f.category_choices) }}
@@ -40,14 +40,20 @@
             <b-form-datalist id="local_ids" :options="local_ids"></b-form-datalist>
         </div>
 
-        <div class="col-md-6 d-flex justify-content-between align-content-stretch">
-            {{ form_row(f.isbn, { 'attr': { 'list': 'other_isbn' }}) }}
-
-            <div class="form-group align-self-end flex-grow-0">
-                <b-button variant="link" @click="loadIsbn" :disabled="loadingIsbn">
-                    <b-icon icon="arrow-repeat" :class="{ 'b-icon-animation-spin': loadingIsbn }"></b-icon>
-                </b-button>
-            </div>
+        <div class="col-md-6">
+            <b-form-group>
+                {{ form_label(f.isbn) }}
+                <b-input-group>
+                    {{ form_widget(f.isbn, { 'attr': { 'list': 'other_isbn' }}) }}
+                    <b-input-group-append>
+                        <b-input-group-addon>
+                            <b-button variant="outline-secondary" @click="loadIsbn" :disabled="loadingIsbn">
+                                <b-icon icon="arrow-repeat" :class="{ 'b-icon-animation-spin': loadingIsbn }"></b-icon>
+                            </b-button>
+                        </b-input-group-addon>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-form-group>
 
             <b-form-datalist id="other_isbn" :options="other_isbn"></b-form-datalist>
         </div>
@@ -66,6 +72,7 @@
             data: {
                 categories: {{ library.categories|vue }},
                 cover: '',
+                coverIsDirty: false,
                 isbn: '',
                 other_isbn: [],
                 images: [],
@@ -75,14 +82,17 @@
 
             methods: {
                 setBook: function (book) {
-                    book.cover = book.images.length > 0 ? book.images[0] : '';
                     book.providers = JSON.stringify(book.providers);
 
                     this.images = book.images;
                     this.other_isbn = [ ...book.other_isbn, book.isbn ];
 
                     this.fillForm('book_form', book);
-                    this.loadCover(book);
+
+                    if (!this.coverIsDirty) {
+                        book.cover = book.images.length > 0 ? book.images[0] : '';
+                        this.loadCover(book);
+                    }
                 },
 
                 loadCover: function (book) {
@@ -91,6 +101,8 @@
                         return;
                     }
 
+                    if (this.coverIsDirty) return; // Don't change the cover is the user has already selected one
+
                     this.cover = '{{ route('books.no_cover') }}';
 
                     axios.post('{{ route('library.cover', library.slug) }}', {
@@ -98,7 +110,7 @@
                         isbn: book.isbn,
                     }).then(({ data }) => {
                         this.cover = data;
-                        $('#book_form_cover').val(data);
+                        $('#book_form_cover').val(data.includes('placeholder') ? '' : data);
                     });
                 },
 
