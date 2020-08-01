@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (Env::notLive()) {
+        if (Env::production()) {
             URL::forceScheme('https');
         }
 
