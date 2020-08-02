@@ -31,9 +31,21 @@
 
     <b-row class="mt-3">
         <b-col sm="12" lg="6">
-            <search-results v-if="searchResults.length > 0"
-                            :items="searchResults">
-            </search-results>
+            <template v-if="existingBooks.length > 0">
+                <h5 class="text-muted">{{ 'library.existing_books'|trans }}:</h5>
+                <b-row class="mb-4">
+                    <b-col cols="2" v-for="existing in existingBooks" :key="existing.id">
+                        <a :href="existing.link" :title="existing.title">
+                            <img :src="existing.cover" alt="" class="w-100" />
+                        </a>
+                    </b-col>
+                </b-row>
+            </template>
+
+            <template v-if="newBooks.length > 0">
+                <h5 class="text-muted">{{ 'library.new_books'|trans }}:</h5>
+                <search-results :items="newBooks"></search-results>
+            </template>
 
             <p v-if="showEmptyResultMessage">
                 {{ 'library.no_results'|trans }}.
@@ -85,8 +97,9 @@
 
                     this.rememberSearch();
 
-                    axios.post('{{ route('library.search', library.slug) }}', {
-                        search: this.search
+                    axios.post('{{ route('books.search') }}', {
+                        search: this.search,
+                        library: '{{ library.slug }}',
                     }).then(({ data }) => {
                         this.searchResults = data;
 
@@ -131,6 +144,14 @@
             },
 
             computed: {
+                existingBooks() {
+                    return this.searchResults.existing  ?? [];
+                },
+
+                newBooks() {
+                    return this.searchResults.new ?? [];
+                },
+
                 showEmptyResultMessage() {
                     return this.submittedOnce === true && this.searching === false && this.searchResults.length === 0;
                 }

@@ -14,30 +14,28 @@ use Illuminate\Support\Collection;
 class Search
 {
     /**
-     * @param Library $library
      * @param string $search
      * @return array
      * @throws Exception
      */
-    public static function books(Library $library, string $search)
+    public static function books(string $search)
     {
         $result = self::queryBooks(compact('search'));
 
-        $parser = new BookResultsParser($library);
+        $parser = new BookResultsParser();
         return $parser->parseSearchResults($result);
     }
 
     /**
-     * @param Library $library
      * @param string $isbn
      * @return array
      * @throws Exception
      */
-    public static function details(Library $library, string $isbn)
+    public static function details(string $isbn)
     {
         $result = self::queryBooks(compact('isbn'));
 
-        $parser = new BookResultsParser($library);
+        $parser = new BookResultsParser();
         return $parser->parseDetailResults($result);
     }
 

@@ -3,12 +3,15 @@
 namespace App;
 
 use App\Http\Api\Providers\Covers\ImageCast;
+use App\Traits\Paginated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
+    use Paginated;
+
     protected $visible = [
         'id', 'local_id', 'link', 'title', 'series',
         'authors', 'publisher', 'year', 'language',
@@ -80,6 +83,23 @@ class Book extends Model
     public function owner()
     {
         return $this->belongsTo(Library::class, 'user_id');
+    }
+
+    /**
+     * @param $query
+     * @param string $search
+     */
+    public function scopeSearch($query, string $search)
+    {
+        $query->where(function ($query) use ($search) {
+            $table = $this->getTable();
+
+            foreach ($this::$searchable as $index => $attribute) {
+                $method = $index > 0 ? 'orWhere' : 'where';
+
+                $query->$method("$table.$attribute", "LIKE", "%$search%");
+            }
+        });
     }
 
     /**

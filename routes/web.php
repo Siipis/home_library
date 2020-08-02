@@ -23,15 +23,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('settings', 'HomeController@settings')->name('settings');
     Route::post('updateAccount', 'HomeController@updateAccount')->name('settings.account');
 
-    Route::get('cover/placeholder', 'Library\BookController@noCover')->name('books.no_cover');
+    Route::prefix('books')->as('books.')->group(function() {
+        Route::post('search', 'ApiController@search')->name('search');
+        Route::post('details', 'ApiController@details')->name('details');
+        Route::post('cover', 'ApiController@cover')->name('cover');
+        Route::get('cover/placeholder', 'Library\BookController@noCover')->name('no_cover');
+    });
 
     Route::prefix('library/{library:slug}')->as('library.')->group(function () {
         Route::get('/', 'LibraryController@index')->name('index');
         Route::post('/', 'LibraryController@books')->name('books');
-
-        Route::post('search', 'LibraryController@search')->name('search');
-        Route::post('details', 'LibraryController@details')->name('details');
-        Route::post('cover', 'LibraryController@cover')->name('cover');
 
         Route::resource('books', 'Library\BookController', [
             'except' => 'index',

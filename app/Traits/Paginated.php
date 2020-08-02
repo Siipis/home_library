@@ -25,27 +25,14 @@ trait Paginated
 
         $search = Request::query('search');
 
-        return $this->books()
-            ->when($search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $this->querySearchables($query, $search);
-                });
-            })
-            ->simplePaginate($this::$paginate);
-    }
-
-    /**
-     * @param $query
-     * @param $search
-     */
-    private function querySearchables($query, $search)
-    {
-        $booksTable = $this->books()->getRelated()->getTable();
-
-        foreach (Book::$searchable as $index => $attribute) {
-            $method = $index > 0 ? 'orWhere' : 'where';
-
-            $query->$method("$booksTable.$attribute", "LIKE", "%$search%");
+        if (method_exists($this, 'books')) {
+            $books = $this->books();
+        } else {
+            $books = Book::query();
         }
+
+        return $books->when($search, function ($query, $search) {
+            $query->search($search);
+        })->simplePaginate($this::$paginate);
     }
 }

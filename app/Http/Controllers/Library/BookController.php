@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Library;
 
 use Alert;
 use App\Book;
-use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LibraryController;
 use App\Http\Forms\BookForm;
@@ -142,14 +141,14 @@ class BookController extends Controller
     {
         Gate::authorize('view', $book);
 
-        if ($book->getRawOriginal('cover') === route('books.no_cover')) {
+        try {
+            return $this->serveImage(
+                \Storage::disk('covers')->path("$book->id.png"),
+                $book->getCacheId()
+            );
+        } catch (\Exception $e) {
             return $this->noCover();
         }
-
-        return $this->serveImage(
-            \Storage::disk('covers')->path("$book->id.png"),
-            $book->getCacheId()
-        );
     }
 
     /**

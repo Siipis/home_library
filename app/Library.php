@@ -3,8 +3,8 @@
 namespace App;
 
 use App\Traits\Paginated;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -17,7 +17,7 @@ class Library extends Model
     ];
 
     /**
-     * @return BelongsToMany
+     * @return BelongsToMany|User
      */
     public function members()
     {
@@ -25,7 +25,7 @@ class Library extends Model
     }
 
     /**
-     * @return mixed
+     * @return mixed|User
      */
     public function nonMembers()
     {
@@ -35,7 +35,7 @@ class Library extends Model
     }
 
     /**
-     * @return HasMany
+     * @return HasMany|Book
      */
     public function books()
     {
@@ -43,10 +43,28 @@ class Library extends Model
     }
 
     /**
-     * @return HasMany
+     * @return HasMany|Category
      */
     public function categories()
     {
         return $this->hasMany(Category::class);
+    }
+
+    /**
+     * @param string $slug
+     * @return Library|null
+     */
+    public static function findBySlug(string $slug)
+    {
+        return self::whereSlug($slug)->first();
+    }
+
+    /**
+     * @param string $slug
+     * @return Library
+     */
+    public static function findBySlugOrFail(string $slug)
+    {
+        return self::whereSlug($slug)->firstOrFail();
     }
 }

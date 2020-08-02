@@ -5,27 +5,15 @@ namespace App\Http\Api;
 
 
 use App\Book;
-use App\Library;
 use Illuminate\Support\Collection;
 
 class BookResultsParser
 {
     protected $similarityThreshold = 0.7;
 
-    protected $library;
-
     protected $compared = [
         'year|title|authors|publisher',
     ];
-
-    /**
-     * BookResultsParser constructor.
-     * @param Library $library
-     */
-    public function __construct(Library $library)
-    {
-        $this->library = $library;
-    }
 
     /**
      * @param Collection $result

@@ -14,4 +14,6 @@ return [
     'book'          => 'Kirja|Kirjat',
     'search'        => 'Kirjoita hakusana',
     'no_results'    => 'Haulla ei löytynyt yhtään tulosta',
+    'new_books'     => 'Verkkohaun tulokset',
+    'existing_books'    => 'Kokoelmassa on jo',
 ];
