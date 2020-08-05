@@ -8,8 +8,12 @@ use App\Book;
 use App\Http\Images\DownloadProvider;
 use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Http\Response;
 use Image;
+use Request;
 use Storage;
+use Str;
+use Validator;
 
 class Cover
 {
@@ -106,18 +110,23 @@ class Cover
      */
     public function make(Book $book)
     {
-        if (!$book->cover || $book->cover === route('books.no_cover')) {
+        if (empty($book->upload_cover) && (!$book->cover || $book->cover === route('books.no_cover'))) {
             $this->storage->delete(
                 $this->getFilename($book)
             );
         } else {
             if ($this->isDirty($book)) {
-                $image = $this->provider->download($book->cover);
-
-                if ($image instanceof \Intervention\Image\Image) {
-                    $this->storage->put($this->getFilename($book), $image->getEncoded());
+                if (Request::hasFile('book_form.upload_cover')) {
+                    Request::file('book_form.upload_cover')->storeAs('', $this->getFilename($book), 'covers');
+                    unset($book->upload_cover);
                 } else {
-                    abort(404);
+                    $image = $this->provider->download($book->cover);
+
+                    if ($image instanceof \Intervention\Image\Image) {
+                        $this->storage->put($this->getFilename($book), $image->getEncoded());
+                    } else {
+                        abort(404);
+                    }
                 }
             }
         }
@@ -151,7 +160,7 @@ class Cover
     /**
      * @param Book|null $book
      * @param string|null $filter
-     * @return \Illuminate\Http\Response
+     * @return Response
      * @throws Exception
      */
     public function response(Book $book = null, string $filter = null)
@@ -187,7 +196,7 @@ class Cover
      */
     private function getFilter(string $filter = null)
     {
-        \Validator::make(compact('filter'), [
+        Validator::make(compact('filter'), [
             'filter' => 'nullable|alpha'
         ]);
 
@@ -209,6 +218,6 @@ class Cover
      */
     private function isDirty(Book $book)
     {
-        return \Str::startsWith($book->cover, 'http') && !\Str::contains($book->cover, config('app.url'));
+        return Request::hasFile('book_form.upload_cover') || Str::startsWith($book->cover, 'http') && !Str::contains($book->cover, config('app.url'));
     }
 }

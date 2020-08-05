@@ -6,6 +6,7 @@ use App\Book;
 use App\Category;
 use Illuminate\Validation\Rule;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -36,34 +37,34 @@ class BookForm extends Form
             ]
         ]);
         $this->add('isbn', TextType::class, [
-            'rules' => 'string',
+            'rules' => 'string|max:20',
             'attr' => [
                 'autocomplete' => 'off',
             ]
         ]);
         $this->add('title', TextType::class, [
-            'rules' => 'required|string',
+            'rules' => 'required|string|max:190',
             'attr' => [
                 'autocomplete' => 'off',
             ],
         ]);
         $this->add('series', TextType::class, [
-            'rules' => 'string'
+            'rules' => 'string|max:190'
         ]);
         $this->add('authors', TextType::class, [
-            'rules' => 'string'
+            'rules' => 'string|max:190'
         ]);
         $this->add('publisher', TextType::class, [
-            'rules' => 'string',
+            'rules' => 'string|max:190',
         ]);
         $this->add('year', TextType::class, [
-            'rules' => 'string',
+            'rules' => 'string|max:4',
         ]);
         $this->add('description', TextareaType::class, [
-            'rules' => 'string',
+            'rules' => 'string|max:2000',
         ]);
         $this->add('keywords', TextType::class, [
-            'rules' => 'string',
+            'rules' => 'string|max:190',
             'attr' => [
                 'autocomplete' => 'off',
             ]
@@ -77,8 +78,11 @@ class BookForm extends Form
             'data' => null,
             'empty_data' => $this->modelExists() ? $this->model()->cover : route('books.no_cover'),
         ]);
+        $this->add('upload_cover', FileType::class, [
+            'rules' => 'image|nullable',
+        ]);
         $this->add('language', TextType::class, [
-            'rules' => 'string',
+            'rules' => 'string|max:20',
         ]);
         $this->add('providers', HiddenType::class, [
             'rules' => 'json',

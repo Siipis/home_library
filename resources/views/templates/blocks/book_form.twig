@@ -10,6 +10,9 @@
         <div class="col-md-6">
             {{ form_row(f.series) }}
         </div>
+
+        {{ form_errors(f.title) }}
+        {{ form_errors(f.series) }}
     </div>
 
 
@@ -29,8 +32,30 @@
         </div>
     </div>
 
-    {{ form_row(f.cover, { 'attr': { 'list': 'images', '@change': 'coverIsDirty = true' }}) }}
-    <b-form-datalist id="images" :options="images"></b-form-datalist>
+    <div class="row">
+        <div class="col">
+            <b-form-group>
+                {{ form_label(f.cover) }}
+                <b-input-group>
+                    {{ form_widget(f.cover, { 'attr': { 'list': 'images', '@change': 'coverIsDirty = true', ':disabled' : 'upload_cover !== null' }}) }}
+                    <b-input-group-append>
+                        <b-input-group-addon>
+                            <div style="width: 0; height: 0; overflow: hidden">
+                                {{ form_widget(f.upload_cover, { 'attr' : { '@change' : 'attachImage', 'ref' : 'upload_cover' } }) }}
+                            </div>
+                            <b-button variant="outline-secondary" @click="$refs.upload_cover.click()" v-if="upload_cover === null">
+                                <b-icon icon="camera"></b-icon>
+                            </b-button>
+                            <b-button variant="outline-danger" @click="detachImage" v-if="upload_cover != null">
+                                <b-icon icon="x"></b-icon>
+                            </b-button>
+                        </b-input-group-addon>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-form-group>
+            <b-form-datalist id="images" :options="images"></b-form-datalist>
+        </div>
+    </div>
 
     {{ form_row(f.category_choices) }}
 
@@ -72,6 +97,7 @@
             data: {
                 categories: {{ library.categories|vue }},
                 cover: '',
+                upload_cover: null,
                 coverIsDirty: false,
                 isbn: '',
                 other_isbn: [],
@@ -126,6 +152,19 @@
                     }).then(({ data }) => {
                         this.setBook(data);
                     });
+                },
+
+                attachImage: function () {
+                    this.upload_cover = this.$refs.upload_cover.files[0];
+                    this.cover = URL.createObjectURL(this.upload_cover);
+                    $('#book_form_cover').val(this.upload_cover.name);
+                },
+
+                detachImage: function () {
+                    this.upload_cover = null;
+                    this.cover = null;
+                    this.$refs.upload_cover.value = null;
+                    $('#book_form_cover').val(null);
                 },
             },
 
