@@ -6,10 +6,10 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class EnvFacade extends Facade
+class CoverFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'env';
+        return 'cover';
     }
 }

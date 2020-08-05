@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use App\Facades\Classes\Alert as AlertClass;
-use App\Facades\Classes\Env as EnvClass;
-use Env;
+use App\Facades\Classes\Cover as CoverClass;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\ServiceProvider;
 use URL;
@@ -24,12 +23,12 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
 
-        $this->app->singleton('env', function () {
-            return new EnvClass();
-        });
-
         $this->app->bind('alert', function () {
             return new AlertClass();
+        });
+
+        $this->app->singleton('cover', function () {
+            return new CoverClass();
         });
     }
 
@@ -40,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (Env::production()) {
+        if ($this->app->environment() === 'production') {
             URL::forceScheme('https');
         }
 

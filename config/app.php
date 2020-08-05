@@ -172,6 +172,9 @@ return [
         // @link https://github.com/barryvdh/laravel-form-bridge
         Barryvdh\Form\ServiceProvider::class,
 
+        // @link http://image.intervention.io
+        Intervention\Image\ImageServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -234,13 +237,15 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // App Specific
-        'Env' => App\Facades\EnvFacade::class,
         'Alert' => App\Facades\AlertFacade::class,
+        'Cover' => App\Facades\CoverFacade::class,
 
         // Third Party
         'Twig' => TwigBridge\Facade\Twig::class,
         'FormFactory' => Barryvdh\Form\Facade\FormFactory::class,
         'FormRenderer' => Barryvdh\Form\Facade\FormRenderer::class,
+
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

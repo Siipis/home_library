@@ -9,11 +9,11 @@ use App\Http\Controllers\LibraryController;
 use App\Http\Forms\BookForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
-use Cache;
+use Cover;
 use DB;
 use Gate;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 class BookController extends Controller
 {
@@ -46,7 +46,7 @@ class BookController extends Controller
      * @param Library $library
      * @return mixed
      * @throws UnsentFormException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(Request $request, Library $library)
     {
@@ -57,6 +57,7 @@ class BookController extends Controller
         $library->books()->save($book);
 
         $book->categories()->sync($request->input('book_form.category_choices'));
+
         DB::commit();
 
         return redirect()->back()->with(
@@ -137,48 +138,19 @@ class BookController extends Controller
      * @param Book $book
      * @return mixed
      */
-    public function cover(Library $library, Book $book)
+    public function cover(Library $library, Book $book, string $size = null)
     {
         Gate::authorize('view', $book);
 
-        try {
-            return $this->serveImage(
-                \Storage::disk('covers')->path("$book->id.png"),
-                $book->getCacheId()
-            );
-        } catch (\Exception $e) {
-            return $this->noCover();
-        }
+        return Cover::response($book, $size);
     }
 
     /**
+     * @param string|null $size
      * @return mixed
      */
-    public function noCover()
+    public function noCover(string $size = null)
     {
-        return $this->serveImage(
-            \Storage::disk('assets')->path('no_cover.png'),
-            'no_cover'
-        );
-    }
-
-    /**
-     * @param $image
-     * @param string $cacheId
-     * @return BinaryFileResponse
-     */
-    private function serveImage($image, string $cacheId)
-    {
-        $contentType = [
-            'Content-Type' => 'image/png'
-        ];
-
-        if (Cache::has($cacheId)) {
-            return response()->file(Cache::get($cacheId), $contentType);
-        }
-
-        Cache::put($cacheId, $image, now()->addDays(30));
-
-        return response()->file($image, $contentType);
+        return Cover::response(null, $size);
     }
 }

@@ -17,6 +17,14 @@ class Library extends Model
     ];
 
     /**
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
      * @return BelongsToMany|User
      */
     public function members()

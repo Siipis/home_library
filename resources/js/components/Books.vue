@@ -21,7 +21,7 @@
                  v-infinitescroll="loadBooks" infinite-scroll-disabled="loading">
             <div v-for="book in allBooks" :key="book.id" class="book col-xl-3 col-md-4 col-sm-6 col-xs-12 p-1">
                 <b-card class="book-card text-center"
-                        :img-src="book.cover"
+                        :img-src="book.cover + '/medium'"
                         img-top>
                     <b-card-body>
                         <b-card-title>

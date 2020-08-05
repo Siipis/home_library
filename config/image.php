@@ -1,0 +1,29 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Image Driver
+    |--------------------------------------------------------------------------
+    |
+    | Intervention Image supports "GD Library" and "Imagick" to process images
+    | internally. You may choose one of them according to your PHP
+    | configuration. By default PHP's "GD Library" implementation is used.
+    |
+    | Supported: "gd", "imagick"
+    |
+    */
+
+    'driver' => env('IMAGE_DRIVER', 'gd'),
+
+    /*
+     * Available image filters.
+     */
+
+    'filters' => [
+        'small' => \App\Http\Images\Templates\SmallFilter::class,
+        'medium' => \App\Http\Images\Templates\MediumFilter::class,
+        'large' => \App\Http\Images\Templates\LargeFilter::class,
+    ]
+];

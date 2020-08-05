@@ -16,9 +16,10 @@
 {% if errors is not empty %}
     <div class="mb-4">
         {% for error in errors.all() %}
-            <flashable variant="danger">
+            <div class="alert alert-danger">
+                <b-icon icon="exclamation-diamond-fill"></b-icon>
                 {{ error }}
-            </flashable>
+            </div>
         {% endfor %}
     </div>
 {% endif %}

@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
         }
 
         // Otherwise flash the error through the session
-        if ($request->acceptsHtml()) {
+        if (!\Session::has('errors') && $request->hasSession()) {
             // Redirect forms back, or...
             if (!empty($request->input())) {
                 return redirect()->back()->withErrors($message);

@@ -21,12 +21,12 @@
                 <td>{{ library.name }}</td>
                 <td>{{ library.slug }}</td>
                 <td>
-                    <b-button variant="outline-secondary" href="{{ route('admin.libraries.show', library.id) }}">
+                    <b-button variant="outline-secondary" href="{{ route('admin.libraries.show', library) }}">
                         <b-icon icon="people"></b-icon>
                     </b-button>
                 </td>
                 <td>
-                    <b-button variant="outline-secondary" href="{{ route('admin.libraries.edit', library.id) }}">
+                    <b-button variant="outline-secondary" href="{{ route('admin.libraries.edit', library) }}">
                         <b-icon icon="pencil"></b-icon>
                     </b-button>
                 </td>

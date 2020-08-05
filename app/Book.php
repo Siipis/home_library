@@ -2,11 +2,13 @@
 
 namespace App;
 
-use App\Http\Api\Providers\Covers\ImageCast;
+use App\Http\Api\Providers\Covers\DownloadProvider;
 use App\Traits\Paginated;
+use Cover;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Routing\Exceptions\UrlGenerationException;
 
 class Book extends Model
 {
@@ -28,37 +30,37 @@ class Book extends Model
         'description', 'keywords', 'isbn', 'local_id',
     ];
 
+    /**
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'hash';
+    }
+
     // @link https://laravel.com/docs/7.x/eloquent#events
     protected static function booted()
     {
+        static::creating(function (Book $book) {
+            $book->hash = uniqid();
+        });
+
         static::saving(function (Book $book) {
+            $book->cover = Cover::make($book);
             unset($book->category_choices);
         });
 
-        static::saved(function (Book $book) {
-            $book->storeImage();
-        });
-
         static::updating(function (Book $book) {
-            $book->storeImage();
+            $book->cover = Cover::make($book);
         });
 
         static::retrieved(function (Book $book) {
-            $book->cover = route('library.books.cover', [$book->library, $book]);
+            try {
+                $book->cover = route('library.books.cover', [$book->library, $book]);
+            } catch (UrlGenerationException $e) {
+                // Do nothing
+            }
         });
-    }
-
-    private function storeImage()
-    {
-        if ($this->cover === route('books.no_cover')) {
-            \Storage::disk('covers')->delete("$this->id.png");
-        } else {
-            $provider = new ImageCast();
-
-            $this->cover = $provider->cast($this, 'cover');
-        }
-
-        \Cache::forget($this->getCacheId());
     }
 
     /**
@@ -164,13 +166,5 @@ class Book extends Model
         if (empty($matches)) return null;
 
         return $matches[1];
-    }
-
-    /**
-     * @return string
-     */
-    public function getCacheId()
-    {
-        return "cover" . $this->id;
     }
 }

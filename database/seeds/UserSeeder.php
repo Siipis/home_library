@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        if (Env::production()) return;
+        if (App::environment() === 'production') return;
 
         DB::table('users')->insert([
             'name' => 'Admin',

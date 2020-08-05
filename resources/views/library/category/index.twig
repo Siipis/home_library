@@ -8,20 +8,20 @@
     <h3>{{ page_title }}</h3>
 
     <nav class="mb-3">
-        <category href="{{ route('library.categories.index', library.slug) }}">
+        <category href="{{ route('library.categories.index', library) }}">
             {{ 'category.all'|trans }}
         </category>
 
         {% for category in library.categories %}
             <category color="{{ category.color }}"
-                      href="{{ route('library.categories.show', [library.slug, category.id]) }}">
+                      href="{{ route('library.categories.show', [library, category]) }}">
                 {{ category.name }}
             </category>
         {% endfor %}
     </nav>
 
     {% if can('create', 'App\\Category') %}
-        <b-button variant="primary" href="{{ route('library.categories.create', library.slug) }}">
+        <b-button variant="primary" href="{{ route('library.categories.create', library) }}">
             {{ 'fields.create'|trans ~ ' ' ~ 'category.type'|trans_choice(1)|lower }}
         </b-button>
     {% endif %}

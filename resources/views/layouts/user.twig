@@ -8,14 +8,14 @@
     {% embed 'navbar'|block %}
         {% block left %}
             {% if library is defined %}
-                <b-nav-item href="{{ route('library.index', library.slug) }}">
+                <b-nav-item href="{{ route('library.index', library) }}">
                     {{ library.name }}
                 </b-nav-item>
-                <b-nav-item href="{{ route('library.categories.index', library.slug) }}">
+                <b-nav-item href="{{ route('library.categories.index', library) }}">
                     {{ 'category.type'|trans_choice(2) }}
                 </b-nav-item>
                 {% for category in library.categories %}
-                    <b-nav-item class="d-none d-md-block" href="{{ route('library.categories.show', [library.slug, category.id]) }}">
+                    <b-nav-item class="d-none d-md-block" href="{{ route('library.categories.show', [library, category]) }}">
                         <b-icon icon="circle-fill" style="color: {{ category.color }}"></b-icon>
                         {{ category.name }}
                     </b-nav-item>
@@ -26,7 +26,7 @@
         {% block right %}
             {% if library is defined %}
                 {% if can('update', library) %}
-                    <b-nav-item href="{{ route('library.books.create', library.slug) }}">
+                    <b-nav-item href="{{ route('library.books.create', library) }}">
                         {{ 'fields.add'|trans ~ ' ' ~ 'library.book'|trans_choice(1)|lower }}
                     </b-nav-item>
                 {% endif %}

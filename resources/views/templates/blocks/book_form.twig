@@ -98,6 +98,7 @@
                 loadCover: function (book) {
                     if (book.cover.length > 0) {
                         this.cover = book.cover;
+                        $('#book_form_cover').val(this.cover);
                         return;
                     }
 
@@ -110,6 +111,7 @@
                         isbn: book.isbn,
                     }).then(({ data }) => {
                         this.cover = data;
+                        console.log(data.includes('placeholder'));
                         $('#book_form_cover').val(data.includes('placeholder') ? '' : data);
                     });
                 },

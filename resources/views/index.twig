@@ -12,7 +12,7 @@
         {% for library in libraries %}
             {% if can('view', library) %}
                 <li>
-                    <a href="{{ route('library.index', library.slug) }}">{{ library.name }}</a>
+                    <a href="{{ route('library.index', library) }}">{{ library.name }}</a>
                 </li>
             {% endif %}
         {% endfor %}

@@ -19,29 +19,32 @@ Auth::routes([
 ]);
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // General routes
     Route::get('/', 'HomeController@index')->name('index');
     Route::get('settings', 'HomeController@settings')->name('settings');
     Route::post('updateAccount', 'HomeController@updateAccount')->name('settings.account');
 
+    // Book specific routes (outside libraries)
     Route::prefix('books')->as('books.')->group(function() {
         Route::post('search', 'ApiController@search')->name('search');
         Route::post('details', 'ApiController@details')->name('details');
         Route::post('cover', 'ApiController@cover')->name('cover');
-        Route::get('cover/placeholder', 'Library\BookController@noCover')->name('no_cover');
+        Route::get('cover/placeholder/{size?}', 'Library\BookController@noCover')->name('no_cover');
     });
 
-    Route::prefix('library/{library:slug}')->as('library.')->group(function () {
+    // Library specific routes
+    Route::prefix('library/{library}')->as('library.')->group(function () {
         Route::get('/', 'LibraryController@index')->name('index');
         Route::post('/', 'LibraryController@books')->name('books');
 
+        Route::resource('categories', 'Library\CategoryController');
         Route::resource('books', 'Library\BookController', [
             'except' => 'index',
         ]);
-        Route::get('books/{book}/cover', 'Library\BookController@cover')->name('books.cover');
-
-        Route::resource('categories', 'Library\CategoryController');
+        Route::get('books/{book}/cover/{size?}', 'Library\BookController@cover')->name('books.cover');
     });
 
+    // Admin panel specific routes
     Route::prefix('admin')->namespace('Admin')->as('admin.')->middleware('admin')->group(function () {
         Route::get('/', 'HomeController@index')->name('index');
 

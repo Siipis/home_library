@@ -5,18 +5,19 @@
     "license": "",
     "require": {
         "php": "^7.2.5",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "ext-xml": "*",
         "barryvdh/laravel-form-bridge": "^0.5.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
+        "intervention/image": "^2.5",
         "laravel/framework": "^7.0",
-        "rcrowe/twigbridge": "^0.12.1",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
-        "ext-json": "*",
-        "ext-gd": "*",
-        "ext-simplexml": "*",
-        "ext-xml": "*"
+        "rcrowe/twigbridge": "^0.12.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.7",

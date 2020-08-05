@@ -18,14 +18,14 @@
             <h3>
                 {{ book.title }}
                 {% if can('update', book) %}
-                    <b-button size="sm" href="{{ route('library.books.edit', [library.slug, book.id]) }}">
+                    <b-button size="sm" href="{{ route('library.books.edit', [library, book]) }}">
                         <b-icon icon="pencil"></b-icon>
                     </b-button>
                 {% endif %}
 
                 {% if can('delete', book) %}
                     <delete-button size="sm"
-                                   action="{{ route('library.books.destroy', [library.slug, book.id]) }}">
+                                   action="{{ route('library.books.destroy', [library, book]) }}">
                     </delete-button>
                 {% endif %}
             </h3>
@@ -69,7 +69,7 @@
                 <h5>{{ 'category.type'|trans_choice(2) }}</h5>
                 {% for category in book.categories %}
                     <category color="{{ category.color }}"
-                              href="{{ route('library.categories.show', [library.slug, category.id]) }}">
+                              href="{{ route('library.categories.show', [library, category]) }}">
                         {{ category.name }}
                     </category>
                 {% endfor %}

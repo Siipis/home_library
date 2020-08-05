@@ -36,7 +36,7 @@
                 <b-row class="mb-4">
                     <b-col cols="2" v-for="existing in existingBooks" :key="existing.id">
                         <a :href="existing.link" :title="existing.title">
-                            <img :src="existing.cover" alt="" class="w-100" />
+                            <img :src="existing.cover + '/small'" alt="" class="w-100" />
                         </a>
                     </b-col>
                 </b-row>
