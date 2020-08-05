@@ -35,6 +35,7 @@ mix.js('resources/js/app.js', 'public/js')
         'axios',
         'vue',
         'bootstrap-vue',
+        'vue-infinite-scroll',
         'popper.js',
         'lang.js',
         'tinycolor2',
