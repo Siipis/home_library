@@ -14,13 +14,6 @@ class Book extends Model
 {
     use Paginated;
 
-    protected $visible = [
-        'id', 'local_id', 'link', 'title', 'series',
-        'authors', 'publisher', 'year', 'language',
-        'isbn', 'other_isbn', 'cover', 'images',
-        'providers',
-    ];
-
     protected $appends = [
         'link',
     ];
@@ -42,20 +35,19 @@ class Book extends Model
     protected static function booted()
     {
         static::creating(function (Book $book) {
-            $book->hash = uniqid();
+            return self::updateAttributes($book);
         });
 
         static::saving(function (Book $book) {
-            if (empty($book->hash)) {
-                $book->hash = uniqid();
-            }
-
-            $book->cover = Cover::make($book);
-            unset($book->category_choices);
+            return self::updateAttributes($book);
         });
 
         static::updating(function (Book $book) {
-            $book->cover = Cover::make($book);
+            return self::updateAttributes($book);
+        });
+
+        static::deleted(function (Book $book) {
+            \Storage::disk('covers')->delete(Cover::getFilename($book));
         });
 
         static::retrieved(function (Book $book) {
@@ -65,6 +57,21 @@ class Book extends Model
                 // Do nothing
             }
         });
+    }
+
+    /**
+     * @param Book $book
+     * @return Book
+     */
+    private static function updateAttributes(Book $book)
+    {
+        if (empty($book->hash)) {
+            $book->setAttribute('hash', uniqid());
+        }
+        $book->setAttribute('cover', Cover::make($book));
+        unset($book->category_choices);
+
+        return $book;
     }
 
     /**

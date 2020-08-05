@@ -112,8 +112,13 @@ class Cover
             );
         } else {
             if ($this->isDirty($book)) {
-                $this->provider->download($book->cover)
-                    ->save($this->getCoverPath($book));
+                $image = $this->provider->download($book->cover);
+
+                if ($image instanceof \Intervention\Image\Image) {
+                    $this->storage->put($this->getFilename($book), $image->getEncoded());
+                } else {
+                    abort(404);
+                }
             }
         }
 
