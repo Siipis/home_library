@@ -10,6 +10,7 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "barryvdh/laravel-form-bridge": "^0.5.1",
+        "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
