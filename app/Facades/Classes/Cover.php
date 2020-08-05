@@ -151,7 +151,7 @@ class Cover
      */
     public function response(Book $book = null, string $filter = null)
     {
-        if ($this->storage->exists($this->getFilename($book))) {
+        if (!is_null($book) && $this->storage->exists($this->getFilename($book))) {
             $lastModified = $this->getLastModified($book);
             $etag = md5($this->getFilename($book) . $filter . $lastModified);
         } else {
