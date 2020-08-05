@@ -6,6 +6,7 @@ namespace App\Facades\Classes;
 
 use App\Book;
 use App\Http\Images\DownloadProvider;
+use App\Http\Images\Templates\LargeFilter;
 use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Response;
@@ -117,16 +118,20 @@ class Cover
         } else {
             if ($this->isDirty($book)) {
                 if (Request::hasFile('book_form.upload_cover')) {
-                    Request::file('book_form.upload_cover')->storeAs('', $this->getFilename($book), 'covers');
+                    $image = Image::make(Request::file('book_form.upload_cover')->getPath());
                     unset($book->upload_cover);
                 } else {
                     $image = $this->provider->download($book->cover);
+                }
 
-                    if ($image instanceof \Intervention\Image\Image) {
-                        $this->storage->put($this->getFilename($book), $image->getEncoded());
-                    } else {
-                        abort(404);
-                    }
+                if ($image instanceof \Intervention\Image\Image) {
+                    $this->storage->put($this->getFilename($book),
+                        $image
+                            ->filter(new LargeFilter)
+                            ->getEncoded()
+                    );
+                } else {
+                    abort(404);
                 }
             }
         }
