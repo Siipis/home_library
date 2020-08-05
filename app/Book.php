@@ -46,6 +46,10 @@ class Book extends Model
         });
 
         static::saving(function (Book $book) {
+            if (empty($book->hash)) {
+                $book->hash = uniqid();
+            }
+
             $book->cover = Cover::make($book);
             unset($book->category_choices);
         });
