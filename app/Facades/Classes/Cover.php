@@ -118,18 +118,17 @@ class Cover
         } else {
             if ($this->isDirty($book)) {
                 if (Request::hasFile('book_form.upload_cover')) {
-                    $image = Image::make(Request::file('book_form.upload_cover')->getPath());
+                    $image = Image::make(Request::file('book_form.upload_cover')->get());
                     unset($book->upload_cover);
                 } else {
                     $image = $this->provider->download($book->cover);
                 }
 
                 if ($image instanceof \Intervention\Image\Image) {
-                    $this->storage->put($this->getFilename($book),
-                        $image
-                            ->filter(new LargeFilter)
-                            ->getEncoded()
-                    );
+                    $image->filter(new LargeFilter());
+                    $image->encode('image/' . $this->extension);
+
+                    $this->storage->put($this->getFilename($book), $image);
                 } else {
                     abort(404);
                 }
