@@ -162,9 +162,11 @@ class Book extends Model
      */
     public function setOtherIsbnAttribute(array $isbns)
     {
-        $this->attributes['other_isbn'] = array_filter(array_map(function ($isbn) {
-            return $this->cleanIsbn($isbn);
-        }, $isbns), 'is_string');
+        $this->attributes['other_isbn'] = array_values(
+            array_filter(array_map(function ($isbn) {
+                return $this->cleanIsbn($isbn);
+            }, $isbns), 'is_string')
+        );
     }
 
     /**
