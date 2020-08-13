@@ -176,6 +176,6 @@ class Book extends Model
 
         if (empty($matches)) return null;
 
-        return $matches[1];
+        return str_replace('-', '', $matches[1]);
     }
 }
