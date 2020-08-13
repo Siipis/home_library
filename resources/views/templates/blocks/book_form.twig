@@ -43,7 +43,8 @@
                             <div style="width: 0; height: 0; overflow: hidden">
                                 {{ form_widget(f.upload_cover, { 'attr' : { '@change' : 'attachImage', 'ref' : 'upload_cover' } }) }}
                             </div>
-                            <b-button variant="outline-secondary" @click="$refs.upload_cover.click()" v-if="upload_cover === null">
+                            <b-button variant="outline-secondary" @click="$refs.upload_cover.click()"
+                                      v-if="upload_cover === null">
                                 <b-icon icon="camera"></b-icon>
                             </b-button>
                             <b-button variant="outline-danger" @click="detachImage" v-if="upload_cover != null">
@@ -119,6 +120,10 @@
                         book.cover = book.images.length > 0 ? book.images[0] : '';
                         this.loadCover(book);
                     }
+
+                    if (this.search !== undefined && this.search.length > 0) {
+                        $('#book_form_local_id').val(this.search);
+                    }
                 },
 
                 loadCover: function (book) {
@@ -137,7 +142,6 @@
                         isbn: book.isbn,
                     }).then(({ data }) => {
                         this.cover = data;
-                        console.log(data.includes('placeholder'));
                         $('#book_form_cover').val(data.includes('placeholder') ? '' : data);
                     });
                 },
