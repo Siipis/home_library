@@ -33,7 +33,7 @@
             <h5 class="text-muted mb-3">{{ book.authors }}</h5>
 
             {% if book.description is not empty %}
-                <p>{{ book.description|nl2br }}</p>
+                <p>{{ book.description|raw|nl2br }}</p>
             {% endif %}
 
             {% if book.keywords is not empty %}

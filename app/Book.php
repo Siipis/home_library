@@ -143,7 +143,10 @@ class Book extends Model
      */
     public function setDescriptionAttribute($description)
     {
-        $this->attributes['description'] = preg_replace("/<br[ ]?\/>/i", "\n", $description);
+        $this->attributes['description'] = is_null($description) ? null :
+            preg_replace("/<br[ ]?\/>/i", "\n",
+                strip_tags($description, ['br', 'i', 'em', 'b', 'strong'])
+            );
     }
 
     /**

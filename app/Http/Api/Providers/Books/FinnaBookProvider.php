@@ -122,7 +122,11 @@ class FinnaBookProvider extends BookProvider
 
     public function getDescription($record)
     {
-        return $record['summary'] ?? null;
+        if (!empty($record['summary'])) {
+            $record['summary'];
+        }
+
+        return null;
     }
 
     public function getLanguage($record)
