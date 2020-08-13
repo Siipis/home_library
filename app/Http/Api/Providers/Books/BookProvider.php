@@ -49,18 +49,18 @@ abstract class BookProvider extends ApiProvider
                 $book->publisher = $this->getPublisher($record);
                 $book->description = $this->getDescription($record);
                 $book->year = $this->getYear($record);
+                $book->isbn = $this->getIsbn($record);
+                $book->other_isbn = $this->getAllIsbns($record);
                 $book->language = $this->getLanguage($record);
                 $book->keywords = $this->getKeywords($record);
-                $book->isbn = isset($options['isbn']) ? $options['isbn'] : $this->getIsbn($record);
-                $book->other_isbn = array_filter(
-                    array_merge(array($this->getIsbn($record)), $this->getOtherIsbn($record)),
-                    'is_string');
                 $book->images = $this->getImages($record);
                 $book->providers = array([
                     'class' => class_basename($this),
                     'id' => $this->getProviderId($record),
                     'page' => $this->getProviderPage($record),
                 ]);
+
+                $this->setPrimaryIsbn($book, $options);
 
                 $books->add($book);
             }
@@ -69,6 +69,10 @@ abstract class BookProvider extends ApiProvider
         return $books;
     }
 
+    /**
+     * @param RequestException $exception
+     * @return array[]|mixed
+     */
     protected function handleException(RequestException $exception)
     {
         return [
@@ -77,6 +81,34 @@ abstract class BookProvider extends ApiProvider
                 "errors" => $exception->getMessage(),
             ]
         ];
+    }
+
+    /**
+     * @param Book $book
+     */
+    private function setPrimaryIsbn(Book $book, array $options)
+    {
+        if (isset($options['isbn'])) {
+            $book->isbn = $options['isbn'];
+            return;
+        }
+
+        if (isset($options['search'])) {
+            if (in_array($options['search'], $book->other_isbn)) {
+                $book->isbn = $options['search'];
+            }
+        }
+    }
+
+    /**
+     * @param $record
+     * @return array
+     */
+    private function getAllIsbns($record)
+    {
+        return array_filter(array_unique(
+            array_merge(array($this->getIsbn($record)), $this->getOtherIsbn($record)
+            )), 'is_string');
     }
 
     /**

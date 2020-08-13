@@ -168,7 +168,7 @@ class Book extends Model
      * @param $isbn
      * @return string|null
      */
-    private function cleanIsbn($isbn)
+    public static function cleanIsbn($isbn)
     {
         if (empty($isbn)) return null;
 

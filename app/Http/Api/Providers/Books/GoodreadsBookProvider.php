@@ -4,6 +4,8 @@
 namespace App\Http\Api\Providers\Books;
 
 
+use Str;
+
 class GoodreadsBookProvider extends BookProvider
 {
     protected function parseResponse($response)
@@ -171,15 +173,17 @@ class GoodreadsBookProvider extends BookProvider
 
     public function getImages($record)
     {
+        $images = [];
+
         if (isset($record['image_url'])) {
-            return array($record['image_url']);
+            $images = array($record['image_url']);
+        } else if (isset($record['best_book']['image_url'])) {
+            $images = array($record['best_book']['image_url']);
         }
 
-        if (isset($record['best_book']['image_url'])) {
-            return array($record['best_book']['image_url']);
-        }
-
-        return [];
+        return array_filter($images, function ($url) {
+            return !Str::contains($url, 'nophoto');
+        });
     }
 
     public function getProviderPage($record)
