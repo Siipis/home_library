@@ -64,7 +64,7 @@ class BookForm extends Form
             'rules' => 'string|max:2000',
         ]);
         $this->add('keywords', TextType::class, [
-            'rules' => 'string|max:190',
+            'rules' => 'string|max:2000',
             'attr' => [
                 'autocomplete' => 'off',
             ]
