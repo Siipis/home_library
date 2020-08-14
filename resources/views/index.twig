@@ -5,18 +5,28 @@
 {% block head %}{% endblock %}
 
 {% block content %}
-    Tervetuloa!
-
     <h3 class="mt-3">Omat kokoelmasi</h3>
-    <ul>
-        {% for library in libraries %}
-            {% if can('view', library) %}
-                <li>
-                    <a href="{{ route('library.index', library) }}">{{ library.name }}</a>
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    {% for library in libraries %}
+        {% if can('view', library) %}
+            <h4 class="mt-3">
+                <a href="{{ route('library.index', library) }}">{{ library.name }}</a>
+                {% set count = library.books().count() %}
+                <span class="badge badge-primary">{{ count ~ ' ' ~ 'library.books'|trans_choice(count)|lower }}</span>
+            </h4>
+
+            <div class="card">
+                <div class="card-body p-2">
+                    <div class="row mx-2">
+                        {% for book in library.books().orderBy('id', 'desc').take(6).get() %}
+                            <a class="col col-2 p-2" href="{{ book.link }}" title="{{ book.title }}">
+                                <img class="w-100" src="{{ book.cover }}/small" alt="{{ book.title }}"/>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
 
 {% block scripts %}{% endblock %}

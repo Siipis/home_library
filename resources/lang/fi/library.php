@@ -12,6 +12,7 @@ return [
 
     'collection'    => 'Kokoelma|Kokoelmat',
     'book'          => 'Kirja|Kirjat',
+    'books'         => 'Kirja|Kirjaa',
     'search'        => 'Kirjoita hakusana',
     'no_results'    => 'Haulla ei löytynyt yhtään tulosta',
     'new_books'     => 'Verkkohaun tulokset',
