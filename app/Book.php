@@ -145,8 +145,28 @@ class Book extends Model
     {
         $this->attributes['description'] = is_null($description) ? null :
             preg_replace("/<br[ ]?\/>/i", "\n",
-                strip_tags($description, ['br', 'i', 'em', 'b', 'strong'])
+                $this->stripTags($description)
             );
+    }
+
+    /**
+     * @param $description
+     */
+    private function stripTags($description)
+    {
+        $tags = ['br', 'i', 'em', 'b', 'strong'];
+
+        if (version_compare(PHP_VERSION, '7.4') >= 0) {
+            return strip_tags($description, $tags);
+        }
+
+        $stripped = $description;
+
+        foreach ($tags as $tag) {
+            $stripped = strip_tags($stripped, $tag);
+        }
+
+        return $stripped;
     }
 
     /**
