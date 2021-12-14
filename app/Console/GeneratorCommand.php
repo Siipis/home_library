@@ -4,8 +4,6 @@
 namespace App\Console;
 
 
-use File;
-use Storage;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;

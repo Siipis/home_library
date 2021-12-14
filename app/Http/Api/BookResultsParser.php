@@ -6,6 +6,7 @@ namespace App\Http\Api;
 
 use App\Book;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class BookResultsParser
 {
@@ -222,7 +223,7 @@ class BookResultsParser
             return $length1 / $length2;
         }
 
-        if (\Str::startsWith($s1, $s2) || \Str::startsWith($s2, $s1)) {
+        if (Str::startsWith($s1, $s2) || Str::startsWith($s2, $s1)) {
             return 1;
         }
 

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Alert;
+use App\Facades\Alert;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\Exceptions\FormException;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\LibraryForm;
 use App\Library;
 use App\User;
-use Gate;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 
 class LibraryController extends Controller

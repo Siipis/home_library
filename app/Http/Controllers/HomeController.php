@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Alert;
+use App\Facades\Alert;
 use App\Http\Forms\Exceptions\UnsentFormException;
-use Auth;
 use App\Http\Forms\UserForm;
 use App\Library;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {

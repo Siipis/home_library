@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Library;
 
-use Alert;
 use App\Book;
+use App\Facades\Alert;
+use App\Facades\Cover;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LibraryController;
 use App\Http\Forms\BookForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
-use Cover;
-use DB;
-use Gate;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class BookController extends Controller

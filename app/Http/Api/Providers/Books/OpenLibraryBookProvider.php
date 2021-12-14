@@ -4,6 +4,8 @@
 namespace App\Http\Api\Providers\Books;
 
 
+use Illuminate\Support\Str;
+
 class OpenLibraryBookProvider extends BookProvider
 {
     protected function getUrl(array $options = [])
@@ -25,7 +27,7 @@ class OpenLibraryBookProvider extends BookProvider
 
     protected function parseResponse($response)
     {
-        if (\Str::startsWith(array_key_first($response), 'ISBN')) {
+        if (Str::startsWith(array_key_first($response), 'ISBN')) {
             return $response;
         }
 

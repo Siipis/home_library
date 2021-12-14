@@ -6,8 +6,9 @@ namespace App\Http\Images;
 
 use App\Http\Api\Providers\ApiProvider;
 use App\Http\Images\Templates\LargeFilter;
-use Cover;
+use App\Facades\Cover;
 use GuzzleHttp\Exception\RequestException;
+use Intervention\Image\Facades\Image;
 
 class DownloadProvider extends ApiProvider
 {
@@ -18,7 +19,7 @@ class DownloadProvider extends ApiProvider
 
     protected function parseResponse($response)
     {
-        return \Image::make($response)
+        return Image::make($response)
             ->filter(new LargeFilter())
             ->encode(Cover::getExtension(), 100);
     }

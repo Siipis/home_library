@@ -4,8 +4,8 @@
 namespace App\Http\Api\Providers;
 
 
-use Cache;
-use Str;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 

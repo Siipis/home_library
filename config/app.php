@@ -237,8 +237,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // App Specific
-        'Alert' => App\Facades\AlertFacade::class,
-        'Cover' => App\Facades\CoverFacade::class,
+        'Alert' => App\Facades\Alert::class,
+        'Cover' => App\Facades\Cover::class,
 
         // Third Party
         'Twig' => TwigBridge\Facade\Twig::class,

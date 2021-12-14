@@ -4,7 +4,7 @@
 namespace App\Http\Api\Providers\Books;
 
 
-use Str;
+use Illuminate\Support\Str;
 
 class GoodreadsBookProvider extends BookProvider
 {

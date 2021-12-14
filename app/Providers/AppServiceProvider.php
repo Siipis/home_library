@@ -6,8 +6,9 @@ use App\Facades\Classes\Alert as AlertClass;
 use App\Facades\Classes\Cover as CoverClass;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\ServiceProvider;
-use URL;
-use Validator;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Builder::defaultStringLength(191);
 
         Validator::extend('slug', function ($attribute, $value, $parameters, $validator) {
-            return $value === \Str::slug($value);
+            return $value === Str::slug($value);
         });
     }
 }

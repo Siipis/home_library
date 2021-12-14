@@ -7,6 +7,7 @@ namespace App\Http\Api\Providers\Covers;
 use App\Book;
 use App\Http\Api\Providers\ApiProvider;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Str;
 
 abstract class CoverProvider extends ApiProvider
 {
@@ -121,7 +122,7 @@ abstract class CoverProvider extends ApiProvider
     {
         return call_user_func([
             $this,
-            \Str::camel('get_' . array_key_first($options) . '_url')
+            Str::camel('get_' . array_key_first($options) . '_url')
         ], array_values($options)[0]);
     }
 

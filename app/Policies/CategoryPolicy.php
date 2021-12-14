@@ -26,7 +26,6 @@ class CategoryPolicy
      * Determine whether the user can view any models.
      *
      * @param User $user
-     * @param Library $library
      * @return mixed
      */
     public function viewAny(User $user)

@@ -4,7 +4,7 @@
 namespace App\Http\Api\Providers\Covers;
 
 
-use Str;
+use Illuminate\Support\Str;
 
 class GoodreadsCoverProvider extends CoverProvider
 {

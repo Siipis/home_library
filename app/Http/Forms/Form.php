@@ -11,6 +11,8 @@ use Barryvdh\Form\ValidatesForms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form as FormBuilder;
 
@@ -116,13 +118,13 @@ class Form
         if (!array_key_exists('label', $options)) {
             $trans = 'fields.' . $name;
 
-            if (\Lang::has($trans)) {
+            if (Lang::has($trans)) {
                 $options['label'] = $trans;
             }
         }
 
         if (!array_key_exists('required', $options) && array_key_exists('rules', $options)) {
-            $options['required'] = \Str::contains('required', $options['rules']);
+            $options['required'] = Str::contains('required', $options['rules']);
         }
 
         $this->form->add($name, $type, $options);
@@ -251,7 +253,7 @@ class Form
      */
     protected function initForm(array $options = [], Model $model = null)
     {
-        $this->form = $this->createNamed(\Str::snake(class_basename($this)),
+        $this->form = $this->createNamed(Str::snake(class_basename($this)),
             FormType::class,
             $this->makeModel($model),
             $options

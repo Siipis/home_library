@@ -5,7 +5,8 @@
 namespace App\Twig\Extensions;
 
 
-use Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 
@@ -32,7 +33,7 @@ class GlobalVariables extends AbstractExtension implements GlobalsInterface
     private function getUserVariables()
     {
         return [
-            'auth' => \Auth::user(),
+            'auth' => Auth::user(),
         ];
     }
 

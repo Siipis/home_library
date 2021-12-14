@@ -9,12 +9,13 @@ use App\Http\Images\DownloadProvider;
 use App\Http\Images\Templates\LargeFilter;
 use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Image;
-use Request;
-use Storage;
-use Str;
-use Validator;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class Cover
 {
@@ -173,7 +174,7 @@ class Cover
             $lastModified = $this->getLastModified($book);
             $etag = md5($this->getFilename($book) . $filter . $lastModified);
         } else {
-            $lastModified = \File::lastModified($this->getPlaceholderPath());
+            $lastModified = File::lastModified($this->getPlaceholderPath());
             $etag = md5($this->getPlaceholderPath() . $filter . $lastModified);
         }
 

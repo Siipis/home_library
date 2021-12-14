@@ -9,6 +9,7 @@ use App\Twig\TokenParser\Token_TokenParser;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -19,7 +20,7 @@ class Helpers extends AbstractExtension
     {
         return [
             new TwigFunction('raw_route', function (string $string) {
-                $routes = \Route::getRoutes();
+                $routes = Route::getRoutes();
 
                 if ($routes->hasNamedRoute($string)) {
                     return "'" . $routes->getByName($string)->uri . "'";

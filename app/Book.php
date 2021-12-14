@@ -2,13 +2,13 @@
 
 namespace App;
 
-use App\Http\Api\Providers\Covers\DownloadProvider;
 use App\Traits\Paginated;
-use Cover;
+use App\Facades\Cover;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Routing\Exceptions\UrlGenerationException;
+use Illuminate\Support\Facades\Storage;
 
 class Book extends Model
 {
@@ -47,7 +47,7 @@ class Book extends Model
         });
 
         static::deleted(function (Book $book) {
-            \Storage::disk('covers')->delete(Cover::getFilename($book));
+            Storage::disk('covers')->delete(Cover::getFilename($book));
         });
 
         static::retrieved(function (Book $book) {

@@ -5,7 +5,7 @@ namespace App\Traits;
 
 
 use App\Book;
-use Request;
+use Illuminate\Http\Request;
 
 trait Paginated
 {

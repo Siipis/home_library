@@ -3,7 +3,7 @@
 namespace App\Http\Forms;
 
 use App\Book;
-use App\Category;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -97,7 +97,7 @@ class BookForm extends Form
     {
         $choices = [];
 
-        $library = \Request::route()->parameter('library');
+        $library = Request::route()->parameter('library');
 
         foreach ($library->categories as $category) {
             $choices[$category->name] = $category->id;

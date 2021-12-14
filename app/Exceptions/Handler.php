@@ -2,10 +2,11 @@
 
 namespace App\Exceptions;
 
-use App;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Validation\ValidationException;
@@ -71,7 +72,7 @@ class Handler extends ExceptionHandler
             }
 
             // Otherwise flash the error through the session
-            if (!\Session::has('errors') && $request->hasSession()) {
+            if (!Session::has('errors') && $request->hasSession()) {
                 // Redirect forms back, or...
                 if (!empty($request->input())) {
                     return redirect()->back()->withErrors($message);

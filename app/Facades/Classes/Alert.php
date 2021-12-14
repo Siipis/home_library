@@ -4,6 +4,8 @@
 namespace App\Facades\Classes;
 
 
+use Illuminate\Support\Str;
+
 class Alert
 {
     public function primary(string $message = 'saved', string $url = null)
@@ -49,7 +51,7 @@ class Alert
     private function make(string $type, string $key, string $url = null)
     {
         $replace = [];
-        if (\Str::contains($key, '.')) {
+        if (Str::contains($key, '.')) {
             $parts = explode('.', $key);
 
             $key = $parts[1];

@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Forms\BookForm;
 use App\Library;
-use Gate;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\Form\Form;
 
 class LibraryController extends Controller
 {
@@ -42,7 +42,7 @@ class LibraryController extends Controller
 
     /**
      * @param Library $library
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     public static function getStoreForm(Library $library)
     {
