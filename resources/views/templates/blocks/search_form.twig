@@ -64,10 +64,12 @@
         </b-col>
     </b-row>
 
-    <b-modal id="scanner" size="xl" centered ok-only>
+    <b-modal id="scanner" modal-class="modal-fullscreen"
+             ok-only ok-title="{{ 'fields.close'|trans }}">
         <scanner @result="handleMobileScan"
-                 :qrbox="500"
+                 :qrbox="250"
                  :fps="10"
+                 ref="scanner"
         ></scanner>
     </b-modal>
 {% endblock %}

@@ -15,6 +15,7 @@ return [
     'delete'            => 'Poista',
     'submit'            => 'Tallenna',
     'cancel'            => 'Peruuta',
+    'close'             => 'Sulje',
     'are_you_sure'      => 'Haluatko varmasti jatkaa?',
     'search'            => 'Hae',
     'settings'          => 'Asetukset',

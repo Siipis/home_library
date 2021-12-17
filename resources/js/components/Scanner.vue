@@ -1,5 +1,5 @@
 <template>
-    <div id="qr-code-full-region"></div>
+    <div id="scanner_area"></div>
 </template>
 
 <script>
@@ -19,13 +19,20 @@ export default {
         },
     },
 
+    data() {
+        return {
+            scanner: undefined
+        }
+    },
+
     mounted () {
         const config = {
             fps: this.fps,
             qrbox: this.qrbox,
+            facingMode: 'environment',
         };
-        const html5QrcodeScanner = new Html5QrcodeScanner('qr-code-full-region', config);
-        html5QrcodeScanner.render(this.onScanSuccess);
+        this.scanner = new Html5QrcodeScanner('scanner_area', config);
+        this.scanner.render(this.onScanSuccess);
     },
 
     methods: {

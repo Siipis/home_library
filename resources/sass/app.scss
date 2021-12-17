@@ -50,3 +50,50 @@ label.required:after {
     content: ' *';
     color: $danger;
 }
+
+.modal-fullscreen {
+    .modal-dialog {
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .modal-content {
+        min-height: 100vh;
+        border-radius: 0;
+        border: 0;
+    }
+}
+
+#scanner {
+    padding: 0 !important;
+
+    .modal-body {
+        padding: 0;
+    }
+}
+#scanner_area {
+    border: 0 !important;
+
+    #scanner_area__dashboard_section_csr {
+        @extend .form-row;
+        font-weight: bold;
+
+        select {
+            @extend .form-control;
+            display: inline-block;
+            width: auto;
+            margin-left: .5em;
+        }
+    }
+
+    #scanner_area__dashboard_section_csr button {
+        @extend .btn;
+        @extend .btn-primary;
+    }
+
+    #scanner_area__dashboard_section_swaplink {
+        display: inline-block;
+        @extend .btn;
+        @extend .btn-link;
+    }
+}
