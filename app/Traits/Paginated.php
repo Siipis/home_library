@@ -5,7 +5,8 @@ namespace App\Traits;
 
 
 use App\Book;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Facades\Request;
 
 trait Paginated
 {
@@ -15,7 +16,7 @@ trait Paginated
     public static $paginate = 12;
 
     /**
-     * @return \Illuminate\Contracts\Pagination\Paginator
+     * @return Paginator
      */
     public function paginate()
     {

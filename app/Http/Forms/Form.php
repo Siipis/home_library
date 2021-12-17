@@ -10,7 +10,6 @@ use Barryvdh\Form\CreatesForms;
 use Barryvdh\Form\ValidatesForms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 use Symfony\Component\Form\Extension\Core\Type\FormType;

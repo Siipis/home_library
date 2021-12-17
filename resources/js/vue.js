@@ -7,6 +7,7 @@ import Category from "./components/Category";
 import DeleteButton from "./components/DeleteButton";
 import Flashable from "./components/Flashable";
 import SearchResults from "./components/SearchResults";
+import Scanner from "./components/Scanner";
 
 /**
  * Import Vue and configure it.
@@ -27,6 +28,7 @@ window.Vue.component('category', Category);
 window.Vue.component('delete-button', DeleteButton);
 window.Vue.component('flashable', Flashable);
 window.Vue.component('search-results', SearchResults);
+window.Vue.component('scanner', Scanner);
 
 window.app = new window.Vue({
     'el': '#app',

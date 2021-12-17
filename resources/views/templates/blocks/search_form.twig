@@ -53,12 +53,23 @@
         </b-col>
 
         <b-col sm="12" lg="6">
+            <b-button v-b-modal.scanner variant="primary" size="lg" class="w-100 mb-3" :disabled="searching">
+                <b-icon icon="camera"></b-icon>
+                {{ 'library.scan_isbn'|trans }}
+            </b-button>
             <b-card :img-src="cover" img-bottom>
                 {% use 'templates.blocks.book_form' %}
                 {{ block('book_form') }}
             </b-card>
         </b-col>
     </b-row>
+
+    <b-modal id="scanner" size="xl" centered ok-only>
+        <scanner @result="handleMobileScan"
+                 :qrbox="500"
+                 :fps="10"
+        ></scanner>
+    </b-modal>
 {% endblock %}
 
 {% block search_form_scripts %}
@@ -78,6 +89,15 @@
                     this.search = value;
 
                     this.fetchBooks(true);
+                },
+
+                handleMobileScan: function(value) {
+                    this.handleScan(value);
+                    this.fillForm('book_form', {
+                        isbn: value
+                    });
+
+                    this.$bvModal.hide('scanner');
                 },
 
                 rememberSearch: function() {

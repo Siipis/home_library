@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Library;
 
-use Alert;
 use App\Category;
+use App\Facades\Classes\Alert;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\LibraryController;
 use App\Http\Forms\CategoryForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller

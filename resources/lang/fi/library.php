@@ -17,4 +17,6 @@ return [
     'no_results'    => 'Haulla ei löytynyt yhtään tulosta',
     'new_books'     => 'Verkkohaun tulokset',
     'existing_books'    => 'Kokoelmassa on jo',
+
+    'scan_isbn'     => 'Haluatko skannata puhelimella? Klikkaa tästä.'
 ];

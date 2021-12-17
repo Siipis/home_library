@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Alert;
+use App\Facades\Classes\Alert;
+use App\Http\Controllers\Controller;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\UserForm;
 use App\User;
-use Gate;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
