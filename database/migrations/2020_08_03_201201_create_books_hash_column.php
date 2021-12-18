@@ -1,7 +1,9 @@
 <?php
 
+use App\Book;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateBooksHashColumn extends Migration
@@ -15,20 +17,20 @@ class CreateBooksHashColumn extends Migration
     {
         DB::beginTransaction();
         Schema::table('books', function (Blueprint $table) {
-            $table->string('hash');
+            $table->string('hash')->nullable();
         });
 
         // Seed values before enabling the unique constraint to avoid errors
-        \App\Book::unsetEventDispatcher();
+        Book::unsetEventDispatcher();
 
-        foreach (\App\Book::all() as $book) {
+        foreach (Book::all() as $book) {
             $book->hash = uniqid();
             $book->save();
         }
         DB::commit();
 
         Schema::table('books', function (Blueprint $table) {
-            $table->string('hash')->unique()->change();
+            $table->string('hash')->nullable(false)->unique()->change();
         });
     }
 

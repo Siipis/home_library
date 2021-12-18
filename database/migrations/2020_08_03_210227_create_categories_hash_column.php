@@ -1,7 +1,9 @@
 <?php
 
+use App\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class createCategoriesHashColumn extends Migration
@@ -15,10 +17,10 @@ class createCategoriesHashColumn extends Migration
     {
         DB::beginTransaction();
         Schema::table('categories', function (Blueprint $table) {
-            $table->string('hash');
+            $table->string('hash')->nullable();
         });
 
-        foreach (\App\Category::all() as $category) {
+        foreach (Category::all() as $category) {
             $category->hash = uniqid();
             $category->save();
         }
@@ -26,7 +28,7 @@ class createCategoriesHashColumn extends Migration
         DB::commit();
 
         Schema::table('categories', function (Blueprint $table) {
-            $table->string('hash')->unique()->change();
+            $table->string('hash')->nullable(false)->unique()->change();
         });
     }
 

@@ -1,8 +1,12 @@
 <?php
 
+use App\Book;
+use App\Facades\Cover;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateBooksCoverColumn extends Migration
 {
@@ -16,9 +20,9 @@ class UpdateBooksCoverColumn extends Migration
         DB::beginTransaction();
 
         // Update books to use new notation
-        \App\Book::unsetEventDispatcher();
+        Book::unsetEventDispatcher();
 
-        foreach (\App\Book::all() as $book) {
+        foreach (Book::all() as $book) {
             if (Storage::disk('covers')->exists($book->id . '.png')) {
                 Storage::disk('covers')->move($book->id . '.png', $book->hash . '.png');
             }

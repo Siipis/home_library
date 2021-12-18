@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd0afbdef91829bda9d2e54028471321",
+    "content-hash": "5e131bfe283556d126711eb52338f821",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1430,16 +1430,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "9a8cc99d30415ec0b3f7649e1647d03a55698545"
+                "reference": "744ebba495319501b873a4e48787759c72e3fb8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/9a8cc99d30415ec0b3f7649e1647d03a55698545",
-                "reference": "9a8cc99d30415ec0b3f7649e1647d03a55698545",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/744ebba495319501b873a4e48787759c72e3fb8c",
+                "reference": "744ebba495319501b873a4e48787759c72e3fb8c",
                 "shasum": ""
             },
             "require": {
@@ -1498,7 +1498,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/2.7.0"
+                "source": "https://github.com/Intervention/image/tree/2.7.1"
             },
             "funding": [
                 {
@@ -1510,20 +1510,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-10-03T14:17:12+00:00"
+            "time": "2021-12-16T16:49:26+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v8.76.1",
+            "version": "v8.76.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "83fe447ae964dc5f1f829d25fa2f6042d9099834"
+                "reference": "c67acfdc968f487b6235435080eef62a7e2ed055"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/83fe447ae964dc5f1f829d25fa2f6042d9099834",
-                "reference": "83fe447ae964dc5f1f829d25fa2f6042d9099834",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/c67acfdc968f487b6235435080eef62a7e2ed055",
+                "reference": "c67acfdc968f487b6235435080eef62a7e2ed055",
                 "shasum": ""
             },
             "require": {
@@ -1682,7 +1682,63 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-12-14T16:21:19+00:00"
+            "time": "2021-12-15T14:02:14+00:00"
+        },
+        {
+            "name": "laravel/legacy-factories",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/legacy-factories.git",
+                "reference": "8091d6d64e0e6ea22fb3326ef0b21936d0a0217c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/legacy-factories/zipball/8091d6d64e0e6ea22fb3326ef0b21936d0a0217c",
+                "reference": "8091d6d64e0e6ea22fb3326ef0b21936d0a0217c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/macroable": "^8.0",
+                "php": "^7.3|^8.0",
+                "symfony/finder": "^3.4|^4.0|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Illuminate\\Database\\Eloquent\\LegacyFactoryServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
+                "psr-4": {
+                    "Illuminate\\Database\\Eloquent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "The legacy version of the Laravel Eloquent factories.",
+            "homepage": "http://laravel.com",
+            "support": {
+                "issues": "https://github.com/laravel/framework/issues",
+                "source": "https://github.com/laravel/framework"
+            },
+            "time": "2021-10-19T13:10:37+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -7699,6 +7755,71 @@
             "time": "2020-10-16T08:27:54+00:00"
         },
         {
+            "name": "fakerphp/faker",
+            "version": "v1.17.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FakerPHP/Faker.git",
+                "reference": "b85e9d44eae8c52cca7aa0939483611f7232b669"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/b85e9d44eae8c52cca7aa0939483611f7232b669",
+                "reference": "b85e9d44eae8c52cca7aa0939483611f7232b669",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "psr/container": "^1.0 || ^2.0",
+                "symfony/deprecation-contracts": "^2.2 || ^3.0"
+            },
+            "conflict": {
+                "fzaninotto/faker": "*"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.4.1",
+                "ext-intl": "*",
+                "symfony/phpunit-bridge": "^4.4 || ^5.2"
+            },
+            "suggest": {
+                "ext-curl": "Required by Faker\\Provider\\Image to download images.",
+                "ext-dom": "Required by Faker\\Provider\\HtmlLorem for generating random HTML.",
+                "ext-iconv": "Required by Faker\\Provider\\ru_RU\\Text::realText() for generating real Russian text.",
+                "ext-mbstring": "Required for multibyte Unicode string functionality."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "v1.17-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "support": {
+                "issues": "https://github.com/FakerPHP/Faker/issues",
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.17.0"
+            },
+            "time": "2021-12-05T17:14:47+00:00"
+        },
+        {
             "name": "filp/whoops",
             "version": "2.14.4",
             "source": {
@@ -7892,16 +8013,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.12.11",
+            "version": "v1.12.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "236b1eb30c36c642b038dc1081036827310b6902"
+                "reference": "c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/236b1eb30c36c642b038dc1081036827310b6902",
-                "reference": "236b1eb30c36c642b038dc1081036827310b6902",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6",
+                "reference": "c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6",
                 "shasum": ""
             },
             "require": {
@@ -7948,7 +8069,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2021-12-14T17:54:29+00:00"
+            "time": "2021-12-16T14:58:08+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -8082,35 +8203,34 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v4.3.0",
+            "version": "v5.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "7c125dc2463f3e144ddc7e05e63077109508c94e"
+                "reference": "3004cfa49c022183395eabc6d0e5207dfe498d00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/7c125dc2463f3e144ddc7e05e63077109508c94e",
-                "reference": "7c125dc2463f3e144ddc7e05e63077109508c94e",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/3004cfa49c022183395eabc6d0e5207dfe498d00",
+                "reference": "3004cfa49c022183395eabc6d0e5207dfe498d00",
                 "shasum": ""
             },
             "require": {
                 "facade/ignition-contracts": "^1.0",
-                "filp/whoops": "^2.4",
-                "php": "^7.2.5 || ^8.0",
+                "filp/whoops": "^2.14.3",
+                "php": "^7.3 || ^8.0",
                 "symfony/console": "^5.0"
             },
             "require-dev": {
-                "facade/ignition": "^2.0",
-                "fideloper/proxy": "^4.2",
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "fruitcake/laravel-cors": "^1.0",
-                "laravel/framework": "^7.0",
-                "laravel/tinker": "^2.0",
-                "nunomaduro/larastan": "^0.6",
-                "orchestra/testbench": "^5.0",
-                "phpstan/phpstan": "^0.12.3",
-                "phpunit/phpunit": "^8.5.1 || ^9.0"
+                "brianium/paratest": "^6.1",
+                "fideloper/proxy": "^4.4.1",
+                "fruitcake/laravel-cors": "^2.0.3",
+                "laravel/framework": "8.x-dev",
+                "nunomaduro/larastan": "^0.6.2",
+                "nunomaduro/mock-final-classes": "^1.0",
+                "orchestra/testbench": "^6.0",
+                "phpstan/phpstan": "^0.12.64",
+                "phpunit/phpunit": "^9.5.0"
             },
             "type": "library",
             "extra": {
@@ -8166,7 +8286,262 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-10-29T15:12:23+00:00"
+            "time": "2021-09-20T15:06:32+00:00"
+        },
+        {
+            "name": "pestphp/pest",
+            "version": "v1.21.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pestphp/pest.git",
+                "reference": "92b8d32ef78c54c915641999e0c4167d7202b2d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/92b8d32ef78c54c915641999e0c4167d7202b2d9",
+                "reference": "92b8d32ef78c54c915641999e0c4167d7202b2d9",
+                "shasum": ""
+            },
+            "require": {
+                "nunomaduro/collision": "^5.4.0|^6.0",
+                "pestphp/pest-plugin": "^1.0.0",
+                "php": "^7.3 || ^8.0",
+                "phpunit/phpunit": "^9.5.5"
+            },
+            "require-dev": {
+                "illuminate/console": "^8.47.0",
+                "illuminate/support": "^8.47.0",
+                "laravel/dusk": "^6.15.0",
+                "pestphp/pest-dev-tools": "dev-master",
+                "pestphp/pest-plugin-parallel": "^1.0"
+            },
+            "bin": [
+                "bin/pest"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                },
+                "pest": {
+                    "plugins": [
+                        "Pest\\Plugins\\Coverage",
+                        "Pest\\Plugins\\Init",
+                        "Pest\\Plugins\\Version",
+                        "Pest\\Plugins\\Environment"
+                    ]
+                },
+                "laravel": {
+                    "providers": [
+                        "Pest\\Laravel\\PestServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pest\\": "src/"
+                },
+                "files": [
+                    "src/Functions.php",
+                    "src/Pest.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "An elegant PHP Testing Framework.",
+            "keywords": [
+                "framework",
+                "pest",
+                "php",
+                "test",
+                "testing",
+                "unit"
+            ],
+            "support": {
+                "issues": "https://github.com/pestphp/pest/issues",
+                "source": "https://github.com/pestphp/pest/tree/v1.21.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/paypalme/enunomaduro",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/lukeraymonddowning",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/octoper",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/olivernybroe",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/owenvoke",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-11-25T16:44:17+00:00"
+        },
+        {
+            "name": "pestphp/pest-plugin",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pestphp/pest-plugin.git",
+                "reference": "fc8519de148699fe612d9c669be60554cd2db4fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin/zipball/fc8519de148699fe612d9c669be60554cd2db4fa",
+                "reference": "fc8519de148699fe612d9c669be60554cd2db4fa",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1 || ^2.0",
+                "php": "^7.3 || ^8.0"
+            },
+            "conflict": {
+                "pestphp/pest": "<1.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.10.19",
+                "pestphp/pest": "^1.0",
+                "pestphp/pest-dev-tools": "dev-master"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                },
+                "class": "Pest\\Plugin\\Manager"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pest\\Plugin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The Pest plugin manager",
+            "keywords": [
+                "framework",
+                "manager",
+                "pest",
+                "php",
+                "plugin",
+                "test",
+                "testing",
+                "unit"
+            ],
+            "support": {
+                "source": "https://github.com/pestphp/pest-plugin/tree/v1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-01-03T15:53:42+00:00"
+        },
+        {
+            "name": "pestphp/pest-plugin-laravel",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pestphp/pest-plugin-laravel.git",
+                "reference": "bacc1ef1f537cf9adf692b6930e54f607ae530ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin-laravel/zipball/bacc1ef1f537cf9adf692b6930e54f607ae530ad",
+                "reference": "bacc1ef1f537cf9adf692b6930e54f607ae530ad",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^7.0 || ^8.0",
+                "pestphp/pest": "^1.7",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.12.1 || ^6.7.2",
+                "pestphp/pest-dev-tools": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pest\\Laravel\\": "src/"
+                },
+                "files": [
+                    "src/Autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The Pest Laravel Plugin",
+            "keywords": [
+                "framework",
+                "laravel",
+                "pest",
+                "php",
+                "test",
+                "testing",
+                "unit"
+            ],
+            "support": {
+                "source": "https://github.com/pestphp/pest-plugin-laravel/tree/v1.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/nunomaduro",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/nunomaduro",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2021-07-07T09:11:42+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -10173,7 +10548,9 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3"
+        "php": "^7.3",
+        "ext-json": "*",
+        "ext-simplexml": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
