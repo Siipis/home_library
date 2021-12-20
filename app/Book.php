@@ -4,6 +4,7 @@ namespace App;
 
 use App\Traits\Paginated;
 use App\Facades\Cover;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Book extends Model
 {
-    use Paginated;
+    use Paginated, HasFactory;
 
     protected $appends = [
         'link',

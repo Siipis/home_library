@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Facades\Classes\Alert;
+use App\Facades\Alert;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\UserForm;

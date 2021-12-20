@@ -4,6 +4,7 @@
 /storage/*.key
 .env
 .env.backup
+.env.testing
 
 # Dependencies
 /node_modules

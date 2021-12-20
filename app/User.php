@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -44,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         static::saving(function (User $user) {
             if ($user->isDirty('password')) {
-                $user->password = \Hash::make($user->password);
+                $user->password = Hash::make($user->password);
             }
             unset($user->password_confirmation);
         });
@@ -74,9 +75,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->isAdmin()) return true;
 
-        return $library->members()
-                ->where('users.id', '=', $this->id)
-                ->count('users.id') > 0;
+        return $library->members->contains($this);
     }
 
     /**
@@ -88,8 +87,8 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->isAdmin()) return true;
 
         return $library->members()
-                ->where('users.id', '=', $this->id)
-                ->where('role', '=', 'owner')
-                ->count('users.id') > 0;
+                ->where('user_id', $this->id)
+                ->where('role', Library::OWNER_ROLE)
+                ->count() > 0;
     }
 }

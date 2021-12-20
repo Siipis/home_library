@@ -4,13 +4,17 @@ namespace App;
 
 use App\Traits\Paginated;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Library extends Model
 {
-    use Paginated;
+    use Paginated, HasFactory;
+
+    public const MEMBER_ROLE = 'lender';
+    public const OWNER_ROLE = 'owner';
 
     protected $hidden = [
         'id', 'created_at', 'updated_at',
@@ -25,7 +29,7 @@ class Library extends Model
     }
 
     /**
-     * @return BelongsToMany|User
+     * @return BelongsToMany
      */
     public function members()
     {

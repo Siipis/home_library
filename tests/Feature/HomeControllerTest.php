@@ -2,26 +2,36 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class HomeControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use WithoutMiddleware;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function testIndex()
     {
-        $user = factory(User::class)->create();
-
-        $response = $this->actingAs($user)
-            ->get('/');
+        $response = $this->actingAs($this->USER)
+            ->get(route('index'));
 
         $response->assertStatus(200);
+    }
+
+    public function testSettings()
+    {
+        $response = $this->actingAs($this->USER)
+            ->get(route('settings'));
+
+        $response->assertStatus(200);
+    }
+
+    public function testUpdateAccount()
+    {
+        $response = $this->actingAs($this->USER)
+            ->post(route('settings.account'),
+                $this->USER->all()->toArray()
+            );
+
+        $response->assertRedirect();
     }
 }

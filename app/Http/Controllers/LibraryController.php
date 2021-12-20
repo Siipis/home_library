@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Forms\BookForm;
 use App\Library;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\Form\Form;
@@ -15,7 +14,6 @@ class LibraryController extends Controller
     /**
      * @param Library $library
      * @return mixed
-     * @throws AuthorizationException
      */
     public function index(Library $library)
     {
@@ -26,8 +24,8 @@ class LibraryController extends Controller
 
     /**
      * @param Request $request
+     * @param Library $library
      * @return mixed
-     * @throws AuthorizationException
      */
     public function books(Request $request, Library $library)
     {

@@ -77,7 +77,13 @@ class Helpers extends AbstractExtension
                     );
                 }
 
-                throw new \Exception("Unrecognized data type " . typeOf($model));
+                if (is_null($model)) {
+                    return $this->escapeJson(
+                        json_encode([]), $mode
+                    );
+                };
+
+                throw new \Exception("Unrecognized data type " . gettype($model));
             }, ['is_safe' => ['html']]),
         ];
     }

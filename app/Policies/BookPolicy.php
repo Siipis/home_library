@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Book;
+use App\Library;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Request;
@@ -11,6 +12,9 @@ class BookPolicy
 {
     use HandlesAuthorization;
 
+    /**
+     * @var Library
+     */
     private $library;
 
     public function __construct(Request $request)

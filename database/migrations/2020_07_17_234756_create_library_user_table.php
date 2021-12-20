@@ -17,7 +17,12 @@ class CreateLibraryUserTable extends Migration
             $table->id();
             $table->unsignedBigInteger('library_id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('role', ['owner', 'lender'])->default('lender');
+
+            if (DB::connection('sqlite')) {
+                $table->string('role', 20)->default('lender');
+            } else {
+                $table->enum('role', ['owner', 'lender'])->default('lender');
+            }
 
             $table->unique(['library_id', 'user_id']);
         });

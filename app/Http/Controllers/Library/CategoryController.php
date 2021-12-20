@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Library;
 
 use App\Category;
-use App\Facades\Classes\Alert;
+use App\Facades\Alert;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LibraryController;
 use App\Http\Forms\CategoryForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
+use Exception;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -131,7 +132,7 @@ class CategoryController extends Controller
      * @param Library $library
      * @param Category $category
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function destroy(Library $library, Category $category)
     {

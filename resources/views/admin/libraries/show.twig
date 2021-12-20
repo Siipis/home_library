@@ -79,7 +79,7 @@
                 },
 
                 updateMembers: function () {
-                    axios.post('{{ route('admin.library.members', library.id) }}', {
+                    axios.post('{{ route('admin.library.members', library) }}', {
                         _method: 'put',
                         data: {
                             members: this.members.map(m => {

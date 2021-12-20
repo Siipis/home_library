@@ -9,9 +9,11 @@ use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Http\Forms\LibraryForm;
 use App\Library;
 use App\User;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class LibraryController extends Controller
 {
@@ -19,7 +21,7 @@ class LibraryController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Library::class, 'library');
+        $this->middleware(['can:access-backend']);
 
         $this->form = new LibraryForm();
     }
@@ -96,7 +98,7 @@ class LibraryController extends Controller
      *
      * @param Request $request
      * @param Library $library
-     * @throws AuthorizationException
+     * @return JsonResponse
      */
     public function members(Request $request, Library $library)
     {
@@ -155,7 +157,7 @@ class LibraryController extends Controller
      *
      * @param Library $library
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public function destroy(Library $library)
     {
