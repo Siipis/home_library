@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -75,7 +76,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->isAdmin()) return true;
 
-        return $library->members->contains($this);
+        return DB::table('library_user')
+            ->where('user_id', $this->id)
+            ->where('library_id', $library->id)
+            ->count() > 0;
     }
 
     /**
@@ -86,8 +90,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->isAdmin()) return true;
 
-        return $library->members()
+        return DB::table('library_user')
                 ->where('user_id', $this->id)
+                ->where('library_id', $library->id)
                 ->where('role', Library::OWNER_ROLE)
                 ->count() > 0;
     }

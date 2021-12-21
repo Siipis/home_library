@@ -2,13 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class LibraryControllerTest extends TestCase
 {
-    use WithoutMiddleware;
-
     public function testAdminHasAccess()
     {
         $this->assertTrue($this->ADMIN->can('view', $this->library));
