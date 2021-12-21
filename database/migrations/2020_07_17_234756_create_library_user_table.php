@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateLibraryUserTable extends Migration
@@ -18,7 +19,7 @@ class CreateLibraryUserTable extends Migration
             $table->unsignedBigInteger('library_id');
             $table->unsignedBigInteger('user_id');
 
-            if (DB::connection('sqlite')) {
+            if (env('DB_CONNECTION') == 'sqlite') {
                 $table->string('role', 20)->default('lender');
             } else {
                 $table->enum('role', ['owner', 'lender'])->default('lender');
