@@ -31,6 +31,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('details', 'ApiController@details')->name('details');
         Route::post('cover', 'ApiController@cover')->name('cover');
         Route::get('cover/placeholder/{size?}', 'Library\BookController@noCover')->name('no_cover');
+
+        Route::post('books/list/{list}/{book}', 'Library\BookController@listAdd')->name('list.add');
+        Route::delete('books/list/{list}/{book}', 'Library\BookController@listRemove')->name('list.remove');
     });
 
     // Library specific routes

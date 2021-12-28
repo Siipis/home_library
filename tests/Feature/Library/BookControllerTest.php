@@ -3,6 +3,7 @@
 namespace Tests\Feature\Library;
 
 use App\Book;
+use App\Listing;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
@@ -163,5 +164,65 @@ class BookControllerTest extends TestCase
             ]));
 
         $response->assertStatus(403);
+    }
+
+    public function testAddToList()
+    {
+        $book = factory(Book::class)->create();
+        $this->library->books()->save($book);
+
+        $response = $this->actingAs($this->MEMBER)
+            ->post(route('books.list.add', [
+                'list' => Listing::FAVORITE,
+                'book' => $book
+            ]));
+
+        $response->assertStatus(200);
+    }
+
+    public function testAddDuplicateToList()
+    {
+        $book = factory(Book::class)->create();
+        $this->library->books()->save($book);
+
+        Listing::list($this->MEMBER, $book, Listing::FAVORITE);
+
+        $response = $this->actingAs($this->MEMBER)
+            ->post(route('books.list.add', [
+                'list' => Listing::FAVORITE,
+                'book' => $book
+            ]));
+
+        $response->assertStatus(409);
+    }
+
+    public function testRemoveFromList()
+    {
+        $book = factory(Book::class)->create();
+        $this->library->books()->save($book);
+
+        Listing::list($this->MEMBER, $book, Listing::FAVORITE);
+
+        $response = $this->actingAs($this->MEMBER)
+            ->delete(route('books.list.remove', [
+                'list' => Listing::FAVORITE,
+                'book' => $book
+            ]));
+
+        $response->assertStatus(200);
+    }
+
+    public function testRemoveUnlisted()
+    {
+        $book = factory(Book::class)->create();
+        $this->library->books()->save($book);
+
+        $response = $this->actingAs($this->MEMBER)
+            ->delete(route('books.list.remove', [
+                'list' => Listing::FAVORITE,
+                'book' => $book
+            ]));
+
+        $response->assertStatus(404);
     }
 }

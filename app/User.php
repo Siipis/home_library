@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -95,5 +96,39 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->where('library_id', $library->id)
                 ->where('role', Library::OWNER_ROLE)
                 ->count() > 0;
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function listed()
+    {
+        return $this->belongsToMany(Book::class, 'listings')
+            ->withPivot('type')
+            ->withTimestamps();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function to_be_read()
+    {
+        return $this->listed()->withPivotValue('type', Listing::TBR);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function wishlist()
+    {
+        return $this->listed()->withPivotValue('type', Listing::WISHLIST);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function favorites()
+    {
+        return $this->listed()->withPivotValue('type', Listing::FAVORITE);
     }
 }

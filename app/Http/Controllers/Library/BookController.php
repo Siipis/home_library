@@ -10,7 +10,9 @@ use App\Http\Controllers\LibraryController;
 use App\Http\Forms\BookForm;
 use App\Http\Forms\Exceptions\UnsentFormException;
 use App\Library;
+use App\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Throwable;
@@ -76,6 +78,8 @@ class BookController extends Controller
      */
     public function show(Library $library, Book $book)
     {
+        $user = Auth::user();
+
         return view('library.books.show');
     }
 
@@ -152,5 +156,41 @@ class BookController extends Controller
     public function noCover(string $size = null)
     {
         return Cover::response(null, $size);
+    }
+
+    /**
+     * @param string $type
+     * @param Book $book
+     * @return mixed
+     */
+    public function listAdd(string $type, Book $book)
+    {
+        Gate::authorize('view', $book);
+
+        if (Listing::exists(Auth::user(), $book, $type)) {
+            return abort(409, 'Book is already listed.');
+        }
+
+        Listing::list(Auth::user(), $book, $type);
+
+        return response(true);
+    }
+
+    /**
+     * @param string $type
+     * @param Book $book
+     * @return mixed
+     */
+    public function listRemove(string $type, Book $book)
+    {
+        Gate::authorize('view', $book);
+
+        if (Listing::missing(Auth::user(), $book, $type)) {
+            return abort(404);
+        }
+
+        Listing::unlist(Auth::user(), $book, $type);
+
+        return response(true);
     }
 }

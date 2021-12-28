@@ -7,7 +7,7 @@
 {% block content %}
     <b-row>
         <b-col class="col-md-6 col-sm-3">
-            <img src="{{ book.cover }}" alt="" class="w-100" />
+            <img src="{{ book.cover }}" alt="" class="w-100"/>
         </b-col>
 
         <b-col class="col-md-6 col-sm-9">
@@ -39,6 +39,38 @@
             {% if book.keywords is not empty %}
                 <p><strong>{{ 'fields.keywords'|trans }}:</strong> {{ book.keywords }}</p>
             {% endif %}
+
+            <div>
+                <b-button title="{{ 'list.list_favorites'|trans }}" variant="link"
+                          @click.prevent="addFavorite" v-if="!favorite">
+                    <b-icon icon="heart"></b-icon>
+                </b-button>
+
+                <b-button title="{{ 'list.unlist_favorites'|trans }}" variant="link"
+                          @click.prevent="removeFavorite" v-if="favorite">
+                    <b-icon icon="heart-fill"></b-icon>
+                </b-button>
+
+                <b-button title="{{ 'list.list_tbr'|trans }}" variant="link"
+                          @click.prevent="addTBR" v-if="!tbr">
+                    <b-icon icon="clock"></b-icon>
+                </b-button>
+
+                <b-button title="{{ 'list.unlist_tbr'|trans }}" variant="link"
+                          @click.prevent="removeTBR" v-if="tbr">
+                    <b-icon icon="clock-fill"></b-icon>
+                </b-button>
+
+                <b-button title="{{ 'list.list_wishlist'|trans }}" variant="link"
+                          @click.prevent="addWishlist" v-if="!wishlist">
+                    <b-icon icon="bookmark"></b-icon>
+                </b-button>
+
+                <b-button title="{{ 'list.unlist_wishlist'|trans }}" variant="link"
+                          @click.prevent="removeWishlist" v-if="wishlist">
+                    <b-icon icon="bookmark-fill"></b-icon>
+                </b-button>
+            </div>
 
             <table class="table table-striped table-sm my-5">
                 <tbody>
@@ -78,4 +110,84 @@
     </b-row>
 {% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        window.Mixin.add('book', {
+            data() {
+                return {
+                    tbr: {{ auth.to_be_read.contains(book)|json_encode }},
+                    wishlist: {{ auth.wishlist.contains(book)|json_encode }},
+                    favorite: {{ auth.favorites.contains(book)|json_encode }},
+                }
+            },
+
+            methods: {
+                addFavorite() {
+                    this.favorite = true
+
+                    axios.post('{{ route('books.list.add', {
+                        'book': book,
+                        'list': 'favorite'
+                    }) }}').catch(() => {
+                        this.favorite = false
+                    });
+                },
+
+                removeFavorite() {
+                    this.favorite = false
+
+                    axios.delete('{{ route('books.list.remove', {
+                        'book': book,
+                        'list': 'favorite'
+                    }) }}').catch(() => {
+                        this.favorite = true
+                    });
+                },
+
+                addTBR() {
+                    this.tbr = true
+
+                    axios.post('{{ route('books.list.add', {
+                        'book': book,
+                        'list': 'tbr'
+                    }) }}').catch(() => {
+                        this.tbr = false
+                    });
+                },
+
+                removeTBR() {
+                    this.tbr = false
+
+                    axios.delete('{{ route('books.list.remove', {
+                        'book': book,
+                        'list': 'tbr'
+                    }) }}').catch(() => {
+                        this.tbr = true
+                    });
+                },
+
+                addWishlist() {
+                    this.wishlist = true
+
+                    axios.post('{{ route('books.list.add', {
+                        'book': book,
+                        'list': 'wishlist'
+                    }) }}').catch(() => {
+                        this.wishlist = false
+                    });
+                },
+
+                removeWishlist() {
+                    this.wishlist = false
+
+                    axios.delete('{{ route('books.list.remove', {
+                        'book': book,
+                        'list': 'wishlist'
+                    }) }}').catch(() => {
+                        this.wishlist = true
+                    });
+                }
+            }
+        })
+    </script>
+{% endblock %}
