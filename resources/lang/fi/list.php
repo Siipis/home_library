@@ -7,6 +7,8 @@ return [
     |
     */
 
+    'lists'             => 'Listat',
+
     'tbr'               => 'Lukulista',
     'list_tbr'          => 'Lisää lukulistalle',
     'unlist_tbr'        => 'Poista lukulistalta',
@@ -18,4 +20,6 @@ return [
     'favorites'         => 'Suosikit',
     'list_favorites'    => 'Lisää suosikkeihin',
     'unlist_favorites'  => 'Poista suosikeista',
+
+    'added'             => 'Lisätty',
 ];

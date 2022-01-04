@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'except' => 'index',
         ]);
         Route::get('books/{book}/cover/{size?}', 'Library\BookController@cover')->name('books.cover');
+
+        Route::get('list/{list}', 'Library\BookController@listView')->name('list.view');
     });
 
     // Admin panel specific routes

@@ -20,6 +20,20 @@
                         {{ category.name }}
                     </b-nav-item>
                 {% endfor %}
+                <b-nav-item-dropdown>
+                    <template v-slot:button-content>
+                        {{ 'list.lists'|trans }}
+                    </template>
+                    <b-dropdown-item href="{{ route('library.list.view', [library, 'favorites']) }}">
+                        {{ 'list.favorites'|trans }}
+                    </b-dropdown-item>
+                    <b-dropdown-item href="{{ route('library.list.view', [library, 'tbr']) }}">
+                        {{ 'list.tbr'|trans }}
+                    </b-dropdown-item>
+                    <b-dropdown-item href="{{ route('library.list.view', [library, 'wishlist']) }}">
+                        {{ 'list.wishlist'|trans }}
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
             {% endif %}
         {% endblock %}
 

@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Throwable;
 
 class BookController extends Controller
@@ -156,6 +157,46 @@ class BookController extends Controller
     public function noCover(string $size = null)
     {
         return Cover::response(null, $size);
+    }
+
+    public function listView(Library $library, string $type)
+    {
+        Gate::authorize('view', $library);
+
+        return view('library.list', [
+            'title' => trans('list.' . $type),
+            'items' => Listing::where('type', Str::singular($type))
+                ->where('user_id', Auth::id())
+                ->get()
+                ->map(function ($listing) use ($type) {
+                    return [
+                        'title' => $listing->book->title,
+                        'added' => $listing->created_at->diffForHumans(),
+                        'link' => $listing->book->link,
+                        'unlist' => route('books.list.remove', [
+                            'list' => Str::singular($type),
+                            'book' => $listing->book,
+                        ]),
+                    ];
+                }),
+            'fields' => [
+                [
+                    'key' => 'title',
+                    'label' => trans('fields.title'),
+                    'sortable' => true
+                ],
+                [
+                    'key' => 'added',
+                    'label' => trans('list.added'),
+                    'sortable' => true
+                ],
+                [
+                    'key' => 'unlist',
+                    'label' => '',
+                    'sortable' => false,
+                ]
+            ]
+        ]);
     }
 
     /**

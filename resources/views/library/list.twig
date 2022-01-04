@@ -1,0 +1,48 @@
+{% extends 'user'|layout %}
+
+{% set page_title = title %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+    <b-table :items="items"
+             :fields="fields"
+             sort-by="added"
+             :sort-desc="true"
+    >
+        <template v-slot:cell(title)="book">
+            <a :href="book.item.link">[[ book.item.title ]]</a>
+        </template>
+
+        <template v-slot:cell(unlist)="book">
+            <b-button variant="outline-secondary" class="bg-white" size="sm" @click="unlist(book)">
+                <b-icon icon="trash"></b-icon>
+            </b-button>
+        </template>
+    </b-table>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        window.Mixin.add('list', {
+            data: {
+                items: {{ items|json_encode|raw }},
+                fields: {{ fields|json_encode|raw }}
+            },
+
+            methods: {
+                unlist({ item }) {
+                    const vue = this
+
+                    this.items = this.items.filter(i => {
+                        return i.unlist !== item.unlist
+                    })
+
+                    axios.delete(item.unlist).catch(error => {
+                        vue.error = error.response
+                    })
+                }
+            }
+        })
+    </script>
+{% endblock %}
